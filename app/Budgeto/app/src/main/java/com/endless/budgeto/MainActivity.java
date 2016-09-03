@@ -6,8 +6,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    String bank = "Tangerine";
+    String url = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogin&device=web&locale=fr_CA";
+    Map<String, String> userInfo = new HashMap<String, String>();
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +33,20 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userInfo.put("username", extras.getString("username"));
+            userInfo.put("password", extras.getString("password"));
+            Snackbar.make(null, userInfo.get("username"), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        webView = (WebView) findViewById(R.id.webView);
+        webView.loadUrl(url);
     }
 
+    int step = 0;
+    public void addBill(View view) {
+
+    }
 }
