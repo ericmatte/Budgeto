@@ -89,13 +89,24 @@
         android:layout_alignEnd="@+id/numberTxt"
         android:textColor="#ffffff" />
 
-    <Switch
+    <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Switch"
-        android:id="@+id/switch1"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/calcBtn"
+        android:onClick="showGreetings"
+        android:text="Open Second Activity"
+        android:id="@+id/secActBtn"
+        android:layout_above="@+id/thiActBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showGreetings"
+        android:text="Open Third Activity"
+        android:id="@+id/thiActBtn"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
