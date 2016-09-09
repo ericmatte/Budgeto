@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
         switch (step) {
             case 0:
                 // username
-                String command = String.format(BankData.tangerineCalls.get(0), userInfo.get("username"));
+                String command = String.format(BankData.tangerineCalls.get(step), userInfo.get("username"));
                 bridge.sendJsData(command);
 
                 break;
             case 1:
                 // question
-                command = BankData.tangerineCalls.get(1);
+                command = BankData.tangerineCalls.get(step);
                 webView.evaluateJavascript("(function() { return " + command + "; })();", new ValueCallback<String>() {
                     @Override
                     public void onReceiveValue(String s) {
@@ -74,7 +74,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 // answering question
-                command = String.format(BankData.tangerineCalls.get(2), value);
+                command = String.format(BankData.tangerineCalls.get(step), value);
+                bridge.sendJsData(command);
+
+                break;
+            case 3:
+                // password
+                command = String.format(BankData.tangerineCalls.get(step), userInfo.get("password"));
                 bridge.sendJsData(command);
 
                 break;

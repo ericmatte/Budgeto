@@ -14,6 +14,7 @@ public class BankData {
     public static List<String> tangerineCalls = Arrays.asList(
             "input = $('#ACN'); input.val('%s'); input.closest('form').submit();", // {username}
             "$(\"div.content-main-wrapper .CB_DoNotShow:first\").html()",
-            "input = $('#Answer'); input.val('%s'); input.closest('form').submit();"); // {answer}
+            "input = $('#Answer'); input.val('%s'); input.closest('form').submit();", // {answer}
+            "input = $('#PIN'); input.val('%s'); input.closest('form').submit()"); // {password}
 
 }
