@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.bank;
 
 import java.util.Arrays;
 import java.util.List;
