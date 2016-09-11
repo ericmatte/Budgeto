@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.bank;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +15,9 @@ public class BankData {
             "input = $('#ACN'); input.val('%s'); input.closest('form').submit();", // {username}
             "$(\"div.content-main-wrapper .CB_DoNotShow:first\").html()",
             "input = $('#Answer'); input.val('%s'); input.closest('form').submit();", // {answer}
-            "input = $('#PIN'); input.val('%s'); input.closest('form').submit()"); // {password}
-    public static String logout = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
+            "input = $('#PIN'); input.val('%s'); input.closest('form').submit()", // {password}
+            "/web/Tangerine.html?command=goToCreditCardAccount&creditCardAccount=0",
+            "$(\"table[data-target='#transactionTable'] tbody tr\")");
+	public static String logout = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
+
 }
