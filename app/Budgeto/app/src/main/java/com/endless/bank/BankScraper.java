@@ -8,19 +8,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
-import com.endless.budgeto.ThisApp;
-
-import java.util.List;
 import java.util.Map;
 
 abstract public class BankScraper {
 
     protected String bankName;
     protected WebView webView;
+    protected Context context;
     protected Map<String, String> userInfo;
 
-    public BankScraper(WebView webView, Map<String, String> userInfo) {
+    public BankScraper(WebView webView, Context context, Map<String, String> userInfo) {
         this.userInfo = userInfo;
+        this.context = context;
         this.webView = webView;
         this.webView.getSettings().setJavaScriptEnabled(true);
 
@@ -52,7 +51,6 @@ abstract public class BankScraper {
     }
 
     public void promptInput(String value) {
-        Context context = ThisApp.getAppContext();
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
         alert.setTitle(BankData.bank + " vous demande une question.");

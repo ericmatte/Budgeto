@@ -1,12 +1,11 @@
 package com.endless.bank;
 
 import android.content.Context;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
-import com.endless.bank.BankScraper;
-import static jodd.jerry.Jerry.jerry;
 
-import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.util.Map;
 
 /**
@@ -16,19 +15,19 @@ public class Tangerine extends BankScraper {
 
     int step;
 
-    public Tangerine(WebView webView, Map<String, String> userInfo) {
-        super(webView, userInfo);
+    public Tangerine(WebView webView, Context context, Map<String, String> userInfo) {
+        super(webView, context, userInfo);
         this.bankName = "Tangerine";
     }
 
     @Override
     public void login() {
-        webView.loadUrl(BankData.url);
+        webView.loadUrl(BankData.tangerineLogin);
     }
 
     @Override
     public void logout() {
-        webView.loadUrl("logout"); // TODO: Get logout url
+        webView.loadUrl(BankData.tangerineLogout);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class Tangerine extends BankScraper {
 
     @Override
     public void nextCall(String url, String response) {
-        if (!url.equals(null) && !url.contains("?"))
+        if (url != null && !url.contains("?"))
             return;
 
         switch (step) {
@@ -54,7 +53,7 @@ public class Tangerine extends BankScraper {
                 break;
             case 2:
                 // prompt for answer
-                promptInput(response);
+                promptInput(response.replaceAll("^\"|\"$", ""));
                 break;
             case 3:
                 // answering question
@@ -74,8 +73,7 @@ public class Tangerine extends BankScraper {
                 break;
             case 7:
                 // extracting data
-                Jerry doc = jerry(html);
-                doc.$("div#jodd p.neat").css("color", "red").addClass("ohmy");
+                Document doc = Jsoup.parse(response);
                 break;
             default:
                 // last step

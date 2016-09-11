@@ -1,17 +1,11 @@
 package com.endless.budgeto;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.EditText;
 
-import com.endless.bank.BankData;
 import com.endless.bank.BankScraper;
 import com.endless.bank.Tangerine;
 
@@ -37,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView = (WebView) findViewById(R.id.webView);
-        BankScraper tangerine = new Tangerine(webView, userInfo);
-        tangerine.getTransactions();
+        BankScraper tangerine = new Tangerine(webView, this, userInfo);
+        tangerine.requestTransactions();
     }
 
 
