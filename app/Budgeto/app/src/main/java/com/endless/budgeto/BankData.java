@@ -16,5 +16,5 @@ public class BankData {
             "$(\"div.content-main-wrapper .CB_DoNotShow:first\").html()",
             "input = $('#Answer'); input.val('%s'); input.closest('form').submit();", // {answer}
             "input = $('#PIN'); input.val('%s'); input.closest('form').submit()"); // {password}
-
+    public static String logout = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
 }
