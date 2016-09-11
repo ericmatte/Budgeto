@@ -4,6 +4,7 @@ import android.content.Context;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import com.endless.bank.BankScraper;
+import static jodd.jerry.Jerry.jerry;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,8 @@ public class Tangerine extends BankScraper {
 
     int step;
 
-    public Tangerine(WebView webView, Context context, Map<String, String> userInfo) {
-        super(webView, context, userInfo);
+    public Tangerine(WebView webView, Map<String, String> userInfo) {
+        super(webView, userInfo);
         this.bankName = "Tangerine";
     }
 
@@ -27,16 +28,14 @@ public class Tangerine extends BankScraper {
 
     @Override
     public void logout() {
-
+        webView.loadUrl("logout"); // TODO: Get logout url
     }
 
     @Override
-    public List<String> getTransactions() {
+    public void requestTransactions() {
         step = 0;
         login();
         // nextCall() will be triggered by page loaded
-        logout();
-        return null;
     }
 
     @Override
@@ -47,33 +46,41 @@ public class Tangerine extends BankScraper {
         switch (step) {
             case 0:
                 // username
-                String command = String.format(BankData.tangerineCalls.get(step), userInfo.get("username"));
-                sendJsData(command);
-
+                sendJsData(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
                 break;
             case 1:
                 // question
-                command = BankData.tangerineCalls.get(step);
-                webView.evaluateJavascript("(function() { return " + command + "; })();", new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String s) {
-                        promptInput(s);
-                    }
-                });
+                requestJsData(BankData.tangerineCalls.get(1));
                 break;
             case 2:
-                // answering question
-                command = String.format(BankData.tangerineCalls.get(step), response);
-                sendJsData(command);
-
+                // prompt for answer
+                promptInput(response);
                 break;
             case 3:
+                // answering question
+                sendJsData(String.format(BankData.tangerineCalls.get(2), response));
+                break;
+            case 4:
                 // password
-                command = String.format(BankData.tangerineCalls.get(step), userInfo.get("password"));
-                sendJsData(command);
-
+                sendJsData(String.format(BankData.tangerineCalls.get(3), userInfo.get("password")));
+                break;
+            case 5:
+                // connected, getting to credit card
+                webView.loadUrl(BankData.tangerineCalls.get(4));
+                break;
+            case 6:
+                // fetching transactions
+                requestJsData(BankData.tangerineCalls.get(5));
+                break;
+            case 7:
+                // extracting data
+                Jerry doc = jerry(html);
+                doc.$("div#jodd p.neat").css("color", "red").addClass("ohmy");
                 break;
             default:
+                // last step
+                logout();
+
                 break;
         }
         step += 1;

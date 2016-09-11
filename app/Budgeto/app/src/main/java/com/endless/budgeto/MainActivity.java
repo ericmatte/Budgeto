@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView = (WebView) findViewById(R.id.webView);
-        BankScraper tangerine = new Tangerine(webView, getApplicationContext(), userInfo);
+        BankScraper tangerine = new Tangerine(webView, userInfo);
         tangerine.getTransactions();
     }
 
