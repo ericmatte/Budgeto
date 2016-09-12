@@ -3,10 +3,14 @@ package com.endless.bank;
 import android.content.Context;
 import android.webkit.WebView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.Map;
+
+import jodd.jerry.Jerry;
+
+import static jodd.jerry.Jerry.jerry;
 
 /**
  * Created by Eric on 2016-09-09.
@@ -45,7 +49,8 @@ public class Tangerine extends BankScraper {
         switch (step) {
             case 0:
                 // username
-                sendJsData(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
+                if (url.contains("displayLogin"))
+                    sendJsData(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
                 break;
             case 1:
                 // question
@@ -61,11 +66,15 @@ public class Tangerine extends BankScraper {
                 break;
             case 4:
                 // password
-                sendJsData(String.format(BankData.tangerineCalls.get(3), userInfo.get("password")));
+                if (url.contains("displayPIN"))
+                    sendJsData(String.format(BankData.tangerineCalls.get(3), userInfo.get("password")));
                 break;
             case 5:
                 // connected, getting to credit card
-                webView.loadUrl(BankData.tangerineCalls.get(4));
+                if (url.contains("displayAccountSummary"))
+                    webView.loadUrl(BankData.tangerineCalls.get(4));
+                else
+                    step -= 1;
                 break;
             case 6:
                 // fetching transactions
@@ -73,12 +82,29 @@ public class Tangerine extends BankScraper {
                 break;
             case 7:
                 // extracting data
-                Document doc = Jsoup.parse(response);
+                Jerry doc = jerry(response);
+                try {
+                    bankResponse.put("bank", bankName);
+
+                    JSONArray transactions = new JSONArray();
+                    for (Jerry tr : doc.$("tr")) {
+                        Transaction trans = new Transaction();
+                        trans.setDate(tr.$(".tr-date").html());
+                        trans.setDesc(tr.$(".tr-desc").html());
+                        trans.setCat(tr.$(".tr-icon i").attr("class"));
+                        trans.setAmount(tr.$(".tr-amount").html());
+                        transactions.put(trans.getJSONObject());
+                    }
+                    bankResponse.put("transactions", transactions);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case 8:
+                logout();
                 break;
             default:
-                // last step
-                logout();
-
                 break;
         }
         step += 1;

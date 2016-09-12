@@ -8,6 +8,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 abstract public class BankScraper {
@@ -16,6 +18,8 @@ abstract public class BankScraper {
     protected WebView webView;
     protected Context context;
     protected Map<String, String> userInfo;
+
+    JSONObject bankResponse = new JSONObject();
 
     public BankScraper(WebView webView, Context context, Map<String, String> userInfo) {
         this.userInfo = userInfo;
