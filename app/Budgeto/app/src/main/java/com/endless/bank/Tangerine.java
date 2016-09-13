@@ -50,39 +50,44 @@ public class Tangerine extends BankScraper {
             case 0:
                 // username
                 if (url.contains("displayLogin"))
-                    sendJsData(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
+                    sendJavascript(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
                 break;
             case 1:
                 // question
-                requestJsData(BankData.tangerineCalls.get(1));
+                getWebViewHTML();
                 break;
             case 2:
                 // prompt for answer
-                promptInput(response.replaceAll("^\"|\"$", ""));
+                String question = jerry(response).$("div.content-main-wrapper .CB_DoNotShow:first").html();
+                promptInput(question); //response.replaceAll("^\"|\"$", ""));
                 break;
             case 3:
                 // answering question
-                sendJsData(String.format(BankData.tangerineCalls.get(2), response));
+                sendJavascript(String.format(BankData.tangerineCalls.get(1), response));
                 break;
             case 4:
                 // password
                 if (url.contains("displayPIN"))
-                    sendJsData(String.format(BankData.tangerineCalls.get(3), userInfo.get("password")));
+                    sendJavascript(String.format(BankData.tangerineCalls.get(2), userInfo.get("password")));
                 break;
             case 5:
                 // connected, getting to credit card
                 if (url.contains("displayAccountSummary"))
-                    webView.loadUrl(BankData.tangerineCalls.get(4));
+                    webView.loadUrl(BankData.tangerineCalls.get(3));
                 else
                     step -= 1;
                 break;
             case 6:
                 // fetching transactions
-                requestJsData(BankData.tangerineCalls.get(5));
+                if (url.contains("displayCreditCardAccount"))
+                    getWebViewHTML();
+                else
+                    step -= 1;
                 break;
             case 7:
                 // extracting data
                 Jerry doc = jerry(response);
+                doc = doc.$("table[data-target='#transactionTable'] tbody");
                 try {
                     bankResponse.put("bank", bankName);
 
@@ -100,9 +105,9 @@ public class Tangerine extends BankScraper {
                     e.printStackTrace();
                 }
 
+                logout();
                 break;
             case 8:
-                logout();
                 break;
             default:
                 break;

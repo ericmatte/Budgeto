@@ -3,7 +3,7 @@ package com.endless.bank;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.webkit.ValueCallback;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -24,14 +24,44 @@ abstract public class BankScraper {
     public BankScraper(WebView webView, Context context, Map<String, String> userInfo) {
         this.userInfo = userInfo;
         this.context = context;
+
         this.webView = webView;
         this.webView.getSettings().setJavaScriptEnabled(true);
-
         this.webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 nextCall(url, null);
+            }
+        });
+
+        class MyJavaScriptInterface
+        {
+            @JavascriptInterface
+            @SuppressWarnings("unused")
+            public void processHTML(String html)
+            {
+                nextCall(null, html);
+            }
+        }
+        webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
+    }
+
+    public void sendJavascript(String command) {
+        final String com = command;
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("javascript:(function() { " + com + "})()");
+            }
+        });
+    }
+
+    public void getWebViewHTML() {
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
             }
         });
     }
@@ -40,19 +70,6 @@ abstract public class BankScraper {
     abstract protected void logout();
     abstract public void requestTransactions();
     abstract protected void nextCall(String url, String response);
-
-    public void sendJsData(String command) {
-        webView.loadUrl("javascript:(function() { " + command + "})()");
-    }
-
-    public void requestJsData(String command) {
-        webView.evaluateJavascript("(function() { return " + command + "; })();", new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String response) {
-                nextCall(null, response);
-            }
-        });
-    }
 
     public void promptInput(String value) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
@@ -78,4 +95,6 @@ abstract public class BankScraper {
 
         alert.show();
     }
+
+
 }

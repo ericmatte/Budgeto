@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    BankScraper bank;
     Map<String, String> userInfo = new HashMap<String, String>();
     WebView webView;
 
@@ -31,13 +32,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView = (WebView) findViewById(R.id.webView);
-        BankScraper tangerine = new Tangerine(webView, this, userInfo);
-        tangerine.requestTransactions();
+        BankScraper bank = new Tangerine(webView, this, userInfo);
+        bank.requestTransactions();
     }
 
 
 
     public void addBill(View view) {
+        Tangerine b = (Tangerine) bank;
+        b.logout();
     }
 
 
