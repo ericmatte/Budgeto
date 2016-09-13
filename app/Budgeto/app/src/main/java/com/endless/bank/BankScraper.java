@@ -39,10 +39,7 @@ abstract public class BankScraper {
         {
             @JavascriptInterface
             @SuppressWarnings("unused")
-            public void processHTML(String html)
-            {
-                nextCall(null, html);
-            }
+            public void processHTML(String html) { nextCall(null, html); }
         }
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
     }
@@ -74,7 +71,7 @@ abstract public class BankScraper {
     public void promptInput(String value) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
-        alert.setTitle(BankData.bank + " vous demande une question.");
+        alert.setTitle(bankName + " vous demande une question.");
         alert.setMessage(value);
 
         // Set an EditText view to get user input

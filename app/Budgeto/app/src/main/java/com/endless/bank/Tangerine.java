@@ -6,6 +6,8 @@ import android.webkit.WebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import jodd.jerry.Jerry;
@@ -17,7 +19,11 @@ import static jodd.jerry.Jerry.jerry;
  */
 public class Tangerine extends BankScraper {
 
-    int step;
+    private List<String> calls = Arrays.asList(
+            "input = $('#ACN'); input.val('%s'); input.closest('form').submit();", // {username}
+            "input = $('#Answer'); input.val('%s'); input.closest('form').submit();", // {answer}
+            "input = $('#PIN'); input.val('%s'); input.closest('form').submit()", // {password}
+            "https://secure.tangerine.ca/web/Tangerine.html?command=goToCreditCardAccount&creditCardAccount=0");
 
     public Tangerine(WebView webView, Context context, Map<String, String> userInfo) {
         super(webView, context, userInfo);
@@ -26,65 +32,57 @@ public class Tangerine extends BankScraper {
 
     @Override
     public void login() {
-        webView.loadUrl(BankData.tangerineLogin);
+        webView.loadUrl("https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogin&device=web&locale=fr_CA");
     }
 
     @Override
     public void logout() {
-        webView.loadUrl(BankData.tangerineLogout);
+        webView.loadUrl("https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA");
     }
 
     @Override
     public void requestTransactions() {
-        step = 0;
         login();
-        // nextCall() will be triggered by page loaded
     }
 
+    String referrer;
     @Override
     public void nextCall(String url, String response) {
-        if (url != null && !url.contains("?"))
-            return;
+        if (url == null && referrer != null)
+            url = referrer;
 
-        switch (step) {
-            case 0:
-                // username
-                if (url.contains("displayLogin"))
-                    sendJavascript(String.format(BankData.tangerineCalls.get(0), userInfo.get("username")));
-                break;
-            case 1:
-                // question
+        if (url.contains("displayLogin")) {
+            // username
+            sendJavascript(String.format(calls.get(0), userInfo.get("username")));
+        }
+        else if (url.contains("displayChallengeQuestion")) {
+            if (response == null) {
+                // fetching question text
+                referrer = url;
                 getWebViewHTML();
-                break;
-            case 2:
+            } else if (response.startsWith("<head>")) {
                 // prompt for answer
                 String question = jerry(response).$("div.content-main-wrapper .CB_DoNotShow:first").html();
                 promptInput(question); //response.replaceAll("^\"|\"$", ""));
-                break;
-            case 3:
+            } else {
                 // answering question
-                sendJavascript(String.format(BankData.tangerineCalls.get(1), response));
-                break;
-            case 4:
-                // password
-                if (url.contains("displayPIN"))
-                    sendJavascript(String.format(BankData.tangerineCalls.get(2), userInfo.get("password")));
-                break;
-            case 5:
-                // connected, getting to credit card
-                if (url.contains("displayAccountSummary"))
-                    webView.loadUrl(BankData.tangerineCalls.get(3));
-                else
-                    step -= 1;
-                break;
-            case 6:
-                // fetching transactions
-                if (url.contains("displayCreditCardAccount"))
-                    getWebViewHTML();
-                else
-                    step -= 1;
-                break;
-            case 7:
+                referrer = null;
+                sendJavascript(String.format(calls.get(1), response));
+            }
+        }
+        else if (url.contains("displayPIN")) {
+            // password
+            sendJavascript(String.format(calls.get(2), userInfo.get("password")));
+        }
+        else if (url.contains("displayAccountSummary")) {
+            // connected, getting to credit card
+            webView.loadUrl(calls.get(3));
+        }
+        else if (url.contains("displayCreditCardAccount")) {
+            if (response == null) {
+                referrer = url;
+                getWebViewHTML();
+            } else if (response.startsWith("<head>")) {
                 // extracting data
                 Jerry doc = jerry(response);
                 doc = doc.$("table[data-target='#transactionTable'] tbody");
@@ -105,13 +103,9 @@ public class Tangerine extends BankScraper {
                     e.printStackTrace();
                 }
 
+                referrer = null;
                 logout();
-                break;
-            case 8:
-                break;
-            default:
-                break;
+            }
         }
-        step += 1;
     }
 }
