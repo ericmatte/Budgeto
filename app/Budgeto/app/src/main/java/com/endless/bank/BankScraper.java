@@ -71,7 +71,7 @@ abstract public class BankScraper {
     public void promptInput(String value) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
-        alert.setTitle(bankName + " vous demande une question.");
+        alert.setTitle(bankName + " ask you a question.");
         alert.setMessage(value);
 
         // Set an EditText view to get user input

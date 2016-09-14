@@ -104,7 +104,7 @@ public class Tangerine extends BankScraper {
                 }
 
                 referrer = null;
-                logout();
+                logout(); // TODO: logout not working
             }
         }
     }
