@@ -14,4 +14,7 @@
         completions."
     </string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!-- Strings related to main activity -->
+    <string name="category">Category</string>
 </resources>

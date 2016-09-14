@@ -9,10 +9,12 @@ import android.webkit.WebView;
 import com.endless.bank.BankScraper;
 import com.endless.bank.Tangerine;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Category.TransactionsFetcher {
 
     BankScraper bank;
     Map<String, String> userInfo = new HashMap<String, String>();
@@ -32,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView = (WebView) findViewById(R.id.webView);
-        BankScraper bank = new Tangerine(webView, this, userInfo);
-        bank.requestTransactions();
+        bank = new Tangerine(webView, this, userInfo);
+        //bank.requestTransactions();
     }
 
 
@@ -44,4 +46,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void getDedicatedTransactions(JSONObject bankResponse) {
+        Category cat1 = (Category) getFragmentManager().findFragmentById(R.id.cat1);
+        Category cat2 = (Category) getFragmentManager().findFragmentById(R.id.cat2);
+    }
 }

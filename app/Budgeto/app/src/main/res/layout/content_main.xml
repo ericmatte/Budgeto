@@ -13,11 +13,27 @@
     tools:showIn="@layout/activity_main"
     tools:context="com.endless.budgeto.MainActivity">
 
+    <fragment class="com.endless.budgeto.Category"
+        android:id="@+id/cat1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/category" />
+
+    <fragment class="com.endless.budgeto.Category"
+        android:id="@+id/cat2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/category"
+        android:layout_below="@+id/cat1"
+        android:layout_alignParentEnd="true" />
+
     <WebView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/webView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:visibility="gone" />
+
 </RelativeLayout>
