@@ -30,11 +30,4 @@
         android:layout_below="@+id/progressBar"
         android:layout_alignParentEnd="true" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_below="@+id/txtAmount"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>
