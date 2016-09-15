@@ -24,6 +24,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="0$ of 0$"
-        android:id="@+id/textView2"
+        android:id="@+id/txtAmount"
         android:layout_gravity="right" />
 </LinearLayout>

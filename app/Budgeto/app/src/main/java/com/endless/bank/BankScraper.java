@@ -8,6 +8,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import com.endless.tools.Sanitizer;
+
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -80,7 +82,8 @@ abstract public class BankScraper {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                nextCall(null, input.getText().toString());
+                String value = Sanitizer.sanitize(input.getText().toString());
+                nextCall(null, value);
             }
         });
 

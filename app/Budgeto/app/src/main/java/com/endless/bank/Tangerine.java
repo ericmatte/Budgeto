@@ -94,7 +94,8 @@ public class Tangerine extends BankScraper {
                         Transaction trans = new Transaction();
                         trans.setDate(tr.$(".tr-date").html());
                         trans.setDesc(tr.$(".tr-desc").html());
-                        trans.setCat(tr.$(".tr-icon i").attr("class"));
+                        String cat = "-" + tr.$(".tr-icon i").attr("class");
+                        trans.setCat(cat.substring(cat.lastIndexOf("-")+1));
                         trans.setAmount(tr.$(".tr-amount").html());
                         transactions.put(trans.getJSONObject());
                     }

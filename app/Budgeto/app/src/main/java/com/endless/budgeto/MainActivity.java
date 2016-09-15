@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = (WebView) findViewById(R.id.webView);
         bank = new Tangerine(webView, this, userInfo);
-        //bank.requestTransactions();
+        // bank.requestTransactions();
 
         showCategories();
     }
@@ -91,140 +91,154 @@ public class MainActivity extends AppCompatActivity {
 
     private JSONObject tempCreateJson() {
         try {
-            return new JSONObject("{\n" +
+            return new JSONObject("{  \n" +
                     "   \"bank\":\"Tangerine\",\n" +
-                    "   \"transactions\":[\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"93935f2c-c229-3cf8-957d-eef7078591d8\",\n" +
+                    "   \"transactions\":[  \n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"543ca339-db1b-3ef0-86d0-c28f2d4514d4\",\n" +
+                    "         \"date\":\"13-09-2016\",\n" +
+                    "         \"desc\":\"U d s centre culturel sherbrooke qc\",\n" +
+                    "         \"cat\":\"Entertainment\",\n" +
+                    "         \"amount\":\"45,00\"\n" +
+                    "      },\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"a1c205ef-1a9e-3621-9dc2-075463825c92\",\n" +
+                    "         \"date\":\"12-09-2016\",\n" +
+                    "         \"desc\":\"Paiement - merci\",\n" +
+                    "         \"cat\":\"Null\",\n" +
+                    "         \"amount\":\"-336,56\"\n" +
+                    "      },\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"c7c02eaf-7bda-305d-a3a8-2cc0cb360859\",\n" +
                     "         \"date\":\"10-09-2016\",\n" +
                     "         \"desc\":\"Yuzu sherbrooke sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-restaurants\",\n" +
+                    "         \"cat\":\"Restaurants\",\n" +
                     "         \"amount\":\"40,36\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"d8cac272-97bd-34c5-a44a-856fba5bed84\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"3f06c72f-274f-3807-bc52-83add021b3e4\",\n" +
                     "         \"date\":\"10-09-2016\",\n" +
                     "         \"desc\":\"Depanneur dunant sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-others\",\n" +
+                    "         \"cat\":\"Others\",\n" +
                     "         \"amount\":\"36,41\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"b8c5994b-fcd4-308e-8917-38dded3aebb2\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"d01b6762-0e79-386a-b871-c362e659ec82\",\n" +
                     "         \"date\":\"10-09-2016\",\n" +
                     "         \"desc\":\"Provigo sherbrooke #84 sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-groceries\",\n" +
+                    "         \"cat\":\"Groceries\",\n" +
                     "         \"amount\":\"31,82\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"545bfa2b-3b4b-3799-9d13-683af492f916\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"bb91ac9c-354a-3644-8e22-899a27d99033\",\n" +
                     "         \"date\":\"09-09-2016\",\n" +
                     "         \"desc\":\"Brullerie de cafe de s sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-restaurants\",\n" +
+                    "         \"cat\":\"Restaurants\",\n" +
                     "         \"amount\":\"4,55\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"751645c9-e7a0-3866-94b7-4ee80f0f4794\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"2f343818-41b8-3e58-814d-1759e728ff1f\",\n" +
                     "         \"date\":\"07-09-2016\",\n" +
                     "         \"desc\":\"Relais pneus mecanique sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-others\",\n" +
+                    "         \"cat\":\"Others\",\n" +
                     "         \"amount\":\"121,39\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"3e321b02-2c20-3cd6-9a35-36ba880ab271\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"e57c5b87-d2f6-39e2-8ee5-312821774fe5\",\n" +
                     "         \"date\":\"04-09-2016\",\n" +
                     "         \"desc\":\"Paiement - merci\",\n" +
-                    "         \"cat\":\"\",\n" +
+                    "         \"cat\":\"Null\",\n" +
                     "         \"amount\":\"-337,34\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"ecf5b952-f0b3-31af-a7f3-d991c05a2fba\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"b4c1017b-25c2-38fb-b08a-aa3a002dfeb8\",\n" +
                     "         \"date\":\"04-09-2016\",\n" +
                     "         \"desc\":\"Beavertix 888-8378604 qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-entertainment\",\n" +
+                    "         \"cat\":\"Entertainment\",\n" +
                     "         \"amount\":\"26,25\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"03cabb02-5646-38a9-9c3b-cea69d0c2cd5\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"db78b53a-5b68-3ef8-9f5c-a1f659a33ca4\",\n" +
                     "         \"date\":\"03-09-2016\",\n" +
                     "         \"desc\":\"Maxi\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-groceries\",\n" +
+                    "         \"cat\":\"Groceries\",\n" +
                     "         \"amount\":\"20,89\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"0f6d8e01-21cf-3283-86c4-e3a964e7ee4a\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"c0520c84-7262-3426-8745-da4599f3d1a5\",\n" +
                     "         \"date\":\"02-09-2016\",\n" +
                     "         \"desc\":\"Paypal *netlinkcomp 4029357733 bc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-others\",\n" +
+                    "         \"cat\":\"Others\",\n" +
                     "         \"amount\":\"54,89\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"428d93e0-570f-36a6-a55d-b77dad3172a1\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"5b4a1e70-253a-39e5-839d-61153f1a89ab\",\n" +
                     "         \"date\":\"31-08-2016\",\n" +
                     "         \"desc\":\"Ultramar #26295 sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-gas\",\n" +
+                    "         \"cat\":\"Gas\",\n" +
                     "         \"amount\":\"33,77\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"3840f86f-bb56-3a06-ad53-8656d679c381\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"f95ed804-ebd8-3506-800e-7f30b858da70\",\n" +
                     "         \"date\":\"31-08-2016\",\n" +
                     "         \"desc\":\"Maxi\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-groceries\",\n" +
+                    "         \"cat\":\"Groceries\",\n" +
                     "         \"amount\":\"7,88\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"ac45ec28-9225-36f3-aa05-54c2724c39fd\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"e0163da1-b61d-3aff-81a8-744472152692\",\n" +
                     "         \"date\":\"29-08-2016\",\n" +
                     "         \"desc\":\"Mag express magog qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-others\",\n" +
+                    "         \"cat\":\"Others\",\n" +
                     "         \"amount\":\"172,47\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"2273b1a9-7c3a-30b1-8e21-8563582b775d\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"202dd521-72dc-34e9-a75b-014a90e8f4e4\",\n" +
                     "         \"date\":\"28-08-2016\",\n" +
                     "         \"desc\":\"Pharmaprix #0009 sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-drugstore\",\n" +
+                    "         \"cat\":\"Drugstore\",\n" +
                     "         \"amount\":\"3,44\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"0af24a34-3e18-3d7c-8159-58ec746f0cda\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"9e05c98a-13df-3fe9-8588-ec51c15346f7\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"A30 express salaberry-de- qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-parking\",\n" +
+                    "         \"cat\":\"Parking\",\n" +
                     "         \"amount\":\"2,50\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"ca004021-406a-31fc-ae92-5a701562ff56\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"128c3b2a-fc0f-3b22-8a63-cd907e4cc3ca\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"Louis luncheonette sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-restaurants\",\n" +
+                    "         \"cat\":\"Restaurants\",\n" +
                     "         \"amount\":\"10,98\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"7ecd09bb-3453-37fd-b0ec-e8281ff94960\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"71907563-d999-33df-9ad2-62aea5f7e202\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"Maxi\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-groceries\",\n" +
+                    "         \"cat\":\"Groceries\",\n" +
                     "         \"amount\":\"24,87\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"179d2f43-5351-32c6-9103-226aff0d4e61\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"f047a4c6-6b78-3796-b173-73c23887e28e\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"Esso grenville qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-gas\",\n" +
+                    "         \"cat\":\"Gas\",\n" +
                     "         \"amount\":\"22,29\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"21ad70a1-f4da-3b43-97b2-daffe06a79b6\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"d6491193-e3c6-3dcd-b80f-c1570b06653f\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"Magasin cdn tire #0009 sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-improvement\",\n" +
+                    "         \"cat\":\"Improvement\",\n" +
                     "         \"amount\":\"12,69\"\n" +
                     "      },\n" +
-                    "      {\n" +
-                    "         \"uuid\":\"cfd9bac5-ef5f-3933-9c17-f06a890ba46d\",\n" +
+                    "      {  \n" +
+                    "         \"uuid\":\"f812f6b0-0281-3657-b630-b69bbfe7fcc5\",\n" +
                     "         \"date\":\"27-08-2016\",\n" +
                     "         \"desc\":\"Magasin cdn tire #0009 sherbrooke qc\",\n" +
-                    "         \"cat\":\"Tan-icon-cc-cat-improvement\",\n" +
+                    "         \"cat\":\"Improvement\",\n" +
                     "         \"amount\":\"4,13\"\n" +
                     "      }\n" +
                     "   ]\n" +
