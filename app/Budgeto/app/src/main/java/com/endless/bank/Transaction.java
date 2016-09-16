@@ -1,5 +1,7 @@
 package com.endless.bank;
 
+import com.endless.tools.Sanitizer;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,27 +12,12 @@ import java.util.UUID;
  */
 public class Transaction {
 
-    // Clean and trim a value
-    public static String clean(String value) {
-        if (value == null)
-            return "";
-
-        if (value.contains("\n"))
-            value = value.substring(0, value.indexOf('\n'));
-        if (value.contains("&"))
-            value = value.substring(0, value.indexOf('&'));
-        value = value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
-        value = value.trim();
-
-        return value;
-    }
-
     private String date, desc, cat, amount;
 
-    public void setDate(String date) { this.date = clean(date); }
-    public void setDesc(String desc) { this.desc = clean(desc); }
-    public void setCat(String cat) { this.cat = clean(cat); }
-    public void setAmount(String amount) { this.amount = clean(amount); }
+    public void setDate(String date) { this.date = Sanitizer.clean(date); }
+    public void setDesc(String desc) { this.desc = Sanitizer.clean(desc); }
+    public void setCat(String cat) { this.cat = Sanitizer.clean(cat); }
+    public void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
 
     private String generateUuid() {
         String s = date + desc + cat + amount;

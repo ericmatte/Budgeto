@@ -8,10 +8,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import com.endless.tools.Sanitizer;
 import org.json.JSONObject;
-
 import java.util.Map;
 
+/**
+ * This class extract transactions from bank.
+ * A bank must inherit from this class.
+ *
+ * @author  Eric Matte
+ * @version 1.0
+ */
 abstract public class BankScraper {
 
     protected String bankName;
@@ -80,7 +87,8 @@ abstract public class BankScraper {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                nextCall(null, input.getText().toString());
+                String value = Sanitizer.sanitize(input.getText().toString());
+                nextCall(null, value);
             }
         });
 
