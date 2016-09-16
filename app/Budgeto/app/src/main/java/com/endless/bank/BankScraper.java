@@ -9,11 +9,16 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 
 import com.endless.tools.Sanitizer;
-
 import org.json.JSONObject;
-
 import java.util.Map;
 
+/**
+ * This class extract transactions from bank.
+ * A bank must inherit from this class.
+ *
+ * @author  Eric Matte
+ * @version 1.0
+ */
 abstract public class BankScraper {
 
     protected String bankName;

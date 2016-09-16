@@ -9,19 +9,16 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.endless.bank.BankScraper;
+import com.endless.bank.Categorizer;
 import com.endless.bank.Tangerine;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,30 +61,15 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject bankResponse = tempCreateJson();
 
     public void showCategories() {
-        Set<String> cats = getCategories();
-        List<String> c = new ArrayList<>();
-        c.addAll(cats);
-        ListAdapter adapter = new CustomAdapter(this, c);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-        //showCategories();
-    }
-
-    private Set<String> getCategories() {
-        Set<String> categories = new HashSet<String>();
         try {
-            JSONArray transactions = bankResponse.getJSONArray("transactions");
-            for (int i = 0; i < transactions.length(); i++) {
-                JSONObject transaction = transactions.getJSONObject(i);
-                categories.add(transaction.getString("cat"));
-            }
+            List<JSONObject> cats = Categorizer.listerize(Categorizer.categorize(bankResponse.getJSONArray("transactions")));
+            ListAdapter adapter = new CustomAdapter(this, cats);
+            ListView listView = (ListView) findViewById(R.id.listView);
+            listView.setAdapter(adapter);
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
         }
-        return categories;
     }
-
 
     private JSONObject tempCreateJson() {
         try {
