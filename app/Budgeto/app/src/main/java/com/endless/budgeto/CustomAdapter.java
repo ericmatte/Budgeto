@@ -1,6 +1,8 @@
 package com.endless.budgeto;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,8 @@ class CustomAdapter extends ArrayAdapter<JSONObject> {
             int objective = ThreadLocalRandom.current().nextInt(current, current*2 + 1);
             pbLimit.setMax(objective);
             pbLimit.setProgress(current);
+            pbLimit.setScaleY(2.2f);
+            pbLimit.setProgressTintList(ColorStateList.valueOf(Color.rgb(20,60,180)));
 
             txtAmount.setText(String.valueOf(Math.abs(amount)) + "$ of " + String.valueOf(objective) + "$");
         } catch (JSONException e) {
