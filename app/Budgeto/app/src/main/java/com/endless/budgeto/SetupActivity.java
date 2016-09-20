@@ -136,22 +136,24 @@ public class SetupActivity extends AppCompatActivity {
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
                     // Welcome
-                    rootView = inflater.inflate(R.layout.fragment_setup, container, false);
-                    TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                    textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-                    return rootView;
+                    return welcomeInflater(inflater, container);
                 case 2:
                     // Banks
                     return banksInflater(inflater, container);
                 case 3:
                     // All set
                     rootView = inflater.inflate(R.layout.fragment_setup, container, false);
-                    textView = (TextView) rootView.findViewById(R.id.section_label);
+                    TextView textView = (TextView) rootView.findViewById(R.id.section_label);
                     textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
                     return rootView;
                 default:
                     return null;
             }
+        }
+
+        private View welcomeInflater(LayoutInflater inflater, ViewGroup container) {
+            View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
+            return rootView;
         }
 
         private View banksInflater(LayoutInflater inflater, ViewGroup container) {
