@@ -27,4 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+    public void showSetup(View view) {
+        Intent intent = new Intent(this,SetupActivity.class);
+        startActivity(intent);
+    }
+
 }
