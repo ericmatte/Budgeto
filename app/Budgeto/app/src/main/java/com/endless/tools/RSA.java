@@ -1,8 +1,10 @@
+package com.endless.tools;
+
 import java.math.BigInteger;
 import java.util.Random;
 import java.io.*;
 
-// RSA Implementation
+// com.endless.tools.RSA Implementation
 // Generate the keys and contain the function to
 // encrypt and decrypt data with specified keys
 public class RSA {
