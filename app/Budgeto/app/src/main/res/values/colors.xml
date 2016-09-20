@@ -3,4 +3,7 @@
     <color name="colorPrimary">@color/accent_material_light</color>
     <color name="colorPrimaryDark">#006e64</color>
     <color name="colorAccent">#ffc107</color>
+    <color name="colorWelcomeBack">#d7d7d7</color>
+    <color name="colorBanksBack">#9ce9e6</color>
+    <color name="colorAllSetBack">#94e696</color>
 </resources>
