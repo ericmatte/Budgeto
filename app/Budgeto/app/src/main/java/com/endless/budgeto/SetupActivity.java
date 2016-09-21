@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,22 +159,34 @@ public class SetupActivity extends AppCompatActivity {
         private View pinInflater(LayoutInflater inflater, ViewGroup container) {
             View rootView = inflater.inflate(R.layout.fragment_pin_chooser, container, false);
 
-            Button btnPinCheck = (Button) rootView.findViewById(R.id.btnPinCheck);
+            final Button btnPinCheck = (Button) rootView.findViewById(R.id.btnPinCheck);
             btnPinCheck.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("App: test", "clicked!");
                 }
             });
 
+            final TextView txtPIN = (TextView) rootView.findViewById(R.id.txtPIN);
+            final TextView txtPINCheck = (TextView) rootView.findViewById(R.id.txtPINCheck);
+            TextWatcher textWatcher = new TextWatcher(){
+                public void afterTextChanged(Editable s) {
+                    if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
+                        btnPinCheck.setText("pwd matches!");
+                    } else {
+                        btnPinCheck.setText("pwd no the same...");
+                    }
+                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+                public void onTextChanged(CharSequence s, int start, int before, int count){}
+            };
+            txtPIN.addTextChangedListener(textWatcher);
+            txtPINCheck.addTextChangedListener(textWatcher);
+
             return rootView;
         }
 
         private View banksInflater(LayoutInflater inflater, ViewGroup container) {
             return inflater.inflate(R.layout.fragment_banks, container, false);
-        }
-
-        public void pinCheck(View view) {
-
         }
     }
 }

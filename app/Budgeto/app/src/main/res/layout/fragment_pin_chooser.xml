@@ -12,26 +12,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="PIN"
+        android:text="Choisissez un mot de passe numérique pour l&apos;application"
         android:id="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Bugeto will help you make your life simpler"
-        android:id="@+id/textView2"
-        android:layout_centerVertical="true"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/txtPINCheck"
+        android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/txtPIN"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/txtPINCheck" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pin test"
         android:id="@+id/btnPinCheck"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/txtPINCheck"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Retapez le mot de passe"
+        android:id="@+id/textView3"
+        android:gravity="center"
+        android:layout_below="@+id/txtPIN"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
