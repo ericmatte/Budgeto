@@ -3,7 +3,10 @@
     <color name="colorPrimary">@color/accent_material_light</color>
     <color name="colorPrimaryDark">#006e64</color>
     <color name="colorAccent">#ffc107</color>
-    <color name="colorWelcomeBack">#d7d7d7</color>
-    <color name="colorBanksBack">#9ce9e6</color>
-    <color name="colorAllSetBack">#94e696</color>
+    <array name="colorsSetupActivity">
+        <item>#d7d7d7</item>
+        <item>#9ce9e6</item>
+        <item>#94e696</item>
+        <item>#ecf1ec</item>
+    </array>
 </resources>

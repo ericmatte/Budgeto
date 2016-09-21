@@ -55,11 +55,9 @@ public class SetupActivity extends AppCompatActivity {
         });
     }
 
+    /** Animation background color transition on page change */
     private void backgroundColorTransition(int position, float positionOffset) {
-        Integer color1 = getResources().getColor(R.color.colorWelcomeBack);
-        Integer color2 = getResources().getColor(R.color.colorBanksBack);
-        Integer color3 = getResources().getColor(R.color.colorAllSetBack);
-        Integer[] colors = {color1, color2, color3};
+        int[] colors = getResources().getIntArray(R.array.colorsSetupActivity);
 
         if(position < (mSectionsPagerAdapter.getCount() -1) && position < (colors.length - 1)) {
             mViewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
@@ -67,6 +65,7 @@ public class SetupActivity extends AppCompatActivity {
             mViewPager.setBackgroundColor(colors[colors.length - 1]);
         }
     }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -86,21 +85,18 @@ public class SetupActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return 4; // Show 4 total pages.
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    return "WELCOME PAGE";
-                case 1:
-                    return "BANKS SETUP";
-                case 2:
-                    return "ALL SET";
+                case 0: return "WELCOME PAGE";
+                case 1: return "CHOOSE PIN";
+                case 2: return "BANKS SETUP";
+                case 3: return "ALL SET";
+                default: return null;
             }
-            return null;
         }
     }
 
@@ -108,10 +104,7 @@ public class SetupActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+        /** Fragment argument representing the section number for this fragment. */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         /**
@@ -138,9 +131,12 @@ public class SetupActivity extends AppCompatActivity {
                     // Welcome
                     return welcomeInflater(inflater, container);
                 case 2:
+                    // Pin
+                    return pinInflater(inflater, container);
+                case 3:
                     // Banks
                     return banksInflater(inflater, container);
-                case 3:
+                case 4:
                     // All set
                     rootView = inflater.inflate(R.layout.fragment_setup, container, false);
                     TextView textView = (TextView) rootView.findViewById(R.id.section_label);
@@ -152,13 +148,15 @@ public class SetupActivity extends AppCompatActivity {
         }
 
         private View welcomeInflater(LayoutInflater inflater, ViewGroup container) {
-            View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_welcome, container, false);
+        }
+
+        private View pinInflater(LayoutInflater inflater, ViewGroup container) {
+            return inflater.inflate(R.layout.fragment_pin_chooser, container, false);
         }
 
         private View banksInflater(LayoutInflater inflater, ViewGroup container) {
-            View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_banks, container, false);
         }
     }
 }
