@@ -1,7 +1,6 @@
 package com.endless.budgeto;
 
 import android.animation.ArgbEvaluator;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class SetupActivity extends AppCompatActivity {
@@ -53,12 +52,16 @@ public class SetupActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {}
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 backgroundColorTransition(position, positionOffset);
             }
             public void onPageSelected(int position) {
+                ImageButton img_page1 = (ImageButton) findViewById(R.id.img_page1);
+                ImageButton img_page2 = (ImageButton) findViewById(R.id.img_page2);
+                ImageButton img_page3 = (ImageButton) findViewById(R.id.img_page3);
+                ImageButton img_page4 = (ImageButton) findViewById(R.id.img_page4);
                 // http://stackoverflow.com/questions/20586619/android-viewpager-with-bottom-dots
                 switch (position) {
                     case 0:
