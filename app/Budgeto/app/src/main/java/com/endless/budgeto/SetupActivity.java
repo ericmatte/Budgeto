@@ -1,6 +1,7 @@
 package com.endless.budgeto;
 
 import android.animation.ArgbEvaluator;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SetupActivity extends AppCompatActivity {
@@ -56,7 +58,41 @@ public class SetupActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 backgroundColorTransition(position, positionOffset);
             }
-            public void onPageSelected(int position) {}
+            public void onPageSelected(int position) {
+                // http://stackoverflow.com/questions/20586619/android-viewpager-with-bottom-dots
+                switch (position) {
+                    case 0:
+                        img_page1.setImageResource(R.drawable.dot_selected);
+                        img_page2.setImageResource(R.drawable.dot);
+                        img_page3.setImageResource(R.drawable.dot);
+                        img_page4.setImageResource(R.drawable.dot);
+                        break;
+
+                    case 1:
+                        img_page1.setImageResource(R.drawable.dot);
+                        img_page2.setImageResource(R.drawable.dot_selected);
+                        img_page3.setImageResource(R.drawable.dot);
+                        img_page4.setImageResource(R.drawable.dot);
+                        break;
+
+                    case 2:
+                        img_page1.setImageResource(R.drawable.dot);
+                        img_page2.setImageResource(R.drawable.dot);
+                        img_page3.setImageResource(R.drawable.dot_selected);
+                        img_page4.setImageResource(R.drawable.dot);
+                        break;
+
+                    case 3:
+                        img_page1.setImageResource(R.drawable.dot);
+                        img_page2.setImageResource(R.drawable.dot);
+                        img_page3.setImageResource(R.drawable.dot);
+                        img_page4.setImageResource(R.drawable.dot_selected);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         });
     }
 

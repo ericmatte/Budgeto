@@ -8,30 +8,41 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.endless.budgeto.SetupActivity$PlaceholderFragment">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/money_icon"
-        android:layout_alignBottom="@+id/textView2"
-        android:padding="40dp" />
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome to Budgeto"
-        android:id="@+id/strPIN"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        <ImageView
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:id="@+id/imgLock"
+            android:src="@drawable/money_icon"
+            android:forceHasOverlappingRendering="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Bugeto will help you make your life simpler"
-        android:id="@+id/textView2"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Bienvenue dans Budgeto!"
+            android:padding="8dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/strWelcome"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textColor="@color/abc_primary_text_material_dark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Budgeto vous simplifiera la vie\nen automatisant la gestion\nde votre budget"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/strDesc"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:gravity="center_horizontal"
+            android:textColor="@color/abc_secondary_text_material_dark" />
+    </LinearLayout>
 
 </RelativeLayout>

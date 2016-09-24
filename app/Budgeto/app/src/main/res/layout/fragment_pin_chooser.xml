@@ -12,15 +12,16 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
         <ImageView
-            android:layout_marginTop="60dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:id="@+id/imgLock"
-            android:src="@drawable/ic_lock_black_24dp"
-            android:forceHasOverlappingRendering="false" />
+            android:src="@drawable/ic_verified_user_black_24dp"
+            android:forceHasOverlappingRendering="false"
+            android:tint="#0f605a" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,8 +37,8 @@
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
             android:id="@+id/txtPIN"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp" />
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,8 +54,8 @@
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
             android:id="@+id/txtPINCheck"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp" />
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal" />
 
         <Button
             android:layout_width="wrap_content"
