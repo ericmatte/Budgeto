@@ -69,6 +69,7 @@
             android:layout_height="42dip"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dip"
+            android:background="#00000000"
             android:src="@mipmap/ic_launcher" />
 
     </RelativeLayout>
