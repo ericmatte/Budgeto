@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.endless.adapter.CategoryAdapter;
 import com.endless.bank.BankScraper;
 import com.endless.bank.Categorizer;
 import com.endless.bank.Tangerine;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public void showCategories() {
         try {
             List<JSONObject> cats = Categorizer.listerize(Categorizer.categorize(bankResponse.getJSONArray("transactions")));
-            ListAdapter adapter = new CustomAdapter(this, cats);
+            ListAdapter adapter = new CategoryAdapter(this, cats);
             ListView listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
         } catch (JSONException e) {

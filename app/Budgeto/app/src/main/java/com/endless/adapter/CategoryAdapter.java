@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.endless.budgeto.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,9 +26,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author  Eric Matte
  * @version 1.0
  */
-class CustomAdapter extends ArrayAdapter<JSONObject> {
+public class CategoryAdapter extends ArrayAdapter<JSONObject> {
 
-    public CustomAdapter(Context context, List<JSONObject> resource) {
+    public CategoryAdapter(Context context, List<JSONObject> resource) {
         super(context, R.layout.category_row, resource);
     }
 

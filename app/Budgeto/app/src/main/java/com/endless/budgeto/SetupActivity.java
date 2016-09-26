@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.endless.adapter.BankAdapter;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -225,7 +229,26 @@ public class SetupActivity extends AppCompatActivity {
         }
 
         private View banksInflater(LayoutInflater inflater, ViewGroup container) {
-            return inflater.inflate(R.layout.fragment_banks, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
+
+            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.banks_recycler_view);
+            RecyclerView.Adapter mAdapter;
+            RecyclerView.LayoutManager mLayoutManager;
+
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            mRecyclerView.setHasFixedSize(true);
+
+            // use a linear layout manager
+            mLayoutManager = new LinearLayoutManager(getContext());
+            mRecyclerView.setLayoutManager(mLayoutManager);
+
+            // specify an adapter (see also next example)
+            String[] myDataset = {"Tangerine", "Desjardins", "BNC"};
+            mAdapter = new BankAdapter(myDataset);
+            mRecyclerView.setAdapter(mAdapter);
+
+            return rootView;
         }
     }
 }
