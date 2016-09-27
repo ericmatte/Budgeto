@@ -20,7 +20,7 @@
             android:layout_height="100dp"
             android:id="@+id/imgLock"
             android:src="@drawable/ic_done"
-            android:tint="#004a83"
+            android:tint="@color/colorPrimary"
             android:forceHasOverlappingRendering="false" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:text="Utiliser Budgeto"
             style="@style/Widget.AppCompat.Button.Colored"
             android:background="@color/colorPrimary"
-            android:layout_margin="20dp"
+            android:layout_margin="24dp"
             android:textSize="@dimen/fab_margin" />
     </LinearLayout>
 
