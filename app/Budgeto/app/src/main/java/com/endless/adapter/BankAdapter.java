@@ -1,12 +1,16 @@
 package com.endless.adapter;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.endless.budgeto.R;
 
@@ -41,7 +45,9 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        // ...
+        LinearLayout layMore = (LinearLayout) v.findViewById(R.id.layMore);
+        layMore.setVisibility(View.GONE);
+
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -51,22 +57,9 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView textView = (TextView) holder.mView.findViewById(R.id.info_text);
-        textView.setText(mDataset[position]);
 
-        ToggleButton button = (ToggleButton) holder.mView.findViewById(R.id.btnElevation);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CardView cardView = (CardView) v.getParent();
-                ToggleButton button = (ToggleButton) v.findViewById(R.id.btnElevation);
-                if (button.isChecked()) {
-                    cardView.setElevation(10f);
-                } else {
-                    cardView.setElevation(4f);
-                }
-            }
-        });
+        setup_listeners(mDataset[position], holder.mView);
+
 
     }
 
@@ -74,5 +67,35 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mDataset.length;
+    }
+
+    private void setup_listeners(String bankName, final View parent) {
+        CheckBox cbxBankName = (CheckBox) parent.findViewById(R.id.cbxBankName);
+        Button btnTestBank = (Button) parent.findViewById(R.id.btnTestBank);
+
+        cbxBankName.setText(bankName);
+        cbxBankName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LinearLayout layMore = (LinearLayout) parent.findViewById(R.id.layMore);
+                if (isChecked) {
+                    layMore.setVisibility(View.VISIBLE);
+                } else {
+                    layMore.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        btnTestBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String credential = ((EditText) parent.findViewById(R.id.txtCredential)).getText().toString();
+                String password = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
+                ProgressBar pbTestBank = (ProgressBar) parent.findViewById(R.id.pbTestBank);
+                pbTestBank.setVisibility(View.VISIBLE);
+                Log.d("App: Tester", credential + " - " + password);
+            }
+        });
     }
 }
