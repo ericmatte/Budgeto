@@ -39,8 +39,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BankAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public BankAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card, parent, false);
@@ -57,10 +56,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
         setup_listeners(mDataset[position], holder.mView);
-
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -78,11 +74,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LinearLayout layMore = (LinearLayout) parent.findViewById(R.id.layMore);
-                if (isChecked) {
-                    layMore.setVisibility(View.VISIBLE);
-                } else {
-                    layMore.setVisibility(View.GONE);
-                }
+                layMore.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
 

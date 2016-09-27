@@ -14,7 +14,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.endless.adapter.BankAdapter;
@@ -30,7 +31,7 @@ public class SetupActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+    private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -47,59 +48,30 @@ public class SetupActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {}
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                backgroundColorTransition(position, positionOffset);
-            }
-            public void onPageSelected(int position) {
-                ImageButton img_page1 = (ImageButton) findViewById(R.id.img_page1);
-                ImageButton img_page2 = (ImageButton) findViewById(R.id.img_page2);
-                ImageButton img_page3 = (ImageButton) findViewById(R.id.img_page3);
-                ImageButton img_page4 = (ImageButton) findViewById(R.id.img_page4);
-                // http://stackoverflow.com/questions/20586619/android-viewpager-with-bottom-dots
-                switch (position) {
-                    case 0:
-                        img_page1.setImageResource(R.drawable.dot_selected);
-                        img_page2.setImageResource(R.drawable.dot);
-                        img_page3.setImageResource(R.drawable.dot);
-                        img_page4.setImageResource(R.drawable.dot);
-                        break;
-
-                    case 1:
-                        img_page1.setImageResource(R.drawable.dot);
-                        img_page2.setImageResource(R.drawable.dot_selected);
-                        img_page3.setImageResource(R.drawable.dot);
-                        img_page4.setImageResource(R.drawable.dot);
-                        break;
-
-                    case 2:
-                        img_page1.setImageResource(R.drawable.dot);
-                        img_page2.setImageResource(R.drawable.dot);
-                        img_page3.setImageResource(R.drawable.dot_selected);
-                        img_page4.setImageResource(R.drawable.dot);
-                        break;
-
-                    case 3:
-                        img_page1.setImageResource(R.drawable.dot);
-                        img_page2.setImageResource(R.drawable.dot);
-                        img_page3.setImageResource(R.drawable.dot);
-                        img_page4.setImageResource(R.drawable.dot_selected);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        });
+        mViewPager.addOnPageChangeListener(scrollingHandler);
     }
+
+    /** Allow Background color transition and dots indicator */
+    ViewPager.SimpleOnPageChangeListener scrollingHandler = new ViewPager.SimpleOnPageChangeListener() {
+        public void onPageScrollStateChanged(int state) {}
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            backgroundColorTransition(position, positionOffset);
+        }
+        public void onPageSelected(int position) {
+            LinearLayout viewPagerCountDots = (LinearLayout) findViewById(R.id.viewPagerCountDots);
+
+            for (int i = 0; i < viewPagerCountDots.getChildCount(); i++) {
+                ImageView dot = (ImageView) viewPagerCountDots.getChildAt(i);
+                dot.setImageResource(i == position ? R.drawable.dot_selected : R.drawable.dot);
+            }
+        }
+    };
 
     /** Animation background color transition on page change */
     private void backgroundColorTransition(int position, float positionOffset) {
         int[] colors = getResources().getIntArray(R.array.colorsSetupActivity);
 
-        if(position < (mSectionsPagerAdapter.getCount() -1) && position < (colors.length - 1)) {
+        if (position < (mSectionsPagerAdapter.getCount() -1) && position < (colors.length - 1)) {
             mViewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
         } else {
             mViewPager.setBackgroundColor(colors[colors.length - 1]);
@@ -111,7 +83,6 @@ public class SetupActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -127,23 +98,13 @@ public class SetupActivity extends AppCompatActivity {
         public int getCount() {
             return 4; // Show 4 total pages.
         }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0: return "WELCOME PAGE";
-                case 1: return "CHOOSE PIN";
-                case 2: return "BANKS SETUP";
-                case 3: return "ALL SET";
-                default: return null;
-            }
-        }
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        public PlaceholderFragment() {}
         /** Fragment argument representing the section number for this fragment. */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -159,12 +120,8 @@ public class SetupActivity extends AppCompatActivity {
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
-
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView;
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
@@ -178,11 +135,9 @@ public class SetupActivity extends AppCompatActivity {
                     return banksInflater(inflater, container);
                 case 4:
                     // All set
-                    rootView = inflater.inflate(R.layout.fragment_setup, container, false);
-                    TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                    textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-                    return rootView;
+                    return allSetInflater(inflater, container);
                 default:
+                    //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
                     return null;
             }
         }
@@ -233,6 +188,11 @@ public class SetupActivity extends AppCompatActivity {
             mAdapter = new BankAdapter(myDataset);
             mRecyclerView.setAdapter(mAdapter);
 
+            return rootView;
+        }
+
+        private View allSetInflater(LayoutInflater inflater, ViewGroup container) {
+            View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
             return rootView;
         }
     }
