@@ -19,18 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:id="@+id/imgLock"
-            android:src="@drawable/ic_verified_user_black_24dp"
-            android:forceHasOverlappingRendering="false"
-            android:tint="#0f605a" />
+            android:src="@drawable/ic_lock"
+            android:forceHasOverlappingRendering="false" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Choisissez un mot de passe numérique pour l&apos;application"
+            android:text="Choisissez un NIP pour l&apos;application"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/strPIN"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:gravity="center" />
+            android:layout_marginTop="@dimen/fab_margin" />
 
         <EditText
             android:layout_width="fill_parent"
@@ -57,12 +56,6 @@
             android:layout_margin="8dp"
             android:gravity="center_horizontal" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pin test"
-            android:id="@+id/btnPinCheck"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </RelativeLayout>

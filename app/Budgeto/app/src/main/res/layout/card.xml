@@ -23,7 +23,8 @@
                 android:text="CheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/cbxBankName" />
+                android:id="@+id/cbxBankName"
+                android:layout_margin="10dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -31,55 +32,83 @@
                 android:layout_height="match_parent"
                 android:id="@+id/layMore">
 
-                <EditText
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="Card Number"
-                    android:ems="10"
-                    android:id="@+id/txtCredential" />
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"/>
 
-                <EditText
-                    android:id="@+id/txtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"/>
-
-                <TextView
-                    android:text="Par mesure de sécurité,\nle mot de passe ne sera jamais enregistré."
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView2" />
-
-                <GridLayout
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:elevation="1dp">
+                    android:layout_margin="6dp">
 
-                    <ProgressBar
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/pbTestBank"
-                        android:layout_weight="1"
-                        android:layout_row="0"
-                        android:layout_column="1"
-                        android:visibility="invisible" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <Button
-                        android:text="Tester"
-                        android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/txtCredential"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Card Number"
+                            android:maxLines="1"
+                            android:inputType="text" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/txtPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Password"
+                            android:imeActionId="@+id/login"
+                            android:imeActionLabel="@string/action_sign_in_short"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPassword"
+                            android:maxLines="1"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <TextView
+                        android:text="Par mesure de sécurité,\nle mot de passe ne sera jamais enregistré."
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnTestBank"
-                        android:layout_weight="1"
-                        android:layout_row="0"
-                        android:layout_column="2" />
-                </GridLayout>
+                        android:id="@+id/textView2"
+                        android:gravity="right" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp">
+
+                        <ProgressBar
+                            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/pbTestBank"
+                            android:layout_weight="1"
+                            android:layout_row="0"
+                            android:layout_column="1"
+                            android:visibility="invisible"
+                            android:layout_gravity="right|center_vertical" />
+
+                        <Button
+                            android:text="Tester"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnTestBank"
+                            android:layout_weight="1"
+                            android:layout_row="0"
+                            android:layout_column="2"
+                            style="@style/Widget.AppCompat.Button.Colored" />
+                    </GridLayout>
+                </LinearLayout>
 
             </LinearLayout>
 

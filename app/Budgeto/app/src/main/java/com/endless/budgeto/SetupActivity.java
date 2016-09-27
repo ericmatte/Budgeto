@@ -9,14 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -46,12 +43,7 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -202,21 +194,14 @@ public class SetupActivity extends AppCompatActivity {
         private View pinInflater(LayoutInflater inflater, ViewGroup container) {
             View rootView = inflater.inflate(R.layout.fragment_pin_chooser, container, false);
 
-            final Button btnPinCheck = (Button) rootView.findViewById(R.id.btnPinCheck);
-            btnPinCheck.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Log.d("App: test", "clicked!");
-                }
-            });
-
             final TextView txtPIN = (TextView) rootView.findViewById(R.id.txtPIN);
             final TextView txtPINCheck = (TextView) rootView.findViewById(R.id.txtPINCheck);
             TextWatcher textWatcher = new TextWatcher(){
                 public void afterTextChanged(Editable s) {
                     if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
-                        btnPinCheck.setText("pwd matches!");
+                        // btnPinCheck.setText("pwd matches!");
                     } else {
-                        btnPinCheck.setText("pwd no the same...");
+                        // btnPinCheck.setText("pwd no the same...");
                     }
                 }
                 public void beforeTextChanged(CharSequence s, int start, int count, int after){}

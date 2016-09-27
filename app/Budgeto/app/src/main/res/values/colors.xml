@@ -5,8 +5,8 @@
     <color name="colorAccent">#ffc107</color>
     <array name="colorsSetupActivity">
         <item>#1e3e2d</item>
-        <item>#add4d4</item>
-        <item>#94e696</item>
+        <item>#cae4ef</item>
+        <item>#7ece82</item>
         <item>#ecf1ec</item>
     </array>
 </resources>
