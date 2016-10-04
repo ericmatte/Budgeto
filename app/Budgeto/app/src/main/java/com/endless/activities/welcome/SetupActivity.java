@@ -14,12 +14,20 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.endless.budgeto.R;
+import com.endless.tools.Logger;
 
+/**
+ * Setup and welcome screens handling user first configuration
+ *
+ * @author  Eric Matte
+ * @version 1.0
+ */
 public class SetupActivity extends AppCompatActivity {
 
     /**
@@ -76,6 +84,11 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             mViewPager.setBackgroundColor(colors[colors.length - 1]);
         }
+    }
+
+    /** Get configuration data from all setup screen and start Budgeto */
+    public void finishSetup() {
+        Logger.print(this, "finishSetup!", "Test");
     }
 
     /**
@@ -192,7 +205,16 @@ public class SetupActivity extends AppCompatActivity {
         }
 
         private View allSetInflater(LayoutInflater inflater, ViewGroup container) {
-            View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
+
+            Button btnFinish = (Button) rootView.findViewById(R.id.btnFinish);
+            btnFinish.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Perform action on click
+                    ((SetupActivity) getActivity()).finishSetup();
+                }
+            });
+
             return rootView;
         }
     }
