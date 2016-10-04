@@ -12,6 +12,7 @@ import android.util.Log;
  */
 public class Logger {
     private static final String filterTag = "App.";
+    private static final boolean enabled = true;
 
     public static int print(FragmentActivity activity, String message) {
         return print(activity, message, null);
@@ -33,6 +34,14 @@ public class Logger {
             tag += " <" + title + ">";
         }
 
-        return Log.println(priority, tag, message);
+        if (message == null) {
+            message = "<empty_string>";
+        }
+
+        if (enabled) {
+            return Log.println(priority, tag, message);
+        } else {
+            return -1;
+        }
     }
 }
