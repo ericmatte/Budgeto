@@ -7,20 +7,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.endless.budgeto.R;
 import com.endless.tools.Logger;
+
+import static com.endless.budgeto.R.id.container;
 
 /**
  * Setup and welcome screens handling user first configuration
@@ -54,7 +50,7 @@ public class SetupActivity extends AppCompatActivity {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(scrollingHandler);
     }
@@ -88,7 +84,31 @@ public class SetupActivity extends AppCompatActivity {
 
     /** Get configuration data from all setup screen and start Budgeto */
     public void finishSetup() {
-        Logger.print(this, "finishSetup!", "Test");
+        Logger.print(this, "Finishing setup...");
+
+        String PIN = null;
+
+        for (int page=0; page<mSectionsPagerAdapter.getCount(); page++) {
+            Fragment fragment = mSectionsPagerAdapter.getItem(page);
+            switch (page) {
+                case 0:
+                    // Welcome
+                    break;
+                case 1:
+                    // Pin
+                    PIN = ((PinFragment) fragment).getPIN();
+                    break;
+                case 2:
+                    // Banks
+
+                case 3:
+                    // All set
+
+                default:
+            }
+        }
+
+        Logger.print(this, PIN, "PIN");
     }
 
     /**
@@ -96,15 +116,22 @@ public class SetupActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        Fragment[] pages = {PlaceholderFragment.newInstance(0),
+                new PinFragment(),
+                new BanksFragment(),
+                new AllSetFragment()};
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position < pages.length) {
+                return pages[position];
+            } else {
+                return null;
+            }
         }
 
         @Override
@@ -135,87 +162,12 @@ public class SetupActivity extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView;
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                case 1:
-                    // Welcome
-                    return welcomeInflater(inflater, container);
-                case 2:
-                    // Pin
-                    return pinInflater(inflater, container);
-                case 3:
-                    // Banks
-                    return banksInflater(inflater, container);
-                case 4:
-                    // All set
-                    return allSetInflater(inflater, container);
-                default:
-                    //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-                    return null;
-            }
+            // getArguments().getInt(ARG_SECTION_NUMBER)
+            return welcomeInflater(inflater, container);
         }
 
         private View welcomeInflater(LayoutInflater inflater, ViewGroup container) {
             return inflater.inflate(R.layout.fragment_welcome, container, false);
-        }
-
-        private View pinInflater(LayoutInflater inflater, ViewGroup container) {
-            View rootView = inflater.inflate(R.layout.fragment_pin_chooser, container, false);
-
-            final TextView txtPIN = (TextView) rootView.findViewById(R.id.txtPIN);
-            final TextView txtPINCheck = (TextView) rootView.findViewById(R.id.txtPINCheck);
-            TextWatcher textWatcher = new TextWatcher(){
-                public void afterTextChanged(Editable s) {
-                    if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
-                        // btnPinCheck.setText("pwd matches!");
-                    } else {
-                        // btnPinCheck.setText("pwd no the same...");
-                    }
-                }
-                public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-                public void onTextChanged(CharSequence s, int start, int before, int count){}
-            };
-            txtPIN.addTextChangedListener(textWatcher);
-            txtPINCheck.addTextChangedListener(textWatcher);
-
-            return rootView;
-        }
-
-        private View banksInflater(LayoutInflater inflater, ViewGroup container) {
-            View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
-
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.banks_recycler_view);
-            RecyclerView.Adapter mAdapter;
-            RecyclerView.LayoutManager mLayoutManager;
-
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            mRecyclerView.setHasFixedSize(true);
-
-            // use a linear layout manager
-            mLayoutManager = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(mLayoutManager);
-
-            // specify an adapter (see also next example)
-            String[] myDataset = {"Tangerine", "Desjardins", "BNC"};
-            mAdapter = new BankAdapter(myDataset);
-            mRecyclerView.setAdapter(mAdapter);
-
-            return rootView;
-        }
-
-        private View allSetInflater(LayoutInflater inflater, ViewGroup container) {
-            final View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
-
-            Button btnFinish = (Button) rootView.findViewById(R.id.btnFinish);
-            btnFinish.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Perform action on click
-                    ((SetupActivity) getActivity()).finishSetup();
-                }
-            });
-
-            return rootView;
         }
     }
 }
