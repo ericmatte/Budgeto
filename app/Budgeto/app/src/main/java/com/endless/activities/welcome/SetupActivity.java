@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.activities.welcome;
 
 import android.animation.ArgbEvaluator;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.endless.adapter.BankAdapter;
+import com.endless.budgeto.R;
 
 public class SetupActivity extends AppCompatActivity {
 

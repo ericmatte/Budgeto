@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.activities.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+
+import com.endless.budgeto.R;
+import com.endless.activities.welcome.SetupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 

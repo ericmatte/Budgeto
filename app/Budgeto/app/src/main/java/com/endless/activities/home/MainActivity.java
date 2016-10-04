@@ -1,4 +1,4 @@
-package com.endless.budgeto;
+package com.endless.activities.home;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +8,10 @@ import android.webkit.WebView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.endless.adapter.CategoryAdapter;
 import com.endless.bank.BankScraper;
 import com.endless.bank.Categorizer;
 import com.endless.bank.Tangerine;
+import com.endless.budgeto.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;

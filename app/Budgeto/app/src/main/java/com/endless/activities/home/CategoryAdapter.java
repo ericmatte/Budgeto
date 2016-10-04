@@ -1,4 +1,4 @@
-package com.endless.adapter;
+package com.endless.activities.home;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
