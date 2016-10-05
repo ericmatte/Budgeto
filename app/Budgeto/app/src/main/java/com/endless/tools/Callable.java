@@ -1,10 +1,10 @@
 package com.endless.tools;
 
-import android.view.View;
+import org.json.JSONObject;
 
 /**
  * Created by Eric on 2016-10-04.
  */
 public interface Callable {
-    public void call(String param, View parent);
+    public void callBack(JSONObject jsonObject);
 }

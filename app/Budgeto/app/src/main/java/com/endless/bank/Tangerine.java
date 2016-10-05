@@ -1,9 +1,9 @@
 package com.endless.bank;
 
 import android.content.Context;
-import android.view.View;
 import android.webkit.WebView;
 
+import com.endless.activities.home.MainActivity;
 import com.endless.tools.Callable;
 
 import org.json.JSONArray;
@@ -44,8 +44,8 @@ public class Tangerine extends BankScraper {
     }
 
     @Override
-    public void requestTransactions(Callable callable, View parent) {
-        callable.call("requestTransactions", parent);
+    public void requestTransactions(Callable callable) {
+        callable.callBack(MainActivity.tempCreateJson());
         // login();
     }
 

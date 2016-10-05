@@ -3,7 +3,6 @@ package com.endless.bank;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -87,7 +86,7 @@ abstract public class BankScraper {
 
     abstract protected void login();
     abstract protected void logout();
-    abstract public void requestTransactions(Callable callable, View parent);
+    abstract public void requestTransactions(Callable callable);
     abstract protected void nextCall(String url, String response);
 
     public void promptInput(String value) {

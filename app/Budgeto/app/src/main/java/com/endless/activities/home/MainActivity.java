@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private JSONObject tempCreateJson() {
+    public static final JSONObject tempCreateJson() {
         try {
             return new JSONObject("{  \n" +
                     "   \"bank\":\"Tangerine\",\n" +
