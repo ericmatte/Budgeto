@@ -1,6 +1,5 @@
 package com.endless.tools;
 
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 /**
@@ -14,20 +13,20 @@ public class Logger {
     private static final String filterTag = "App.";
     private static final boolean enabled = true;
 
-    public static int print(FragmentActivity activity, String message) {
-        return print(activity, message, null);
+    public static int print(Class referrer, String message) {
+        return print(referrer, message, null);
     }
 
-    public static int print(FragmentActivity activity, String message, String title) {
-        return print(activity, message, title, Log.DEBUG);
+    public static int print(Class referrer, String message, String title) {
+        return print(referrer, message, title, Log.DEBUG);
     }
 
-    public static int print(FragmentActivity activity, String message, int priority) {
-        return print(activity, message, null, Log.DEBUG);
+    public static int print(Class referrer, String message, int priority) {
+        return print(referrer, message, null, Log.DEBUG);
     }
 
-    public static int print(FragmentActivity activity, String message, String title, int priority) {
-        String[] fullClassName = activity.getLocalClassName().split("\\.");
+    public static int print(Class referrer, String message, String title, int priority) {
+        String[] fullClassName = referrer.getName().split("\\.");
         String tag = filterTag + fullClassName[fullClassName.length-1];
 
         if (title != null && !title.isEmpty()) {

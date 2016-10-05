@@ -3,13 +3,17 @@ package com.endless.bank;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import com.endless.tools.Callable;
 import com.endless.tools.Sanitizer;
+
 import org.json.JSONObject;
+
 import java.util.Map;
 
 /**
@@ -27,6 +31,17 @@ abstract public class BankScraper {
     protected Map<String, String> userInfo;
 
     JSONObject bankResponse = new JSONObject();
+
+    /** Instantiate a specific bank scraper from the given bankName */
+    public static BankScraper fromName(String bankName, WebView webView, Context context,
+                                       Map<String, String> userInfo) throws Exception {
+        switch (bankName) {
+            case "Tangerine":
+                return new Tangerine(webView, context, userInfo);
+            default:
+                throw new Exception("The requested bank has not been implemented.");
+        }
+    }
 
     public BankScraper(WebView webView, Context context, Map<String, String> userInfo) {
         this.userInfo = userInfo;
@@ -61,7 +76,7 @@ abstract public class BankScraper {
         });
     }
 
-    public void getWebViewHTML() {
+    public void getDocumentHTML() {
         webView.post(new Runnable() {
             @Override
             public void run() {
@@ -72,7 +87,7 @@ abstract public class BankScraper {
 
     abstract protected void login();
     abstract protected void logout();
-    abstract public void requestTransactions();
+    abstract public void requestTransactions(Callable callable, View parent);
     abstract protected void nextCall(String url, String response);
 
     public void promptInput(String value) {

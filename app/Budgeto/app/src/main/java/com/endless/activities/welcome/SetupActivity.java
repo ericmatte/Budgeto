@@ -84,31 +84,11 @@ public class SetupActivity extends AppCompatActivity {
 
     /** Get configuration data from all setup screen and start Budgeto */
     public void finishSetup() {
-        Logger.print(this, "Finishing setup...");
+        Logger.print(this.getClass(), "Finishing setup...");
 
-        String PIN = null;
+        String PIN = ((PinFragment) mSectionsPagerAdapter.getItem(1)).getPIN();
 
-        for (int page=0; page<mSectionsPagerAdapter.getCount(); page++) {
-            Fragment fragment = mSectionsPagerAdapter.getItem(page);
-            switch (page) {
-                case 0:
-                    // Welcome
-                    break;
-                case 1:
-                    // Pin
-                    PIN = ((PinFragment) fragment).getPIN();
-                    break;
-                case 2:
-                    // Banks
-
-                case 3:
-                    // All set
-
-                default:
-            }
-        }
-
-        Logger.print(this, PIN, "PIN");
+        Logger.print(this.getClass(), PIN, "PIN");
     }
 
     /**

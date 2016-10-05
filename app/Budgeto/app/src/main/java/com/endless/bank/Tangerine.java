@@ -1,7 +1,10 @@
 package com.endless.bank;
 
 import android.content.Context;
+import android.view.View;
 import android.webkit.WebView;
+
+import com.endless.tools.Callable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +44,9 @@ public class Tangerine extends BankScraper {
     }
 
     @Override
-    public void requestTransactions() {
-        login();
+    public void requestTransactions(Callable callable, View parent) {
+        callable.call("requestTransactions", parent);
+        // login();
     }
 
     String referrer;
@@ -59,7 +63,7 @@ public class Tangerine extends BankScraper {
             if (response == null) {
                 // fetching question text
                 referrer = url;
-                getWebViewHTML();
+                getDocumentHTML();
             } else if (response.startsWith("<head>")) {
                 // prompt for answer
                 String question = jerry(response).$("div.content-main-wrapper .CB_DoNotShow:first").html();
@@ -81,7 +85,7 @@ public class Tangerine extends BankScraper {
         else if (url.contains("displayCreditCardAccount")) {
             if (response == null) {
                 referrer = url;
-                getWebViewHTML();
+                getDocumentHTML();
             } else if (response.startsWith("<head>")) {
                 // extracting data
                 Jerry doc = jerry(response);

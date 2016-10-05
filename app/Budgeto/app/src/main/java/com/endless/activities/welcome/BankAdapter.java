@@ -1,10 +1,10 @@
 package com.endless.activities.welcome;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,12 +12,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.endless.bank.BankScraper;
 import com.endless.budgeto.R;
+import com.endless.tools.Callable;
+import com.endless.tools.Logger;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Eric on 2016-09-25.
  */
-public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
+public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> implements Callable {
     private String[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -65,7 +73,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
         return mDataset.length;
     }
 
-    private void setup_listeners(String bankName, final View parent) {
+    private void setup_listeners(final String bankName, final View parent) {
         CheckBox cbxBankName = (CheckBox) parent.findViewById(R.id.cbxBankName);
         Button btnTestBank = (Button) parent.findViewById(R.id.btnTestBank);
 
@@ -84,10 +92,38 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.ViewHolder> {
             public void onClick(View v) {
                 String credential = ((EditText) parent.findViewById(R.id.txtCredential)).getText().toString();
                 String password = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
+                WebView webView = (WebView) parent.findViewById(R.id.webView);
+
                 ProgressBar pbTestBank = (ProgressBar) parent.findViewById(R.id.pbTestBank);
                 pbTestBank.setVisibility(View.VISIBLE);
-                Log.d("App: Tester", credential + " - " + password);
+
+                Logger.print(this.getClass(), credential + " - " + password, bankName + " card");
+
+                try {
+                    testBank(bankName, webView, parent, credential, password);
+                } catch (Exception e) {
+                    Logger.print(this.getClass(), e.getMessage());
+                }
             }
         });
+    }
+
+    private JSONObject testBank(String bankName, WebView webView, View parent,
+                                String credential, String password) throws Exception {
+        Map<String, String> userInfo = new HashMap<String, String>();
+        userInfo.put("username", credential);
+        userInfo.put("password", password);
+        BankScraper bank = BankScraper.fromName(bankName, webView, parent.getContext(), userInfo);
+
+        Callable cmd = this;
+        bank.requestTransactions(cmd, parent);
+
+        return null;
+    }
+
+    public void call(String param, View parent) {
+        Logger.print(this.getClass(), param);
+        EditText credential = ((EditText) parent.findViewById(R.id.txtCredential));
+        credential.setText("Bank tested!");
     }
 }
