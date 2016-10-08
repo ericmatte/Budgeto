@@ -1,0 +1,2 @@
+Main server   : endlessapi.ddns.net, port 22
+Backup server : endless.ddns.net, port 22
