@@ -10,26 +10,46 @@
 
 
     <LinearLayout
+        android:paddingTop="24dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
-        <ImageView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/imgLock"
-            android:src="@drawable/ic_lock" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:id="@+id/imgLock"
+                android:src="@drawable/ic_lock" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Choisissez un mot de passe\npour l&apos;application"
+                android:id="@+id/strTitle"
+                android:layout_marginTop="@dimen/fab_margin" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Choisissez un NIP\npour l&apos;application"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:text="Entrez un NIP"
             android:layout_gravity="center_horizontal"
             android:id="@+id/strPIN"
-            android:layout_marginTop="@dimen/fab_margin" />
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textSize="18sp" />
 
         <EditText
             android:layout_width="fill_parent"
@@ -45,11 +65,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             android:text="Retapez le NIP"
             android:layout_gravity="center_horizontal"
             android:id="@+id/strPINCheck"
-            android:layout_marginTop="@dimen/fab_margin" />
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textSize="18sp" />
 
         <EditText
             android:layout_width="fill_parent"
