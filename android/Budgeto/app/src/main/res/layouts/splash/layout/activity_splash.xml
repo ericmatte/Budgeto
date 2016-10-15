@@ -1,12 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.endless.budgeto.com.endless.welcome.SetupActivity$PlaceholderFragment">
+    tools:context="com.endless.activities.splash.SplashActivity"
+    android:background="#1e3e2d">
 
     <LinearLayout
         android:orientation="vertical"
@@ -19,31 +22,22 @@
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:id="@+id/imgLock"
+            android:id="@+id/imageView"
             android:src="@drawable/money_icon"
             android:forceHasOverlappingRendering="false" />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Bienvenue dans Budgeto!"
+            android:text="Budgeto"
             android:padding="8dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/strWelcome"
+            android:id="@+id/textView"
             android:layout_marginTop="@dimen/fab_margin"
-            android:textColor="@color/abc_primary_text_material_dark" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Budgeto vous simplifiera la vie\nen automatisant la gestion\nde votre budget"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/strDesc"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:gravity="center_horizontal"
-            android:textColor="@color/abc_secondary_text_material_dark" />
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:textSize="36sp" />
     </LinearLayout>
 
 </RelativeLayout>
