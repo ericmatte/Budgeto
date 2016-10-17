@@ -1,8 +1,8 @@
 package com.endless.bank;
 
+import android.app.Activity;
 import android.webkit.WebView;
 
-import com.endless.activities.home.MainActivity;
 import com.endless.tools.Callable;
 import com.endless.tools.Logger;
 import com.endless.tools.Sanitizer.StringType;
@@ -49,10 +49,15 @@ public class Tangerine extends BankScraper {
             }
         } catch (JSONException e) { Logger.print(this.getClass(), e.getMessage(), bankName); }
 
-        if (response == null) response = MainActivity.tempCreateJson();
-
-        callable.callBack(response);
-        // webView.loadUrl(loginUrl);
+        if (response != null) {
+            callable.callBack(response);
+        } else {
+            // response = MainActivity.tempCreateJson();
+            this.username = usr;
+            this.password = pwd;
+            this.callable = callable;
+            webView.loadUrl(loginUrl);
+        }
     }
 
     @Override
@@ -68,14 +73,16 @@ public class Tangerine extends BankScraper {
     String referrer;
     @Override
     public void nextCall(String url, String response) {
+        Logger.print(this.getClass(), url, "nextCall");
+
         if (url == null && referrer != null)
             url = referrer;
 
         if (url.contains("displayLogin")) {
             // username
-            sendJavascript(String.format(calls.get(0), userInfo.get("username")));
-        }
-        else if (url.contains("displayChallengeQuestion")) {
+            sendJavascript(String.format(calls.get(0), username));
+
+        } else if (url.contains("displayChallengeQuestion")) {
             if (response == null) {
                 // fetching question text
                 referrer = url;
@@ -89,21 +96,22 @@ public class Tangerine extends BankScraper {
                 referrer = null;
                 sendJavascript(String.format(calls.get(1), response));
             }
-        }
-        else if (url.contains("displayPIN")) {
+
+        } else if (url.contains("displayPIN")) {
             // password
-            sendJavascript(String.format(calls.get(2), userInfo.get("password")));
-        }
-        else if (url.contains("displayAccountSummary")) {
+            sendJavascript(String.format(calls.get(2), password));
+
+        } else if (url.contains("displayAccountSummary")) {
             // connected, getting to credit card
             webView.loadUrl(calls.get(3));
-        }
-        else if (url.contains("displayCreditCardAccount")) {
+
+        } else if (url.contains("displayCreditCardAccount")) {
             if (response == null) {
                 referrer = url;
                 getDocumentHTML();
             } else if (response.startsWith("<head>")) {
                 // extracting data
+                JSONObject bankResponse = new JSONObject();
                 Jerry doc = jerry(response);
                 doc = doc.$("table[data-target='#transactionTable'] tbody");
                 try {
@@ -119,14 +127,21 @@ public class Tangerine extends BankScraper {
                         trans.setAmount(tr.$(".tr-amount").html());
                         transactions.put(trans.getJSONObject());
                     }
+
                     bankResponse.put("transactions", transactions);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    bankResponse.put("bank", bankName);
+                    bankResponse.put("state", "ok");
+                } catch (JSONException e) { Logger.print(this.getClass(), e.getMessage()); }
+
+                callable.callBack(bankResponse);
 
                 referrer = null;
-                webView.loadUrl(logoutUrl); // TODO: logout not working
+                ((Activity) webView.getContext()).runOnUiThread(new Runnable() {
+                    @Override public void run() { webView.loadUrl(logoutUrl); }
+                });
             }
+        } else if (url.contains("displayLogout")) {
+            Logger.print(this.getClass(), "Operations successfully completed for " + bankName);
         }
     }
 }
