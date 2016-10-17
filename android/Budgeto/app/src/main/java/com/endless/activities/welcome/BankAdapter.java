@@ -1,5 +1,6 @@
 package com.endless.activities.welcome;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -76,6 +77,7 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
                 String pwd = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
                 WebView webView = (WebView) parent.findViewById(R.id.webView);
 
+                parent.findViewById(R.id.txtBankCallback).setVisibility(View.GONE);
                 parent.findViewById(R.id.pbTestBank).setVisibility(View.VISIBLE);
 
                 Logger.print(this.getClass(), usr + " - " + pwd, bankName + " card");
@@ -88,24 +90,33 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
         });
     }
 
-    public void callBack(JSONObject jsonObject) {
+    public void callBack(final JSONObject jsonObject) {
         try {
-            String state = jsonObject.getString("state");
-            View view = getView(jsonObject.getString("bank"));
-            TextView txtBankCallback = (TextView) view.findViewById(R.id.txtBankCallback);
+            final View view = getView(jsonObject.getString("bank"));
+            ((Activity) view.getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String state = jsonObject.getString("state");
+                        TextView txtBankCallback = (TextView) view.findViewById(R.id.txtBankCallback);
 
-            Logger.print(this.getClass(), state);
-            if (state.equals("ok")) {
-                int nbrTransactions = jsonObject.getJSONArray("transactions").length();
-                txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
-                txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
-            } else {
-                txtBankCallback.setTextColor(Color.RED);
-                txtBankCallback.setText("Erreur!");
-            }
+                        Logger.print(this.getClass(), state);
+                        if (state.equals("ok")) {
+                            int nbrTransactions = jsonObject.getJSONArray("transactions").length();
+                            txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+                            txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
+                        } else {
+                            txtBankCallback.setTextColor(Color.RED);
+                            txtBankCallback.setText("Erreur!");
+                        }
 
-            txtBankCallback.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
+                        view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
+                        txtBankCallback.setVisibility(View.VISIBLE);
+                    } catch (JSONException e) {
+                        Logger.print(this.getClass(), e.getMessage());
+                    }
+                }
+            });
         } catch (JSONException e) {
             Logger.print(this.getClass(), e.getMessage());
         }

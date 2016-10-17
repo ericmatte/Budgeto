@@ -11,10 +11,6 @@ import com.endless.tools.Callable;
 import com.endless.tools.Sanitizer;
 import com.endless.tools.Sanitizer.StringType;
 
-import org.json.JSONObject;
-
-import java.util.Map;
-
 /**
  * This class extract transactions from bank.
  * A bank must inherit from this class.
@@ -27,9 +23,9 @@ abstract public class BankScraper {
     protected String bankName;
     protected String loginUrl, logoutUrl;
     protected WebView webView;
-    protected Map<String, String> userInfo;
 
-    JSONObject bankResponse = new JSONObject();
+    protected Callable callable;
+    protected String username, password;
 
     /** Instantiate a specific bank scraper from the given bankName */
     public static BankScraper fromName(String bankName, WebView webView) throws Exception {
@@ -60,7 +56,9 @@ abstract public class BankScraper {
         {
             @JavascriptInterface
             @SuppressWarnings("unused")
-            public void processHTML(String html) { nextCall(null, html); }
+            public void processHTML(String html) {
+                nextCall(null, html);
+            }
         }
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
     }
@@ -97,7 +95,7 @@ abstract public class BankScraper {
     protected void promptInput(String value) {
         AlertDialog.Builder alert = new AlertDialog.Builder(webView.getContext());
 
-        alert.setTitle(bankName + " ask you a question.");
+        alert.setTitle(bankName + " vous pose une question.");
         alert.setMessage(value);
 
         // Set an EditText view to get user input
