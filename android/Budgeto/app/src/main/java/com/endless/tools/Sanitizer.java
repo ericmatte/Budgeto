@@ -26,4 +26,31 @@ public class Sanitizer {
 
         return value;
     }
+
+    public enum StringType {
+        lettersAndNumbersOnly, lettersOnly, numbersOnly, anyChars
+    }
+
+    public static String validateString(String string, int minLength, int maxLength, StringType stringType) {
+        if (string == null || string.equals("")) return "empty";
+        if (string.length() < minLength) return "too short";
+        if (string.length() > maxLength) return "too long";
+
+        boolean isCorrect = true;
+        switch (stringType) {
+            case lettersAndNumbersOnly:
+                if (!string.matches("[a-zA-Z0-9]+")) isCorrect = false;
+                break;
+            case lettersOnly:
+                if (!string.matches("[a-zA-Z]+")) isCorrect = false;
+                break;
+            case numbersOnly:
+                if (!string.matches("[0-9]+")) isCorrect = false;
+                break;
+            case anyChars:
+                if (!string.matches(".*[a-zA-Z0-9]+.*")) isCorrect = false;
+        }
+
+        return isCorrect ? "validated" : "error";
+    }
 }
