@@ -1,17 +1,18 @@
 package com.endless.bank;
 
-import android.content.Context;
 import android.webkit.WebView;
 
 import com.endless.activities.home.MainActivity;
 import com.endless.tools.Callable;
+import com.endless.tools.Logger;
+import com.endless.tools.Sanitizer.StringType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import jodd.jerry.Jerry;
 
@@ -28,25 +29,40 @@ public class Tangerine extends BankScraper {
             "input = $('#PIN'); input.val('%s'); input.closest('form').submit()", // {password}
             "https://secure.tangerine.ca/web/Tangerine.html?command=goToCreditCardAccount&creditCardAccount=0");
 
-    public Tangerine(WebView webView, Context context, Map<String, String> userInfo) {
-        super(webView, context, userInfo);
+    public Tangerine(WebView webView) {
+        super(webView);
         this.bankName = "Tangerine";
+        this.loginUrl = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogin&device=web&locale=fr_CA";
+        this.logoutUrl = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
     }
 
     @Override
-    public void login() {
-        webView.loadUrl("https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogin&device=web&locale=fr_CA");
+    public void requestTransactions(Callable callable, String usr, String pwd) {
+        JSONObject response = null;
+        try {
+            if (!validateUsername(usr)) {
+                response = new JSONObject("{\"bank\":\"" + bankName + "\", \"state\":\"error\", \"from\":\"username\", "
+                        + "\"hint\":\"Veuillez vérifier votre nom d'utilisateur " + bankName + ".\"}");
+            } else if (!validatePassword(pwd)) {
+                response = new JSONObject("{\"bank\":\"" + bankName + "\", \"state\":\"error\", \"from\":\"password\", "
+                        + "\"hint\":\"Votre NIP " + bankName + " doit comporter 4 ou 6 chiffres.\"}");
+            }
+        } catch (JSONException e) { Logger.print(this.getClass(), e.getMessage(), bankName); }
+
+        if (response == null) response = MainActivity.tempCreateJson();
+
+        callable.callBack(response);
+        // webView.loadUrl(loginUrl);
     }
 
     @Override
-    public void logout() {
-        webView.loadUrl("https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA");
+    protected boolean validateUsername(String username) {
+        return validateString(username, 0, 50, StringType.anyChars);
     }
 
     @Override
-    public void requestTransactions(Callable callable) {
-        callable.callBack(MainActivity.tempCreateJson());
-        // login();
+    protected boolean validatePassword(String password) {
+        return validateString(password, 4, 6, StringType.numbersOnly);
     }
 
     String referrer;
@@ -109,7 +125,7 @@ public class Tangerine extends BankScraper {
                 }
 
                 referrer = null;
-                logout(); // TODO: logout not working
+                webView.loadUrl(logoutUrl); // TODO: logout not working
             }
         }
     }

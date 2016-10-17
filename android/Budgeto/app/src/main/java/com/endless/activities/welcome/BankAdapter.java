@@ -1,6 +1,7 @@
 package com.endless.activities.welcome;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.endless.bank.BankScraper;
 import com.endless.budgeto.R;
@@ -20,9 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Eric on 2016-09-25.
@@ -55,6 +55,7 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
     }
 
     private void setup_listeners(final String bankName, final View parent) {
+        final BankAdapter bankAdapter = this;
         CheckBox cbxBankName = (CheckBox) parent.findViewById(R.id.cbxBankName);
         Button btnTestBank = (Button) parent.findViewById(R.id.btnTestBank);
 
@@ -71,41 +72,42 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
         btnTestBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String credential = ((EditText) parent.findViewById(R.id.txtCredential)).getText().toString();
-                String password = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
+                String usr = ((EditText) parent.findViewById(R.id.txtCredential)).getText().toString();
+                String pwd = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
                 WebView webView = (WebView) parent.findViewById(R.id.webView);
 
                 parent.findViewById(R.id.pbTestBank).setVisibility(View.VISIBLE);
 
-                Logger.print(this.getClass(), credential + " - " + password, bankName + " card");
+                Logger.print(this.getClass(), usr + " - " + pwd, bankName + " card");
 
                 try {
-                    testBank(bankName, webView, parent, credential, password);
-                } catch (Exception e) {
-                    Logger.print(this.getClass(), e.getMessage(), bankName);
-                }
+                    BankScraper bank = BankScraper.fromName(bankName, webView);
+                    bank.requestTransactions(bankAdapter, usr, pwd);
+                } catch (Exception e) { Logger.print(this.getClass(), e.getMessage(), bankName); }
             }
         });
     }
 
-    private void testBank(String bankName, WebView webView, View parent,
-                                String credential, String password) throws Exception {
-        Map<String, String> userInfo = new HashMap<String, String>();
-        userInfo.put("username", credential);
-        userInfo.put("password", password);
-        BankScraper bank = BankScraper.fromName(bankName, webView, parent.getContext(), userInfo);
-
-        bank.requestTransactions(this);
-    }
-
     public void callBack(JSONObject jsonObject) {
         try {
+            String state = jsonObject.getString("state");
             View view = getView(jsonObject.getString("bank"));
-            Logger.print(this.getClass(), "");
-            EditText credential = ((EditText) view.findViewById(R.id.txtCredential));
-            credential.setText("Bank tested!");
+            TextView txtBankCallback = (TextView) view.findViewById(R.id.txtBankCallback);
+
+            Logger.print(this.getClass(), state);
+            if (state.equals("ok")) {
+                int nbrTransactions = jsonObject.getJSONArray("transactions").length();
+                txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+                txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
+            } else {
+                txtBankCallback.setTextColor(Color.RED);
+                txtBankCallback.setText("Erreur!");
+            }
+
+            txtBankCallback.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Logger.print(this.getClass(), e.getMessage());
         }
     }
 }
