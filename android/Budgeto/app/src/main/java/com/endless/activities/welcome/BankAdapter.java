@@ -14,13 +14,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.endless.bank.BankResponse;
 import com.endless.bank.BankScraper;
+import com.endless.bank.BankScraper.Bank;
 import com.endless.budgeto.R;
-import com.endless.tools.Callable;
+import com.endless.bank.BankCallable;
 import com.endless.tools.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,10 @@ import java.util.List;
 /**
  * Created by Eric on 2016-09-25.
  */
-public class BankAdapter extends ArrayAdapter<String> implements Callable {
+public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
     private List<View> views = new ArrayList<>();
 
-    public BankAdapter(Context context, List<String> resource) {
+    public BankAdapter(Context context, List<Bank> resource) {
         super(context, R.layout.card, resource);
     }
 
@@ -49,18 +49,18 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
         return view;
     }
 
-    private View getView(String item) {
+    private View getView(Bank item) {
         View view = null;
         for (int i=0; i<getCount(); i++) if (getItem(i).equals(item)) view = views.get(i);
         return view;
     }
 
-    private void setup_listeners(final String bankName, final View parent) {
+    private void setup_listeners(final Bank bank, final View parent) {
         final BankAdapter bankAdapter = this;
         CheckBox cbxBankName = (CheckBox) parent.findViewById(R.id.cbxBankName);
         Button btnTestBank = (Button) parent.findViewById(R.id.btnTestBank);
 
-        cbxBankName.setText(bankName);
+        cbxBankName.setText(String.valueOf(bank));
         cbxBankName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -80,45 +80,39 @@ public class BankAdapter extends ArrayAdapter<String> implements Callable {
                 parent.findViewById(R.id.txtBankCallback).setVisibility(View.GONE);
                 parent.findViewById(R.id.pbTestBank).setVisibility(View.VISIBLE);
 
-                Logger.print(this.getClass(), usr + " - " + pwd, bankName + " card");
+                Logger.print(this.getClass(), usr + " - " + pwd, String.valueOf(bank) + " card");
 
                 try {
-                    BankScraper bank = BankScraper.fromName(bankName, webView);
-                    bank.requestTransactions(bankAdapter, usr, pwd);
-                } catch (Exception e) { Logger.print(this.getClass(), e.getMessage(), bankName); }
+                    BankScraper bankScraper = BankScraper.fromName(bank, webView);
+                    bankScraper.requestTransactions(bankAdapter, usr, pwd);
+                } catch (Exception e) {
+                    Logger.print(this.getClass(), e.getMessage(), String.valueOf(bank));
+                }
             }
         });
     }
 
-    public void callBack(final JSONObject jsonObject) {
-        try {
-            final View view = getView(jsonObject.getString("bank"));
-            ((Activity) view.getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String state = jsonObject.getString("state");
-                        TextView txtBankCallback = (TextView) view.findViewById(R.id.txtBankCallback);
+    public void callBack(final BankResponse response) {
+        final View view = getView(response.getBank());
+        ((Activity) view.getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                BankResponse.State state = response.getState();
+                TextView txtBankCallback = (TextView) view.findViewById(R.id.txtBankCallback);
 
-                        Logger.print(this.getClass(), state);
-                        if (state.equals("ok")) {
-                            int nbrTransactions = jsonObject.getJSONArray("transactions").length();
-                            txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
-                            txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
-                        } else {
-                            txtBankCallback.setTextColor(Color.RED);
-                            txtBankCallback.setText("Erreur!");
-                        }
-
-                        view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
-                        txtBankCallback.setVisibility(View.VISIBLE);
-                    } catch (JSONException e) {
-                        Logger.print(this.getClass(), e.getMessage());
-                    }
+                Logger.print(this.getClass(), String.valueOf(state));
+                if (state == BankResponse.State.ok) {
+                    int nbrTransactions = response.getTransactions().size();
+                    txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+                    txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
+                } else {
+                    txtBankCallback.setTextColor(Color.RED);
+                    txtBankCallback.setText("Erreur!");
                 }
-            });
-        } catch (JSONException e) {
-            Logger.print(this.getClass(), e.getMessage());
-        }
+
+                view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
+                txtBankCallback.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

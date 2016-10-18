@@ -3,14 +3,11 @@ package com.endless.bank;
 import android.app.Activity;
 import android.webkit.WebView;
 
-import com.endless.tools.Callable;
+import com.endless.bank.BankResponse.ErrorFrom;
 import com.endless.tools.Logger;
 import com.endless.tools.Sanitizer.StringType;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,31 +28,29 @@ public class Tangerine extends BankScraper {
 
     public Tangerine(WebView webView) {
         super(webView);
-        this.bankName = "Tangerine";
+        this.bank = Bank.Tangerine;
         this.loginUrl = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogin&device=web&locale=fr_CA";
         this.logoutUrl = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
     }
 
     @Override
-    public void requestTransactions(Callable callable, String usr, String pwd) {
-        JSONObject response = null;
-        try {
-            if (!validateUsername(usr)) {
-                response = new JSONObject("{\"bank\":\"" + bankName + "\", \"state\":\"error\", \"from\":\"username\", "
-                        + "\"hint\":\"Veuillez vérifier votre nom d'utilisateur " + bankName + ".\"}");
-            } else if (!validatePassword(pwd)) {
-                response = new JSONObject("{\"bank\":\"" + bankName + "\", \"state\":\"error\", \"from\":\"password\", "
-                        + "\"hint\":\"Votre NIP " + bankName + " doit comporter 4 ou 6 chiffres.\"}");
-            }
-        } catch (JSONException e) { Logger.print(this.getClass(), e.getMessage(), bankName); }
+    public void requestTransactions(BankCallable bankCallable, String usr, String pwd) {
+        BankResponse response = null;
+        if (!validateUsername(usr)) {
+            response = new BankResponse(bank, ErrorFrom.username,
+                    String.format("Veuillez vérifier votre nom d'utilisateur %s", String.valueOf(bank)));
+        } else if (!validatePassword(pwd)) {
+            response = new BankResponse(bank, ErrorFrom.password,
+                    String.format("Votre NIP %s doit comporter 4 ou 6 chiffres.", String.valueOf(bank)));
+        }
 
         if (response != null) {
-            callable.callBack(response);
+            bankCallable.callBack(response);
         } else {
             // response = MainActivity.tempCreateJson();
             this.username = usr;
             this.password = pwd;
-            this.callable = callable;
+            this.bankCallable = bankCallable;
             webView.loadUrl(loginUrl);
         }
     }
@@ -73,7 +68,7 @@ public class Tangerine extends BankScraper {
     String referrer;
     @Override
     public void nextCall(String url, String response) {
-        Logger.print(this.getClass(), url, "nextCall");
+        Logger.print(this.getClass(), url, "nextCall url");
 
         if (url == null && referrer != null)
             url = referrer;
@@ -111,29 +106,22 @@ public class Tangerine extends BankScraper {
                 getDocumentHTML();
             } else if (response.startsWith("<head>")) {
                 // extracting data
-                JSONObject bankResponse = new JSONObject();
                 Jerry doc = jerry(response);
                 doc = doc.$("table[data-target='#transactionTable'] tbody");
-                try {
-                    bankResponse.put("bank", bankName);
 
-                    JSONArray transactions = new JSONArray();
-                    for (Jerry tr : doc.$("tr")) {
-                        Transaction trans = new Transaction();
-                        trans.setDate(tr.$(".tr-date").html());
-                        trans.setDesc(tr.$(".tr-desc").html());
-                        String cat = "-" + tr.$(".tr-icon i").attr("class");
-                        trans.setCat(cat.substring(cat.lastIndexOf("-")+1));
-                        trans.setAmount(tr.$(".tr-amount").html());
-                        transactions.put(trans.getJSONObject());
-                    }
+                BankResponse bankResponse = new BankResponse(bank);
+                List<Transaction> transactions = new ArrayList<>();
+                for (Jerry tr : doc.$("tr")) {
+                    String date = tr.$(".tr-date").html();
+                    String desc = tr.$(".tr-desc").html();
+                    String amount = tr.$(".tr-amount").html();
+                    String cat = "-" + tr.$(".tr-icon i").attr("class");
+                    cat = cat.substring(cat.lastIndexOf("-")+1);
 
-                    bankResponse.put("transactions", transactions);
-                    bankResponse.put("bank", bankName);
-                    bankResponse.put("state", "ok");
-                } catch (JSONException e) { Logger.print(this.getClass(), e.getMessage()); }
+                    bankResponse.addTransaction(date, desc, amount, cat);
+                }
 
-                callable.callBack(bankResponse);
+                bankCallable.callBack(bankResponse.finalizeResponse());
 
                 referrer = null;
                 ((Activity) webView.getContext()).runOnUiThread(new Runnable() {
@@ -141,7 +129,7 @@ public class Tangerine extends BankScraper {
                 });
             }
         } else if (url.contains("displayLogout")) {
-            Logger.print(this.getClass(), "Operations successfully completed for " + bankName);
+            Logger.print(this.getClass(), "Operations successfully completed for " + String.valueOf(bank));
         }
     }
 }

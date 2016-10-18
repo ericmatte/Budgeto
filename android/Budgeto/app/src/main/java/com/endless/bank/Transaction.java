@@ -1,6 +1,7 @@
 package com.endless.bank;
 
 import com.endless.tools.Sanitizer;
+import com.endless.bank.BankScraper.Bank;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,26 +13,37 @@ import java.util.UUID;
  */
 public class Transaction {
 
-    private String date, desc, cat, amount;
+    private Bank bank;
+    private String date, desc, amount, cat;
 
-    public void setDate(String date) { this.date = Sanitizer.clean(date); }
-    public void setDesc(String desc) { this.desc = Sanitizer.clean(desc); }
+    public Transaction(Bank bank, String date, String desc, String amount, String cat) {
+        this.bank = bank;
+        setDate(date);
+        setDesc(desc);
+        setAmount(amount);
+        setCat(cat);
+    }
+
+    private void setDate(String date) { this.date = Sanitizer.clean(date); }
+    private void setDesc(String desc) { this.desc = Sanitizer.clean(desc); }
+    private void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
+    // Category can be set later
     public void setCat(String cat) { this.cat = Sanitizer.clean(cat); }
-    public void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
 
-    private String generateUuid() {
-        String s = date + desc + cat + amount;
+    private String getTransactionUuid() {
+        String s = date + desc + amount + bank;
         return UUID.nameUUIDFromBytes(s.getBytes()).toString();
     }
 
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         try {
-            obj.put("uuid", generateUuid());
+            obj.put("uuid", getTransactionUuid());
             obj.put("date", date);
             obj.put("desc", desc);
             obj.put("cat", cat);
             obj.put("amount", amount);
+            obj.put("bank", bank);
         } catch (JSONException e) {
             e.printStackTrace();
         }
