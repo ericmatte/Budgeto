@@ -22,15 +22,16 @@ import java.util.Arrays;
  */
 public class BanksFragment extends Fragment {
     public BanksFragment() {}
+    public ListAdapter bankAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
 
         ArrayList<Bank> banks = new ArrayList<Bank>(Arrays.asList(Bank.values()));
-        ListAdapter adapter = new BankAdapter(this.getContext(), banks);
+        bankAdapter = new BankAdapter(this.getContext(), banks);
         ListView lstBanks = (ListView) rootView.findViewById(R.id.lstBanks);
-        lstBanks.setAdapter(adapter);
+        lstBanks.setAdapter(bankAdapter);
 
         return rootView;
     }

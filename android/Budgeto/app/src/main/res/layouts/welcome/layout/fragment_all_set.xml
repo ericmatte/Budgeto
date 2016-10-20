@@ -15,23 +15,79 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
+        android:layout_margin="34dp"
         android:gravity="center">
 
-        <ImageView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/imgLock"
-            android:src="@drawable/ic_done"
-            android:tint="@color/colorPrimary" />
+            android:layout_height="wrap_content"
+            android:id="@+id/layAllSet"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_done"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Configuration terminé!"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:gravity="center_horizontal"
+                android:id="@+id/textView8" />
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Configuration terminé!"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/strPIN"
-            android:layout_marginTop="@dimen/fab_margin" />
+            android:text="Récapitulatif"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:gravity="center_horizontal"
+            android:id="@+id/txtRecap" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Numéro d'identification personelle"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:id="@+id/txtPIN"
+            android:drawableStart="@drawable/ic_cross"
+            android:drawablePadding="5dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Banques configurées :"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:id="@+id/txtBanks"
+            android:drawableStart="@drawable/ic_piggy_bank"
+            android:drawablePadding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Aucune banques configurées."
+            android:layout_marginTop="@dimen/fab_margin"
+            android:id="@+id/txtNoBanks"
+            android:drawableStart="@drawable/ic_cross"
+            android:drawablePadding="5dp"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layBanks"></LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -40,9 +96,9 @@
             android:text="Utiliser Budgeto"
             style="@style/Widget.AppCompat.Button.Colored"
             android:backgroundTint="@color/colorPrimary"
-            android:layout_margin="34dp"
             android:padding="20dp"
-            android:textSize="@dimen/fab_margin" />
+            android:textSize="@dimen/fab_margin"
+            android:layout_marginTop="34dp" />
     </LinearLayout>
 
 </RelativeLayout>
