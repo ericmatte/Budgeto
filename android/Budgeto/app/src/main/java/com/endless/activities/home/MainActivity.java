@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView = (WebView) findViewById(R.id.webView);
-        bank = new Tangerine(webView, this, userInfo);
+        bank = new Tangerine(webView);
         // bank.requestTransactions();
 
         showCategories();
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addBill(View view) {
         Tangerine b = (Tangerine) bank;
-        b.logout();
+        // b.logout();
     }
 
 
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             return new JSONObject("{  \n" +
                     "   \"bank\":\"Tangerine\",\n" +
+                    "   \"state\":\"ok\",\n" +
                     "   \"transactions\":[  \n" +
                     "      {  \n" +
                     "         \"uuid\":\"543ca339-db1b-3ef0-86d0-c28f2d4514d4\",\n" +

@@ -1,7 +1,6 @@
 package com.endless.bank;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -10,10 +9,7 @@ import android.widget.EditText;
 
 import com.endless.tools.Callable;
 import com.endless.tools.Sanitizer;
-
-import org.json.JSONObject;
-
-import java.util.Map;
+import com.endless.tools.Sanitizer.StringType;
 
 /**
  * This class extract transactions from bank.
@@ -25,27 +21,27 @@ import java.util.Map;
 abstract public class BankScraper {
 
     protected String bankName;
+    protected String loginUrl, logoutUrl;
     protected WebView webView;
-    protected Context context;
-    protected Map<String, String> userInfo;
 
-    JSONObject bankResponse = new JSONObject();
+    protected Callable callable;
+    protected String username, password;
 
     /** Instantiate a specific bank scraper from the given bankName */
-    public static BankScraper fromName(String bankName, WebView webView, Context context,
-                                       Map<String, String> userInfo) throws Exception {
+    public static BankScraper fromName(String bankName, WebView webView) throws Exception {
+        BankScraper bankFromName;
         switch (bankName) {
             case "Tangerine":
-                return new Tangerine(webView, context, userInfo);
+                bankFromName = new Tangerine(webView);
+                break;
             default:
                 throw new Exception("The requested bank has not been implemented.");
         }
+
+        return bankFromName;
     }
 
-    public BankScraper(WebView webView, Context context, Map<String, String> userInfo) {
-        this.userInfo = userInfo;
-        this.context = context;
-
+    public BankScraper(WebView webView) {
         this.webView = webView;
         this.webView.getSettings().setJavaScriptEnabled(true);
         this.webView.setWebViewClient(new WebViewClient(){
@@ -60,12 +56,14 @@ abstract public class BankScraper {
         {
             @JavascriptInterface
             @SuppressWarnings("unused")
-            public void processHTML(String html) { nextCall(null, html); }
+            public void processHTML(String html) {
+                nextCall(null, html);
+            }
         }
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
     }
 
-    public void sendJavascript(String command) {
+    protected void sendJavascript(String command) {
         final String com = command;
         webView.post(new Runnable() {
             @Override
@@ -75,7 +73,7 @@ abstract public class BankScraper {
         });
     }
 
-    public void getDocumentHTML() {
+    protected void getDocumentHTML() {
         webView.post(new Runnable() {
             @Override
             public void run() {
@@ -84,19 +82,24 @@ abstract public class BankScraper {
         });
     }
 
-    abstract protected void login();
-    abstract protected void logout();
-    abstract public void requestTransactions(Callable callable);
+    abstract public void requestTransactions(Callable callable, String username, String password);
     abstract protected void nextCall(String url, String response);
 
-    public void promptInput(String value) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+    abstract protected boolean validateUsername(String usr);
+    abstract protected boolean validatePassword(String pwd);
+    protected boolean validateString(String s, int min, int max, StringType stringType) {
+        String validator = Sanitizer.validateString(s, min, max, stringType);
+        return validator.equals("validated");
+    }
 
-        alert.setTitle(bankName + " ask you a question.");
+    protected void promptInput(String value) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(webView.getContext());
+
+        alert.setTitle(bankName + " vous pose une question.");
         alert.setMessage(value);
 
         // Set an EditText view to get user input
-        final EditText input = new EditText(context);
+        final EditText input = new EditText(webView.getContext());
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
