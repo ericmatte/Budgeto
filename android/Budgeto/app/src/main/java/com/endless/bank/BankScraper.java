@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
-import com.endless.tools.Callable;
 import com.endless.tools.Sanitizer;
 import com.endless.tools.Sanitizer.StringType;
 
@@ -20,26 +19,28 @@ import com.endless.tools.Sanitizer.StringType;
  */
 abstract public class BankScraper {
 
-    protected String bankName;
-    protected String loginUrl, logoutUrl;
-    protected WebView webView;
-
-    protected Callable callable;
-    protected String username, password;
+    /** This is the list of all banks covered by budgeto */
+    public enum Bank { Tangerine, Desjardins }
 
     /** Instantiate a specific bank scraper from the given bankName */
-    public static BankScraper fromName(String bankName, WebView webView) throws Exception {
+    public static BankScraper fromName(Bank bank, WebView webView) throws Exception {
         BankScraper bankFromName;
-        switch (bankName) {
-            case "Tangerine":
+        switch (bank) {
+            case Tangerine:
                 bankFromName = new Tangerine(webView);
                 break;
             default:
                 throw new Exception("The requested bank has not been implemented.");
         }
-
         return bankFromName;
     }
+
+    protected Bank bank;
+    protected String loginUrl, logoutUrl;
+    protected WebView webView;
+
+    protected BankCallable bankCallable;
+    protected String username, password;
 
     public BankScraper(WebView webView) {
         this.webView = webView;
@@ -82,7 +83,7 @@ abstract public class BankScraper {
         });
     }
 
-    abstract public void requestTransactions(Callable callable, String username, String password);
+    abstract public void requestTransactions(BankCallable bankCallable, String username, String password);
     abstract protected void nextCall(String url, String response);
 
     abstract protected boolean validateUsername(String usr);
@@ -95,7 +96,7 @@ abstract public class BankScraper {
     protected void promptInput(String value) {
         AlertDialog.Builder alert = new AlertDialog.Builder(webView.getContext());
 
-        alert.setTitle(bankName + " vous pose une question.");
+        alert.setTitle(String.valueOf(bank) + " vous pose une question.");
         alert.setMessage(value);
 
         // Set an EditText view to get user input

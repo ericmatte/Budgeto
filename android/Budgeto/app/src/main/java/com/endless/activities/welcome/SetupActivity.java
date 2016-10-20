@@ -12,9 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.endless.bank.BankResponse;
 import com.endless.budgeto.R;
 import com.endless.tools.Logger;
+
+import java.util.List;
 
 import static com.endless.budgeto.R.id.container;
 
@@ -34,13 +38,13 @@ public class SetupActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter pagerAdapter;
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +52,11 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(scrollingHandler);
+        viewPager = (ViewPager) findViewById(container);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(scrollingHandler);
     }
 
     /** Allow Background color transition and dots indicator */
@@ -68,6 +72,8 @@ public class SetupActivity extends AppCompatActivity {
                 ImageView dot = (ImageView) viewPagerCountDots.getChildAt(i);
                 dot.setImageResource(i == position ? R.drawable.dot_selected : R.drawable.dot);
             }
+
+            if (position == pagerAdapter.getCount()-1) checkSetup();
         }
     };
 
@@ -75,19 +81,54 @@ public class SetupActivity extends AppCompatActivity {
     private void backgroundColorTransition(int position, float positionOffset) {
         int[] colors = getResources().getIntArray(R.array.colorsSetupActivity);
 
-        if (position < (mSectionsPagerAdapter.getCount() -1) && position < (colors.length - 1)) {
-            mViewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
+        if (position < (pagerAdapter.getCount()-1) && position < (colors.length-1)) {
+            viewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]));
         } else {
-            mViewPager.setBackgroundColor(colors[colors.length - 1]);
+            viewPager.setBackgroundColor(colors[colors.length-1]);
         }
+    }
+
+    /** Check if everything has been correctly completed */
+    public void checkSetup() {
+        View allSetView = pagerAdapter.getItem(3).getView();
+        String PIN = ((PinFragment) pagerAdapter.getItem(1)).getPIN();
+        if (PIN == null) {
+            ((TextView) allSetView.findViewById(R.id.txtPIN)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cross, 0, 0, 0);
+        } else {
+            ((TextView) allSetView.findViewById(R.id.txtPIN)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+        }
+
+        BankAdapter bankAdapter = (BankAdapter) ((BanksFragment) pagerAdapter.getItem(2)).bankAdapter;
+        List<BankResponse> bankResponses = bankAdapter.getBankResponses();
+        ((LinearLayout) allSetView.findViewById(R.id.layBanks)).removeAllViews();
+        if (bankResponses.size() == 0) {
+            allSetView.findViewById(R.id.txtNoBanks).setVisibility(View.VISIBLE);
+        } else {
+            allSetView.findViewById(R.id.txtNoBanks).setVisibility(View.GONE);
+        }
+
+        for (int i=0; i<bankResponses.size(); i++) {
+            BankResponse bankResponse = bankResponses.get(i);
+            TextView txtBank = new TextView(this);
+            txtBank.setText(bankResponse.getBank() + " - " + String.valueOf(bankResponse.getTransactions().size()) + " transactions");
+            txtBank.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            ((LinearLayout) allSetView.findViewById(R.id.layBanks)).addView(txtBank);
+        }
+
+        int showDoneViews = (PIN != null) && (bankResponses.size() > 0) ? View.VISIBLE : View.GONE;
+        allSetView.findViewById(R.id.layAllSet).setVisibility(showDoneViews);
+        allSetView.findViewById(R.id.btnFinish).setVisibility(showDoneViews);
+        allSetView.findViewById(R.id.txtRecap).setVisibility(showDoneViews==View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     /** Get configuration data from all setup screen and start Budgeto */
     public void finishSetup() {
         Logger.print(this.getClass(), "Finishing setup...");
 
-        String PIN = ((PinFragment) mSectionsPagerAdapter.getItem(1)).getPIN();
-
+        String PIN = ((PinFragment) pagerAdapter.getItem(1)).getPIN();
+        BankAdapter bankAdapter = (BankAdapter) ((BanksFragment) pagerAdapter.getItem(2)).bankAdapter;
+        List<BankResponse> bankResponses = bankAdapter.getBankResponses();
         Logger.print(this.getClass(), PIN, "PIN");
     }
 
