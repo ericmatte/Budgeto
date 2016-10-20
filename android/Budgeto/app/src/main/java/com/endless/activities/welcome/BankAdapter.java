@@ -14,13 +14,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.endless.bank.BankCallable;
 import com.endless.bank.BankResponse;
 import com.endless.bank.BankScraper;
 import com.endless.bank.BankScraper.Bank;
 import com.endless.budgeto.R;
-import com.endless.bank.BankCallable;
 import com.endless.tools.Logger;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,20 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
         View view = null;
         for (int i=0; i<getCount(); i++) if (getItem(i).equals(item)) view = views.get(i);
         return view;
+    }
+
+    public List<BankResponse> getBankResponses() {
+        List<BankResponse> bankResponses = new ArrayList<>();
+        for (int i=0; i<views.size(); i++) {
+            BankResponse bankResponse = (BankResponse) views.get(i).getTag();
+            if (bankResponse != null) {
+                // Check if bank is selected
+                if (((CheckBox) views.get(i).findViewById(R.id.cbxBankName)).isChecked()) {
+                    bankResponses.add(bankResponse);
+                }
+            }
+        }
+        return bankResponses;
     }
 
     private void setup_listeners(final Bank bank, final View parent) {
@@ -102,10 +115,12 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
 
                 Logger.print(this.getClass(), String.valueOf(state));
                 if (state == BankResponse.State.ok) {
+                    view.setTag(response);
                     int nbrTransactions = response.getTransactions().size();
                     txtBankCallback.setTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
                     txtBankCallback.setText("Succès! (" + String.valueOf(nbrTransactions) + " transactions)");
                 } else {
+                    view.setTag(null);
                     txtBankCallback.setTextColor(Color.RED);
                     txtBankCallback.setText("Erreur!");
                 }
