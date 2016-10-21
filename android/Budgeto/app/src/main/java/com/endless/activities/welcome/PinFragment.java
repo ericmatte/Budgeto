@@ -35,7 +35,7 @@ public class PinFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
                     // "pwd matches!"
-                    PIN = txtPIN.getText().toString();
+                    PIN = txtPIN.getText().toString().equals("") ? null : txtPIN.getText().toString();
                 } else {
                     // "pwd no the same..."
                     PIN = null;
