@@ -14,5 +14,7 @@ setup(
         'Werkzeug>=0.11.10',
         'click>=6.6',
         'itsdangerous>=0.24',
+        'pytest>=3.0.3',
+        'rsa>=3.4.2'
     ]
 )
