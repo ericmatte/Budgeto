@@ -21,18 +21,23 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class BanksFragment extends Fragment {
-    public BanksFragment() {}
     public ListAdapter bankAdapter;
+    private View rootView;
+
+    public BanksFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
+        if (this.rootView == null) {
+            View rootView = inflater.inflate(R.layout.fragment_banks, container, false);
 
-        ArrayList<Bank> banks = new ArrayList<Bank>(Arrays.asList(Bank.values()));
-        bankAdapter = new BankAdapter(this.getContext(), banks);
-        ListView lstBanks = (ListView) rootView.findViewById(R.id.lstBanks);
-        lstBanks.setAdapter(bankAdapter);
+            ArrayList<Bank> banks = new ArrayList<Bank>(Arrays.asList(Bank.values()));
+            bankAdapter = new BankAdapter(this.getContext(), banks);
+            ListView lstBanks = (ListView) rootView.findViewById(R.id.lstBanks);
+            lstBanks.setAdapter(bankAdapter);
 
-        return rootView;
+            this.rootView = rootView;
+        }
+        return this.rootView;
     }
 }
