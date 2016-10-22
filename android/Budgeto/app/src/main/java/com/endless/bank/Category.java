@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Eric on 2016-10-21.
+ * Represent a list of transactions
+ *
+ * @author  Eric Matte
+ * @version 1.0
  */
-
 public class Category {
     private String name;
     private List<Transaction> associatedTransactions;

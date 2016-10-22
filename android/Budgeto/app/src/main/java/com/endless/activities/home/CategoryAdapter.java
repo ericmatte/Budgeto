@@ -32,39 +32,38 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            view = inflater.inflate(R.layout.category_row, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        view = inflater.inflate(R.layout.category_row, parent, false);
 
-            Category singleItem = getItem(position);
-            TextView txtCat = (TextView) view.findViewById(R.id.txtCat);
-            ProgressBar pbLimit = (ProgressBar) view.findViewById(R.id.pbLimit);
-            TextView txtAmount = (TextView) view.findViewById(R.id.txtAmount);
-            LinearLayout linearTrans = (LinearLayout) view.findViewById(R.id.linearTrans);
+        Category singleItem = getItem(position);
+        TextView txtCat = (TextView) view.findViewById(R.id.txtCat);
+        ProgressBar pbLimit = (ProgressBar) view.findViewById(R.id.pbLimit);
+        TextView txtAmount = (TextView) view.findViewById(R.id.txtAmount);
+        LinearLayout linearTrans = (LinearLayout) view.findViewById(R.id.linearTrans);
 
 
-            txtCat.setText((String) singleItem.getName());
-            List<Transaction> transactions = singleItem.getAssociatedTransactions();
+        txtCat.setText((String) singleItem.getName());
+        List<Transaction> transactions = singleItem.getAssociatedTransactions();
 
-            float categoryAmount = 0;
-            for (int i = 0; i < transactions.size(); i++) {
-                Transaction transaction = transactions.get(i);
-                categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", "."));
+        float categoryAmount = 0;
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction transaction = transactions.get(i);
+            categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", "."));
 
-                TextView txtTrans = new TextView(getContext());
-                txtTrans.setText(transaction.getAmount() + "$ -- " + transaction.getDesc());
-                linearTrans.addView(txtTrans);
-            }
-
-            int current = (int) Math.abs(categoryAmount);
-            int objective = ThreadLocalRandom.current().nextInt(current, current * 2 + 1);
-            pbLimit.setMax(objective);
-            pbLimit.setProgress(current);
-            pbLimit.setScaleY(2.2f);
-            pbLimit.setProgressTintList(ColorStateList.valueOf(Color.rgb(20, 60, 180)));
-
-            txtAmount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
+            TextView txtTrans = new TextView(getContext());
+            txtTrans.setText(transaction.getAmount() + "$ -- " + transaction.getDesc());
+            linearTrans.addView(txtTrans);
         }
+
+        int current = (int) Math.abs(categoryAmount);
+        int objective = ThreadLocalRandom.current().nextInt(current, current * 2 + 1);
+        pbLimit.setMax(objective);
+        pbLimit.setProgress(current);
+        pbLimit.setScaleY(2.2f);
+        pbLimit.setProgressTintList(ColorStateList.valueOf(Color.rgb(20, 60, 180)));
+
+        txtAmount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
+        
         return view;
     }
 }

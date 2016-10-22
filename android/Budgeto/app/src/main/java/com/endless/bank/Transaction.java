@@ -9,7 +9,10 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 /**
- * Created by Eric on 2016-09-11.
+ * Represent a bank transaction
+ *
+ * @author  Eric Matte
+ * @version 1.0
  */
 public class Transaction {
     private Bank bank;
