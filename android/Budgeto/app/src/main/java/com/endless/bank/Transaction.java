@@ -12,7 +12,6 @@ import java.util.UUID;
  * Created by Eric on 2016-09-11.
  */
 public class Transaction {
-
     private Bank bank;
     private String date, desc, amount, cat;
 
@@ -29,6 +28,10 @@ public class Transaction {
     private void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
     // Category can be set later
     public void setCat(String cat) { this.cat = Sanitizer.clean(cat); }
+
+    public String getCat() { return cat; }
+    public String getDesc() { return desc; }
+    public String getAmount() { return amount; }
 
     private String getTransactionUuid() {
         String s = date + desc + amount + bank;

@@ -1,6 +1,7 @@
 package com.endless.activities.welcome;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.endless.activities.home.MainActivity;
 import com.endless.bank.BankResponse;
+import com.endless.bank.Transaction;
 import com.endless.budgeto.R;
+import com.endless.tools.DeviceDataSaver;
 import com.endless.tools.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.endless.budgeto.R.id.container;
@@ -73,7 +78,7 @@ public class SetupActivity extends AppCompatActivity {
                 dot.setImageResource(i == position ? R.drawable.dot_selected : R.drawable.dot);
             }
 
-            if (position == pagerAdapter.getCount()-1) checkSetup();
+            if (position >= pagerAdapter.getCount()-1) checkSetup();
         }
     };
 
@@ -124,12 +129,24 @@ public class SetupActivity extends AppCompatActivity {
 
     /** Get configuration data from all setup screen and start Budgeto */
     public void finishSetup() {
+        View allSetView = pagerAdapter.getItem(3).getView();
         Logger.print(this.getClass(), "Finishing setup...");
 
-        String PIN = ((PinFragment) pagerAdapter.getItem(1)).getPIN();
+        int PIN = Integer.parseInt(((PinFragment) pagerAdapter.getItem(1)).getPIN());
+
         BankAdapter bankAdapter = (BankAdapter) ((BanksFragment) pagerAdapter.getItem(2)).bankAdapter;
         List<BankResponse> bankResponses = bankAdapter.getBankResponses();
-        Logger.print(this.getClass(), PIN, "PIN");
+        List<Transaction> allBanksTransactions = new ArrayList<>();
+        for (int i=0; i<bankResponses.size(); i++) {
+            allBanksTransactions.addAll(bankResponses.get(i).getTransactions());
+        }
+
+        DeviceDataSaver deviceDataSaver = new DeviceDataSaver(allSetView.getContext());
+        deviceDataSaver.savePIN(PIN);
+        deviceDataSaver.saveTransactionsList(allBanksTransactions);
+        Logger.print(this.getClass(), "Data saved with DeviceDataSaver.");
+
+        startActivity(new Intent(SetupActivity.this, MainActivity.class));
     }
 
     /**

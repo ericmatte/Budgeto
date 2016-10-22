@@ -17,19 +17,22 @@ import com.endless.budgeto.R;
  */
 public class AllSetFragment extends Fragment {
     public AllSetFragment() {}
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
+        if (this.rootView == null) {
+            View rootView = inflater.inflate(R.layout.fragment_all_set, container, false);
 
-        Button btnFinish = (Button) rootView.findViewById(R.id.btnFinish);
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                ((SetupActivity) getActivity()).finishSetup();
-            }
-        });
-
-        return rootView;
+            Button btnFinish = (Button) rootView.findViewById(R.id.btnFinish);
+            btnFinish.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Perform action on click
+                    ((SetupActivity) getActivity()).finishSetup();
+                }
+            });
+            this.rootView = rootView;
+        }
+        return this.rootView;
     }
 }

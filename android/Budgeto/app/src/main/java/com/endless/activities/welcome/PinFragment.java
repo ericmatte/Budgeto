@@ -18,8 +18,9 @@ import com.endless.budgeto.R;
  * @version 1.0
  */
 public class PinFragment extends Fragment {
-    private String PIN;
     public String getPIN() { return PIN; }
+    private String PIN;
+    private View rootView;
 
     public PinFragment() {
         PIN = null;
@@ -27,26 +28,32 @@ public class PinFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pin_chooser, container, false);
+        if (this.rootView == null) {
+            View rootView = inflater.inflate(R.layout.fragment_pin_chooser, container, false);
 
-        final TextView txtPIN = (TextView) rootView.findViewById(R.id.txtPIN);
-        final TextView txtPINCheck = (TextView) rootView.findViewById(R.id.txtPINCheck);
-        TextWatcher textWatcher = new TextWatcher(){
-            public void afterTextChanged(Editable s) {
-                if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
-                    // "pwd matches!"
-                    PIN = txtPIN.getText().toString().equals("") ? null : txtPIN.getText().toString();
-                } else {
-                    // "pwd no the same..."
-                    PIN = null;
+            final TextView txtPIN = (TextView) rootView.findViewById(R.id.txtPIN);
+            final TextView txtPINCheck = (TextView) rootView.findViewById(R.id.txtPINCheck);
+            TextWatcher textWatcher = new TextWatcher() {
+                public void afterTextChanged(Editable s) {
+                    if (txtPINCheck.getText().toString().equals(txtPIN.getText().toString())) {
+                        // "pwd matches!"
+                        PIN = txtPIN.getText().toString().equals("") ? null : txtPIN.getText().toString();
+                    } else {
+                        // "pwd no the same..."
+                        PIN = null;
+                    }
                 }
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-            public void onTextChanged(CharSequence s, int start, int before, int count){}
-        };
-        txtPIN.addTextChangedListener(textWatcher);
-        txtPINCheck.addTextChangedListener(textWatcher);
 
-        return rootView;
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+            };
+            txtPIN.addTextChangedListener(textWatcher);
+            txtPINCheck.addTextChangedListener(textWatcher);
+            this.rootView = rootView;
+        }
+        return this.rootView;
     }
 }
