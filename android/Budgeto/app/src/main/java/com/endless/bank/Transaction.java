@@ -23,7 +23,7 @@ public class Transaction {
         setDate(date);
         setDesc(desc);
         setAmount(amount);
-        setCat(cat);
+        if (cat != null) setCat(cat);
     }
 
     private void setDate(String date) { this.date = Sanitizer.clean(date); }

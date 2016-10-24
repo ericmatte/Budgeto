@@ -48,7 +48,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         float categoryAmount = 0;
         for (int i = 0; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
-            categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", "."));
+            if (!transaction.getAmount().equals(""))
+                categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", ".").replace(" ", ""));
 
             TextView txtTrans = new TextView(getContext());
             txtTrans.setText(transaction.getAmount() + "$ -- " + transaction.getDesc());
