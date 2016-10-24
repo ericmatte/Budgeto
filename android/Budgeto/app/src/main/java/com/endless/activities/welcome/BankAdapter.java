@@ -15,8 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.endless.bank.BankCallable;
@@ -109,7 +111,7 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
     }
 
     private Dialog showBankLoginDialog(final View referenceView, final Bank bank) {
-        final View alertView = referenceView.findViewById(alertWeb);
+        final RelativeLayout alertView = (RelativeLayout) referenceView.findViewById(alertWeb);
 
         alertView.setVisibility(View.VISIBLE);
         ((ViewGroup)alertView.getParent()).removeView(alertView);
@@ -124,6 +126,10 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
                 callBack(new BankResponse(bank, BankResponse.ErrorFrom.internal, "Request canceled."));
             }
         });
+
+        EditText keyboardHack = new EditText(getContext());
+        keyboardHack.setVisibility(View.GONE);
+        alertView.addView(keyboardHack, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         ((TextView) alertView.findViewById(R.id.txtAlertTitle)).setText("Connection à " + bank.toString());
         alert.setView(alertView);
