@@ -1,6 +1,5 @@
 package com.endless.bank;
 
-import android.app.Activity;
 import android.webkit.WebView;
 
 import com.endless.tools.Logger;
@@ -40,8 +39,7 @@ public class Tangerine extends BankScraper {
         if (url.contains("displayAccountSummary")) {
             // connected, getting to credit card
             dialog.hide();
-            //dialog.dismiss();
-            webView.loadUrl(calls.get(0));
+            loadUrl(calls.get(0));
 
         } else if (url.contains("displayCreditCardAccount")) {
             if (response == null) {
@@ -67,12 +65,19 @@ public class Tangerine extends BankScraper {
                 bankCallable.callBack(bankResponse.finalizeResponse());
 
                 referrer = null;
-                ((Activity) webView.getContext()).runOnUiThread(new Runnable() {
-                    @Override public void run() { webView.loadUrl(logoutUrl); }
-                });
+                loadUrl(logoutUrl);
             }
         } else if (url.contains("displayLogout")) {
             Logger.print(this.getClass(), "Operations successfully completed for " + String.valueOf(bank));
+            loadUrl("about:blank");
+        } else {
+            Logger.print(this.getClass(), url, "User tried to ge else where! Canceling...");
+            if (!url.startsWith("https://secure.tangerine.ca/web/Tangerine.html") &&
+                    !url.startsWith("https://secure.tangerine.ca/web/InitialTangerine.html")) {
+                dialog.cancel();
+
+                if (!url.equals("about:blank")) loadUrl("about:blank");
+            }
         }
     }
 }

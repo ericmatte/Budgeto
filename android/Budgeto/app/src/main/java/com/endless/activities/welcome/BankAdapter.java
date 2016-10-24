@@ -160,7 +160,7 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
                 } else {
                     view.setTag(null);
                     txtBankCallback.setTextColor(Color.RED);
-                    txtBankCallback.setText("Erreur!");
+                    txtBankCallback.setText("Opération annulée!");
                 }
 
                 view.findViewById(R.id.pbTestBank).setVisibility(View.GONE);
