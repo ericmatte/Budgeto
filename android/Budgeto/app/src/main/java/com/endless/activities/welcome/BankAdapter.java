@@ -1,17 +1,22 @@
 package com.endless.activities.welcome;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.endless.bank.BankCallable;
@@ -23,6 +28,8 @@ import com.endless.tools.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.endless.budgeto.R.id.alertWeb;
 
 /**
  * Created by Eric on 2016-09-25.
@@ -82,27 +89,52 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
             }
         });
 
-
         btnTestBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String usr = ((EditText) parent.findViewById(R.id.txtCredential)).getText().toString();
-                String pwd = ((EditText) parent.findViewById(R.id.txtPassword)).getText().toString();
-                WebView webView = (WebView) parent.findViewById(R.id.webView);
-
                 parent.findViewById(R.id.txtBankCallback).setVisibility(View.GONE);
                 parent.findViewById(R.id.pbTestBank).setVisibility(View.VISIBLE);
 
-                Logger.print(this.getClass(), usr + " - " + pwd, String.valueOf(bank) + " card");
+                WebView webView = (WebView) parent.findViewById(R.id.webView);
+                Dialog dialog = showBankLoginDialog(parent, bank);
 
                 try {
                     BankScraper bankScraper = BankScraper.fromName(bank, webView);
-                    bankScraper.requestTransactions(bankAdapter, usr, pwd);
+                    bankScraper.requestTransactions(bankAdapter, dialog);
                 } catch (Exception e) {
                     Logger.print(this.getClass(), e.getMessage(), String.valueOf(bank));
                 }
             }
         });
+    }
+
+    private Dialog showBankLoginDialog(final View referenceView, final Bank bank) {
+        final View alertView = referenceView.findViewById(alertWeb);
+
+        alertView.setVisibility(View.VISIBLE);
+        ((ViewGroup)alertView.getParent()).removeView(alertView);
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                alertView.setVisibility(View.GONE);
+                ((ViewGroup)alertView.getParent()).removeView(alertView);
+                ((LinearLayout) referenceView.findViewById(R.id.layMore)).addView(alertView);
+                callBack(new BankResponse(bank, BankResponse.ErrorFrom.internal, "Request canceled."));
+            }
+        });
+
+        ((TextView) alertView.findViewById(R.id.txtAlertTitle)).setText("Connection à " + bank.toString());
+        alert.setView(alertView);
+        final Dialog dialog = alert.show();
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        ((ImageButton) alertView.findViewById(R.id.btnCancelAlert)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { dialog.cancel(); }
+        });
+
+        return dialog;
     }
 
     public void callBack(final BankResponse response) {

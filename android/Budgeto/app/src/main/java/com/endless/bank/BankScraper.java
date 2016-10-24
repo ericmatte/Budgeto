@@ -1,14 +1,21 @@
 package com.endless.bank;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
+import android.content.Context;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.endless.tools.Sanitizer;
-import com.endless.tools.Sanitizer.StringType;
+import com.endless.budgeto.R;
+
+import static android.widget.GridLayout.HORIZONTAL;
+import static android.widget.GridLayout.VERTICAL;
 
 /**
  * This class extract transactions from bank.
@@ -40,7 +47,7 @@ abstract public class BankScraper {
     protected WebView webView;
 
     protected BankCallable bankCallable;
-    protected String username, password;
+    protected Dialog dialog;
 
     public BankScraper(WebView webView) {
         this.webView = webView;
@@ -83,41 +90,50 @@ abstract public class BankScraper {
         });
     }
 
-    abstract public void requestTransactions(BankCallable bankCallable, String username, String password);
+    public void requestTransactions(BankCallable bankCallable, Dialog dialog) {
+        this.bankCallable = bankCallable;
+        this.dialog = dialog;
+        webView.loadUrl(loginUrl);
+    }
+
+    private RelativeLayout setupBankDialogContent(View referrerView) {
+        // Setup dialog views
+        Context that = referrerView.getContext();
+        LayoutParams match_parent = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        LayoutParams match_wrap_content = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams wrap_content = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+
+        RelativeLayout dialogContent = new RelativeLayout(that);
+        dialogContent.setId(R.id.alertWeb);
+        dialogContent.setLayoutParams(match_parent);
+
+        LinearLayout linearLayout_381 = new LinearLayout(that);
+        linearLayout_381.setOrientation(VERTICAL);
+        linearLayout_381.setLayoutParams(match_parent);
+
+        LinearLayout linearLayout_511 = new LinearLayout(that);
+        linearLayout_511.setOrientation(HORIZONTAL);
+        linearLayout_511.setLayoutParams(match_wrap_content);
+
+        TextView txtAlertTitle = new TextView(that);
+        txtAlertTitle.setText("AlertTitle");
+        txtAlertTitle.setId(R.id.txtAlertTitle);
+        txtAlertTitle.setTextSize((18/that.getResources().getDisplayMetrics().scaledDensity));
+        txtAlertTitle.setTextColor(that.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
+        txtAlertTitle.setLayoutParams(match_wrap_content);
+        linearLayout_511.addView(txtAlertTitle);
+
+        ImageButton btnCancelAlert = new ImageButton(that);
+        btnCancelAlert.setId(R.id.btnCancelAlert);
+        btnCancelAlert.setLayoutParams(wrap_content);
+        linearLayout_511.addView(btnCancelAlert);
+        linearLayout_381.addView(linearLayout_511);
+        dialogContent.addView(linearLayout_381);
+
+        return dialogContent;
+    }
+
     abstract protected void nextCall(String url, String response);
-
-    abstract protected boolean validateUsername(String usr);
-    abstract protected boolean validatePassword(String pwd);
-    protected boolean validateString(String s, int min, int max, StringType stringType) {
-        String validator = Sanitizer.validateString(s, min, max, stringType);
-        return validator.equals("validated");
-    }
-
-    protected void promptInput(String value) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(webView.getContext());
-
-        alert.setTitle(String.valueOf(bank) + " vous pose une question.");
-        alert.setMessage(value);
-
-        // Set an EditText view to get user input
-        final EditText input = new EditText(webView.getContext());
-        alert.setView(input);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = Sanitizer.sanitize(input.getText().toString());
-                nextCall(null, value);
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
-
-        alert.show();
-    }
-
 
 }

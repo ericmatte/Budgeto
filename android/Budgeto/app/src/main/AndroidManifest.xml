@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.endless.activities.splash.SplashActivity"
+        <activity
+            android:name="com.endless.activities.splash.SplashActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +35,8 @@
             android:name="com.endless.activities.welcome.SetupActivity"
             android:label="@string/title_activity_setup"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name="com.endless.activities.home.LoginActivity"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.endless.activities.home.LoginActivity" />
     </application>
 
 </manifest>
