@@ -26,15 +26,9 @@ public class Tangerine extends BankScraper {
         this.logoutUrl = "https://secure.tangerine.ca/web/InitialTangerine.html?command=displayLogout&device=web&locale=fr_CA";
     }
 
-    String referrer;
     @Override
     public void nextCall(String url, String response) {
         Logger.print(this.getClass(), url, "nextCall url");
-
-        if (url == null && referrer != null)
-            url = referrer;
-
-        // TODO: Cancel bank request if the user go else where
 
         if (url.contains("displayAccountSummary")) {
             // connected, getting to credit card
@@ -43,8 +37,7 @@ public class Tangerine extends BankScraper {
 
         } else if (url.contains("displayCreditCardAccount")) {
             if (response == null) {
-                referrer = url;
-                getDocumentHTML();
+                getDocumentHTML(url);
             } else if (response.startsWith("<head>")) {
                 // extracting data
                 Jerry doc = jerry(response);
@@ -64,20 +57,21 @@ public class Tangerine extends BankScraper {
 
                 bankCallable.callBack(bankResponse.finalizeResponse());
 
-                referrer = null;
                 loadUrl(logoutUrl);
             }
         } else if (url.contains("displayLogout")) {
             Logger.print(this.getClass(), "Operations successfully completed for " + String.valueOf(bank));
             loadUrl("about:blank");
         } else {
-            Logger.print(this.getClass(), url, "User tried to ge else where! Canceling...");
-            if (!url.startsWith("https://secure.tangerine.ca/web/Tangerine.html") &&
-                    !url.startsWith("https://secure.tangerine.ca/web/InitialTangerine.html")) {
-                dialog.cancel();
-
-                if (!url.equals("about:blank")) loadUrl("about:blank");
-            }
+//            if (!url.startsWith("https://secure.tangerine.ca/web/Tangerine.html") &&
+//                    !url.startsWith("https://secure.tangerine.ca/web/InitialTangerine.html")) {
+//                Logger.print(this.getClass(), url, "User tried to ge else where! Canceling...");
+//
+//                if (!url.equals("about:blank")) {
+//                    loadUrl("about:blank");
+//                    dialog.cancel();
+//                }
+//            }
         }
     }
 }

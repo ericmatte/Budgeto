@@ -15,14 +15,17 @@ public class Sanitizer {
         if (value == null)
             return "";
 
-        if (value.contains("\n"))
-            value = value.substring(0, value.indexOf('\n'));
-        if (value.contains("&"))
-            value = value.substring(0, value.indexOf('&'));
+        value = value.replace("\\n", "").replace("&nbsp;", " ").replace("&", "");
+//        if (value.contains("\n"))
+//            value = value.substring(0, value.indexOf('\n'));
+//        if (value.contains("&"))
+//            value = value.substring(0, value.indexOf('&'));
 
-        value = sanitize(value);
-        value = value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
-        value = value.trim();
+        if (value.length() > 1) {
+            value = sanitize(value);
+            value = value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
+            value = value.trim();
+        }
 
         return value;
     }

@@ -16,7 +16,7 @@ import android.webkit.WebViewClient;
 abstract public class BankScraper {
 
     /** This is the list of all banks covered by budgeto */
-    public enum Bank { Tangerine, Desjardins }
+    public enum Bank { Tangerine, Desjardins, TD }
 
     /** Instantiate a specific bank scraper from the given bankName */
     public static BankScraper fromName(Bank bank, WebView webView) throws Exception {
@@ -24,6 +24,9 @@ abstract public class BankScraper {
         switch (bank) {
             case Tangerine:
                 bankFromName = new Tangerine(webView);
+                break;
+            case Desjardins:
+                bankFromName = new Desjardins(webView);
                 break;
             default:
                 throw new Exception("The requested bank has not been implemented.");
@@ -54,7 +57,9 @@ abstract public class BankScraper {
             @JavascriptInterface
             @SuppressWarnings("unused")
             public void processHTML(String html) {
-                nextCall(null, html);
+                String url = referrerUrl;
+                referrerUrl = null;
+                nextCall(url, html);
             }
         }
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
@@ -70,7 +75,8 @@ abstract public class BankScraper {
         });
     }
 
-    protected void getDocumentHTML() {
+    protected void getDocumentHTML(String referrerUrl) {
+        this.referrerUrl = referrerUrl;
         webView.post(new Runnable() {
             @Override
             public void run() {
@@ -92,6 +98,7 @@ abstract public class BankScraper {
         });
     }
 
+    private String referrerUrl;
     abstract protected void nextCall(String url, String response);
 
 }
