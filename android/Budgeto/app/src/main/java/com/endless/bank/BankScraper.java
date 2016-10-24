@@ -1,21 +1,10 @@
 package com.endless.bank;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.endless.budgeto.R;
-
-import static android.widget.GridLayout.HORIZONTAL;
-import static android.widget.GridLayout.VERTICAL;
 
 /**
  * This class extract transactions from bank.
@@ -96,42 +85,11 @@ abstract public class BankScraper {
         webView.loadUrl(loginUrl);
     }
 
-    private RelativeLayout setupBankDialogContent(View referrerView) {
-        // Setup dialog views
-        Context that = referrerView.getContext();
-        LayoutParams match_parent = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        LayoutParams match_wrap_content = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        LayoutParams wrap_content = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-
-        RelativeLayout dialogContent = new RelativeLayout(that);
-        dialogContent.setId(R.id.alertWeb);
-        dialogContent.setLayoutParams(match_parent);
-
-        LinearLayout linearLayout_381 = new LinearLayout(that);
-        linearLayout_381.setOrientation(VERTICAL);
-        linearLayout_381.setLayoutParams(match_parent);
-
-        LinearLayout linearLayout_511 = new LinearLayout(that);
-        linearLayout_511.setOrientation(HORIZONTAL);
-        linearLayout_511.setLayoutParams(match_wrap_content);
-
-        TextView txtAlertTitle = new TextView(that);
-        txtAlertTitle.setText("AlertTitle");
-        txtAlertTitle.setId(R.id.txtAlertTitle);
-        txtAlertTitle.setTextSize((18/that.getResources().getDisplayMetrics().scaledDensity));
-        txtAlertTitle.setTextColor(that.getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
-        txtAlertTitle.setLayoutParams(match_wrap_content);
-        linearLayout_511.addView(txtAlertTitle);
-
-        ImageButton btnCancelAlert = new ImageButton(that);
-        btnCancelAlert.setId(R.id.btnCancelAlert);
-        btnCancelAlert.setLayoutParams(wrap_content);
-        linearLayout_511.addView(btnCancelAlert);
-        linearLayout_381.addView(linearLayout_511);
-        dialogContent.addView(linearLayout_381);
-
-        return dialogContent;
+    /** Make sur to always load webView url on UI thread. */
+    protected void loadUrl(final String url) {
+        ((Activity) webView.getContext()).runOnUiThread(new Runnable() {
+            @Override public void run() { webView.loadUrl(url); }
+        });
     }
 
     abstract protected void nextCall(String url, String response);
