@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,8 +29,6 @@ import com.endless.tools.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.endless.budgeto.R.id.alertWeb;
 
 /**
  * Created by Eric on 2016-09-25.
@@ -97,8 +94,11 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
                 parent.findViewById(R.id.txtBankCallback).setVisibility(View.GONE);
                 parent.findViewById(R.id.pbTestBank).setVisibility(View.VISIBLE);
 
-                WebView webView = (WebView) parent.findViewById(R.id.webView);
-                Dialog dialog = showBankLoginDialog(parent, bank);
+                LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.bank_login_dialog, null);
+
+                WebView webView = (WebView) dialogView.findViewById(R.id.webView);
+                Dialog dialog = showBankLoginDialog(dialogView, bank);
 
                 try {
                     BankScraper bankScraper = BankScraper.fromName(bank, webView);
@@ -110,32 +110,28 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
         });
     }
 
-    private Dialog showBankLoginDialog(final View referenceView, final Bank bank) {
-        final RelativeLayout alertView = (RelativeLayout) referenceView.findViewById(alertWeb);
-
-        alertView.setVisibility(View.VISIBLE);
-        ((ViewGroup)alertView.getParent()).removeView(alertView);
-
+    private Dialog showBankLoginDialog(View dialogView, final Bank bank) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                alertView.setVisibility(View.GONE);
-                ((ViewGroup)alertView.getParent()).removeView(alertView);
-                ((LinearLayout) referenceView.findViewById(R.id.layMore)).addView(alertView);
                 callBack(new BankResponse(bank, BankResponse.ErrorFrom.internal, "Request canceled."));
             }
         });
 
+        /* HACK TODO: Remove the hack */
         EditText keyboardHack = new EditText(getContext());
         keyboardHack.setVisibility(View.GONE);
-        alertView.addView(keyboardHack, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ((RelativeLayout) dialogView.findViewById(R.id.alertWeb))
+                .addView(keyboardHack, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        /* END OF HACK */
 
-        ((TextView) alertView.findViewById(R.id.txtAlertTitle)).setText("Connection à " + bank.toString());
-        alert.setView(alertView);
+        ((TextView) dialogView.findViewById(R.id.txtAlertTitle)).setText("Connection à " + bank.toString());
+        alert.setView(dialogView);
+
         final Dialog dialog = alert.show();
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        ((ImageButton) alertView.findViewById(R.id.btnCancelAlert)).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.btnCancelAlert).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { dialog.cancel(); }
         });
