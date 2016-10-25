@@ -97,20 +97,16 @@ public class SetupActivity extends AppCompatActivity {
     public void checkSetup() {
         View allSetView = pagerAdapter.getItem(3).getView();
         String PIN = ((PinFragment) pagerAdapter.getItem(1)).getPIN();
-        if (PIN == null) {
-            ((TextView) allSetView.findViewById(R.id.txtPIN)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cross, 0, 0, 0);
-        } else {
-            ((TextView) allSetView.findViewById(R.id.txtPIN)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
-        }
+
+        int pinCheckIcon = (PIN == null) ? R.drawable.ic_cross : R.drawable.ic_done;
+        ((TextView) allSetView.findViewById(R.id.txtPIN)).setCompoundDrawablesWithIntrinsicBounds(pinCheckIcon, 0, 0, 0);
 
         BankAdapter bankAdapter = (BankAdapter) ((BanksFragment) pagerAdapter.getItem(2)).bankAdapter;
         List<BankResponse> bankResponses = bankAdapter.getBankResponses();
         ((LinearLayout) allSetView.findViewById(R.id.layBanks)).removeAllViews();
-        if (bankResponses.size() == 0) {
-            allSetView.findViewById(R.id.txtNoBanks).setVisibility(View.VISIBLE);
-        } else {
-            allSetView.findViewById(R.id.txtNoBanks).setVisibility(View.GONE);
-        }
+
+        int isNoBanksMessageVisible = (bankResponses.size() == 0) ? View.VISIBLE : View.GONE;
+        allSetView.findViewById(R.id.txtNoBanks).setVisibility(isNoBanksMessageVisible);
 
         for (int i=0; i<bankResponses.size(); i++) {
             BankResponse bankResponse = bankResponses.get(i);

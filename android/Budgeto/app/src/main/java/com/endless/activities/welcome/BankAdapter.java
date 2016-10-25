@@ -1,23 +1,20 @@
 package com.endless.activities.welcome;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.endless.bank.BankCallable;
@@ -111,31 +108,27 @@ public class BankAdapter extends ArrayAdapter<Bank> implements BankCallable {
     }
 
     private Dialog showBankLoginDialog(View dialogView, final Bank bank) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        // Setting dialog
+        final Dialog dialog = new Dialog(getContext(),android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 callBack(new BankResponse(bank, BankResponse.ErrorFrom.internal, "Request canceled."));
             }
         });
+        dialog.setContentView(dialogView);
 
-        /* HACK TODO: Remove the hack */
-        EditText keyboardHack = new EditText(getContext());
-        keyboardHack.setVisibility(View.GONE);
-        ((RelativeLayout) dialogView.findViewById(R.id.alertWeb))
-                .addView(keyboardHack, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        /* END OF HACK */
+        // Setting dialog toolbar
+        Toolbar toolbar = (Toolbar) dialogView.findViewById(R.id.alertToolbar);
+        toolbar.setTitle("Connection à " + bank.toString());
+        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
 
-        ((TextView) dialogView.findViewById(R.id.txtAlertTitle)).setText("Connection à " + bank.toString());
-        alert.setView(dialogView);
-
-        final Dialog dialog = alert.show();
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialogView.findViewById(R.id.btnCancelAlert).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { dialog.cancel(); }
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { dialog.cancel(); }
         });
 
+        dialog.show();
         return dialog;
     }
 
