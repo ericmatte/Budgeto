@@ -7,40 +7,21 @@
     android:id="@+id/alertWeb"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/alertToolbar"
+        android:layout_weight="1" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="AlertTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtAlertTitle"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_cross"
-                android:id="@+id/btnCancelAlert" />
-
-        </LinearLayout>
-
-        <WebView
-            android:visibility="visible"
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadingEdge="horizontal" />
-    </LinearLayout>
+    <WebView
+        android:visibility="visible"
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="horizontal"
+        android:layout_below="@+id/alertToolbar" />
 
 </RelativeLayout>
