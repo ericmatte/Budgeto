@@ -1,12 +1,11 @@
 package com.endless.activities.home;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,47 +23,67 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author  Eric Matte
  * @version 1.0
  */
-public class CategoryAdapter extends ArrayAdapter<Category> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CatViewHolder> {
 
-    public CategoryAdapter(Context context, List<Category> resource) {
-        super(context, R.layout.category_row, resource);
+    private List<Category> categoryList;
+
+    public class CatViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, amount;
+        public ProgressBar progressBar;
+        public LinearLayout transactionList;
+
+        public CatViewHolder(View view) {
+            super(view);
+            title = (TextView) view.findViewById(R.id.txtTitle);
+            amount = (TextView) view.findViewById(R.id.txtAmount);
+            progressBar = (ProgressBar) view.findViewById(R.id.pbLimit);
+            transactionList = (LinearLayout) view.findViewById(R.id.linearTrans);
+        }
+    }
+
+    public CategoryAdapter(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        view = inflater.inflate(R.layout.category_row, parent, false);
+    public CatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.category_row, parent, false);
 
-        Category singleItem = getItem(position);
-        TextView txtCat = (TextView) view.findViewById(R.id.txtCat);
-        ProgressBar pbLimit = (ProgressBar) view.findViewById(R.id.pbLimit);
-        TextView txtAmount = (TextView) view.findViewById(R.id.txtAmount);
-        LinearLayout linearTrans = (LinearLayout) view.findViewById(R.id.linearTrans);
+        return new CatViewHolder(itemView);
+    }
 
+    @Override
+    public void onBindViewHolder(CatViewHolder holder, int position) {
+        Category category = categoryList.get(position);
 
-        txtCat.setText((String) singleItem.getName());
-        List<Transaction> transactions = singleItem.getAssociatedTransactions();
-
+        // Get all transactions
+        List<Transaction> transactions = category.getAssociatedTransactions();
         float categoryAmount = 0;
         for (int i = 0; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
             if (!transaction.getAmount().equals(""))
                 categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", ".").replace(" ", ""));
 
-            TextView txtTrans = new TextView(getContext());
+            TextView txtTrans = new TextView(holder.transactionList.getContext());
             txtTrans.setText(transaction.getAmount() + "$ -- " + transaction.getDesc());
-            linearTrans.addView(txtTrans);
+            holder.transactionList.addView(txtTrans);
         }
 
+        // Get simulated progress
         int current = (int) Math.abs(categoryAmount);
         int objective = ThreadLocalRandom.current().nextInt(current, current * 2 + 1);
-        pbLimit.setMax(objective);
-        pbLimit.setProgress(current);
-        pbLimit.setScaleY(2.2f);
-        pbLimit.setProgressTintList(ColorStateList.valueOf(Color.rgb(20, 60, 180)));
+        holder.progressBar.setMax(objective);
+        holder.progressBar.setProgress(current);
+        holder.progressBar.setScaleY(2.2f);
+        holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(20, 60, 180)));
 
-        txtAmount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
-        
-        return view;
+        holder.title.setText(category.getName());
+        holder.amount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
+    }
+
+    @Override
+    public int getItemCount() {
+        return categoryList.size();
     }
 }

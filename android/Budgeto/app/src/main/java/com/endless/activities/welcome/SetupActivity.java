@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.endless.activities.home.MainActivity;
+import com.endless.activities.home.BudgetActivity;
 import com.endless.bank.BankResponse;
 import com.endless.bank.Transaction;
 import com.endless.budgeto.R;
@@ -142,7 +142,7 @@ public class SetupActivity extends AppCompatActivity {
         deviceDataSaver.saveTransactionsList(allBanksTransactions);
         Logger.print(this.getClass(), "Data saved with DeviceDataSaver.");
 
-        startActivity(new Intent(SetupActivity.this, MainActivity.class));
+        startActivity(new Intent(SetupActivity.this, BudgetActivity.class));
     }
 
     /**
