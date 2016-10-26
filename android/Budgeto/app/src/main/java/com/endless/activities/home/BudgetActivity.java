@@ -1,14 +1,16 @@
 package com.endless.activities.home;
 
+import android.graphics.Movie;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.endless.bank.BankScraper;
 import com.endless.bank.Category;
 import com.endless.bank.Transaction;
 import com.endless.budgeto.R;
@@ -21,11 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class BudgetActivity extends AppCompatActivity {
 
-    BankScraper bank;
-    Map<String, String> userInfo = new HashMap<String, String>();
-    WebView webView;
+    private List<Movie> categoryList = new ArrayList<>();
+    private CategoryAdapter categoryAdapter;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -35,19 +37,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_budget);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Votre Budget");
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         showCategories();
     }
-
-
-    public void addBill(View view) {
-
-    }
-
 
     public void showCategories() {
         final DeviceDataSaver deviceDataSaver = new DeviceDataSaver(this.getBaseContext());
@@ -69,9 +74,11 @@ public class MainActivity extends AppCompatActivity {
             it.remove(); // avoids a ConcurrentModificationException
         }
 
-        ListAdapter adapter = new CategoryAdapter(this, cats);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-    }
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
+        categoryAdapter = new CategoryAdapter(cats);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(categoryAdapter);
+    }
 }
