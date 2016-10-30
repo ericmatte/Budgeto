@@ -1,12 +1,10 @@
-from flask import Flask
-
-app = Flask(__name__)
+from endless.flask import flask
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World! yeah!'
+@flask.route('/', methods=['GET'])
+def home():
+    return "tbnk"
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+    flask.run(debug=True, threaded=True)
