@@ -1,4 +1,4 @@
-from api.tools.rsa import RSA
+from tools.rsa import RSA
 
 
 def test_rsa():
