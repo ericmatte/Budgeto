@@ -8,5 +8,5 @@ def test_db():
     db = MongoDB(flask.config["MONGODB_URI"], "Budgeto")
     # We simulate the communication between server/db
     with  MongoDBContext(db):
-        bob = db.db['user'].find_one({"email": "BoblikesAlice@gmail.com"})
+        bob = db.find_one_by('user', {'email': 'BoblikesAlice@gmail.com'})
         assert bob["_id"] == ObjectId('5816b655a91049131fcfdf99')
