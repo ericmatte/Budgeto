@@ -1,4 +1,4 @@
-from flaskapi import app
+from endless.flask import flask
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    flask.run(threaded=True)
