@@ -33,11 +33,10 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if (deviceDataSaver.retrievePIN() == -1)
-//                    startActivity(new Intent(SplashActivity.this, SetupActivity.class));
-//                else
-//                    startActivity(new Intent(SplashActivity.this, BudgetActivity.class));
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                if (deviceDataSaver.retrievePIN() == -1)
+                    startActivity(new Intent(SplashActivity.this, SetupActivity.class));
+                else
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
 
                 finish();
             }
