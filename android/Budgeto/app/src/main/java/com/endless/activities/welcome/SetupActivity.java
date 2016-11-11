@@ -59,7 +59,7 @@ public class SetupActivity extends AppCompatActivity {
 
         pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        viewPager = (ViewPager) findViewById(container);
+        viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(scrollingHandler);
     }

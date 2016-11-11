@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.endless.activities.home.BudgetActivity;
+import com.endless.activities.home.MainActivity;
 import com.endless.activities.welcome.SetupActivity;
 import com.endless.budgeto.R;
 import com.endless.tools.DeviceDataSaver;
@@ -32,10 +33,11 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (deviceDataSaver.retrievePIN() == -1)
-                    startActivity(new Intent(SplashActivity.this, SetupActivity.class));
-                else
-                    startActivity(new Intent(SplashActivity.this, BudgetActivity.class));
+//                if (deviceDataSaver.retrievePIN() == -1)
+//                    startActivity(new Intent(SplashActivity.this, SetupActivity.class));
+//                else
+//                    startActivity(new Intent(SplashActivity.this, BudgetActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
 
                 finish();
             }
