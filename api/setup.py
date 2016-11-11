@@ -15,6 +15,7 @@ setup(
         'click>=6.6',
         'itsdangerous>=0.24',
         'pytest>=3.0.3',
+        'pymongo>=0.1',
         'rsa>=3.4.2'
     ]
 )
