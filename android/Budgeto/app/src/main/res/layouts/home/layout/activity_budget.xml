@@ -20,7 +20,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:layout_weight="1">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -32,8 +33,6 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_budget" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -42,5 +41,7 @@
         app:layout_anchor="@id/app_bar"
         app:srcCompat="@drawable/ic_add"
         app:layout_anchorGravity="bottom|end" />
+
+    <include layout="@layout/content_budget" />
 
 </android.support.design.widget.CoordinatorLayout>

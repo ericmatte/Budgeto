@@ -27,6 +27,7 @@ public class BudgetActivity extends AppCompatActivity {
 
     private List<Movie> categoryList = new ArrayList<>();
     private CategoryAdapter categoryAdapter;
+    private List<Transaction> allBanksTransactions;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -42,6 +43,8 @@ public class BudgetActivity extends AppCompatActivity {
         toolbar.setTitle("Votre Budget");
         setSupportActionBar(toolbar);
 
+        showCategories();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,13 +53,11 @@ public class BudgetActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        showCategories();
     }
 
     public void showCategories() {
         final DeviceDataSaver deviceDataSaver = new DeviceDataSaver(this.getBaseContext());
-        List<Transaction> allBanksTransactions = deviceDataSaver.retrieveTransactionsList();
+        allBanksTransactions = deviceDataSaver.retrieveTransactionsList();
         HashMap<String, List<Transaction>> transMap = new HashMap();
         for (int i=0; i<allBanksTransactions.size(); i++) {
             Transaction t = allBanksTransactions.get(i);
