@@ -2,6 +2,7 @@ package com.endless.activities.welcome;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,17 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.endless.activities.home.BudgetActivity;
 import com.endless.bank.BankResponse;
 import com.endless.bank.Transaction;
+import com.endless.activities.home.BudgetActivity;
 import com.endless.budgeto.R;
 import com.endless.tools.DeviceDataSaver;
 import com.endless.tools.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.endless.budgeto.R.id.container;
 
 /**
  * Setup and welcome screens handling user first configuration
@@ -56,6 +55,14 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        // Setup dark status bar icon for Android M and up
+        View setupView = findViewById(R.id.main_content);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (setupView != null) {
+                setupView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
 
         pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.

@@ -34,12 +34,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.endless.activities.home.BudgetActivity"
-            android:label="BudgetActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.endless.activities.home.MainActivity"
-            android:label="MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_budget"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
