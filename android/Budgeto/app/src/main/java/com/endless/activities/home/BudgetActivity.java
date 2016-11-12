@@ -1,49 +1,36 @@
 package com.endless.activities.home;
 
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.endless.bank.Category;
-import com.endless.bank.Transaction;
+import com.endless.activities.home.BudgetFragment;
+import com.endless.activities.home.TransactionsFragment;
 import com.endless.budgeto.R;
-import com.endless.tools.DeviceDataSaver;
-import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-public class BudgetActivity extends AppCompatActivity {
-
-    private List<Movie> categoryList = new ArrayList<>();
-    private CategoryAdapter categoryAdapter;
-    private List<Transaction> allBanksTransactions;
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+public class BudgetActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+    private SectionsPagerAdapter pagerAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Votre Budget");
-        setSupportActionBar(toolbar);
-
-        showCategories();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,33 +40,116 @@ public class BudgetActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        init_drawer();
+        init_tabs();
     }
 
-    public void showCategories() {
-        final DeviceDataSaver deviceDataSaver = new DeviceDataSaver(this.getBaseContext());
-        allBanksTransactions = deviceDataSaver.retrieveTransactionsList();
-        HashMap<String, List<Transaction>> transMap = new HashMap();
-        for (int i=0; i<allBanksTransactions.size(); i++) {
-            Transaction t = allBanksTransactions.get(i);
-            List<Transaction> ts = transMap.get(t.getCat());
-            if (ts == null) ts = new ArrayList<>();
-            ts.add(t);
-            transMap.put(t.getCat(), ts);
+
+    private void init_drawer() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void init_tabs() {
+        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        viewPager = (ViewPager) findViewById(R.id.content_budget);
+        viewPager.setAdapter(pagerAdapter);
+        ((TabLayout) findViewById(R.id.tabLayout)).setupWithViewPager(viewPager);
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        Fragment[] pages = {new TransactionsFragment(), new BudgetFragment()};
+        private String tabTitles[] = new String[]{"Transactions", "Budget"};
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        List<Category> cats = new ArrayList<>();
-        Iterator it = transMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry cat = (Map.Entry)it.next();
-            cats.add(new Category((String) cat.getKey(), (List<Transaction>) cat.getValue()));
-            it.remove(); // avoids a ConcurrentModificationException
+        @Override
+        public int getCount() {
+            return 2;
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        @Override
+        public Fragment getItem(int position) {
+            return pages[position];
+        }
 
-        categoryAdapter = new CategoryAdapter(cats);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(categoryAdapter);
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return tabTitles[position];
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.budget, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

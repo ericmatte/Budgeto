@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CatViewHolder> {
 
     private List<Category> categoryList;
+    private boolean showProgress;
 
     public class CatViewHolder extends RecyclerView.ViewHolder {
         public TextView title, amount;
@@ -41,8 +42,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CatVie
         }
     }
 
-    public CategoryAdapter(List<Category> categoryList) {
+    public CategoryAdapter(List<Category> categoryList, boolean showProgress) {
         this.categoryList = categoryList;
+        this.showProgress = showProgress;
     }
 
     @Override
@@ -70,16 +72,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CatVie
             holder.transactionList.addView(txtTrans);
         }
 
-        // Get simulated progress
-        int current = (int) Math.abs(categoryAmount);
-        int objective = ThreadLocalRandom.current().nextInt(current, current * 2 + 1);
-        holder.progressBar.setMax(objective);
-        holder.progressBar.setProgress(current);
-        holder.progressBar.setScaleY(2.2f);
-        holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(20, 60, 180)));
+        if (showProgress) {
+            // Get simulated progress
+            int current = (int) Math.abs(categoryAmount);
+            int objective = ThreadLocalRandom.current().nextInt(current, current * 2 + 1);
+            holder.progressBar.setMax(objective);
+            holder.progressBar.setProgress(current);
+            holder.progressBar.setScaleY(1.5f);
+            holder.amount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
+        } else {
+            holder.progressBar.setVisibility(View.GONE);
+            holder.amount.setVisibility(View.GONE);
+        }
 
         holder.title.setText(category.getName());
-        holder.amount.setText(String.valueOf(Math.abs(categoryAmount)) + "$ of " + String.valueOf(objective) + "$");
     }
 
     @Override

@@ -66,7 +66,7 @@ public class BudgetFragment extends Fragment {
             it.remove(); // avoids a ConcurrentModificationException
         }
 
-        categoryAdapter = new CategoryAdapter(cats);
+        categoryAdapter = new CategoryAdapter(cats, true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(categoryAdapter);
