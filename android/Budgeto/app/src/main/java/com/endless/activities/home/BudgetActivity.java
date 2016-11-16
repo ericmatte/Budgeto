@@ -21,6 +21,9 @@ import android.view.MenuItem;
 import com.endless.activities.home.BudgetFragment;
 import com.endless.activities.home.TransactionsFragment;
 import com.endless.budgeto.R;
+import com.endless.tools.CallAPI;
+
+import java.util.HashMap;
 
 public class BudgetActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -145,7 +148,8 @@ public class BudgetActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            CallAPI callAPI = new CallAPI(new HashMap<String, String>());
+            callAPI.execute("http://requestb.in/s3torks3");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
