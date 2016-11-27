@@ -4,6 +4,8 @@ import android.webkit.WebView;
 
 import com.endless.tools.Logger;
 
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,9 @@ public class Desjardins extends BankScraper {
     }
 
     @Override
-    public void nextCall(String url, String response) {
+    public void nextCall(String url, Document documentHTML) {
+        // TODO: This code is break.
+        String response = "";
         Logger.print(this.getClass(), url, "nextCall url");
 
         if (url.startsWith(baseUrl + "detention")) {

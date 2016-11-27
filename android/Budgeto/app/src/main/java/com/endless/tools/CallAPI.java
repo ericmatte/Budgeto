@@ -22,9 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ericm on 2016-11-15.
+ * This class allow to send post request to API
+ *
+ * @author  Eric Matte
+ * @version 1.0
  */
-
 public class CallAPI extends AsyncTask<String, Integer, JSONObject> {
     HashMap<String, String> mParams;
 

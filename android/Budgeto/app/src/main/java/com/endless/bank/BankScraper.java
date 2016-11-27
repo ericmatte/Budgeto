@@ -6,6 +6,9 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 /**
  * This class extract transactions from bank.
  * A bank must inherit from this class.
@@ -34,14 +37,23 @@ abstract public class BankScraper {
         return bankFromName;
     }
 
+    public void requestTransactions(BankCallable bankCallable, Dialog dialog) {
+        this.bankCallable = bankCallable;
+        this.dialog = dialog;
+        webView.loadUrl(loginUrl);
+    }
+
     protected Bank bank;
     protected String loginUrl, logoutUrl;
     protected WebView webView;
 
+
+    protected BankResponse bankResponse;
     protected BankCallable bankCallable;
     protected Dialog dialog;
 
     public BankScraper(WebView webView) {
+        this.bankResponse = new BankResponse(bank);
         this.webView = webView;
         this.webView.getSettings().setJavaScriptEnabled(true);
         this.webView.setWebViewClient(new WebViewClient(){
@@ -59,7 +71,7 @@ abstract public class BankScraper {
             public void processHTML(String html) {
                 String url = referrerUrl;
                 referrerUrl = null;
-                nextCall(url, html);
+                nextCall(url, Jsoup.parse(html));
             }
         }
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
@@ -85,12 +97,6 @@ abstract public class BankScraper {
         });
     }
 
-    public void requestTransactions(BankCallable bankCallable, Dialog dialog) {
-        this.bankCallable = bankCallable;
-        this.dialog = dialog;
-        webView.loadUrl(loginUrl);
-    }
-
     /** Make sur to always load webView url on UI thread. */
     protected void loadUrl(final String url) {
         ((Activity) webView.getContext()).runOnUiThread(new Runnable() {
@@ -98,7 +104,10 @@ abstract public class BankScraper {
         });
     }
 
+    // Save the referrer url when asking to get document HTML
     private String referrerUrl;
-    abstract protected void nextCall(String url, String response);
+
+    /** List of calls to scrap a bank */
+    abstract protected void nextCall(String url, Document documentHTML);
 
 }

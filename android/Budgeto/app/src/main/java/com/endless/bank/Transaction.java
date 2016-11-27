@@ -28,11 +28,12 @@ public class Transaction {
 
     private void setDate(String date) { this.date = Sanitizer.clean(date); }
     private void setDesc(String desc) { this.desc = Sanitizer.clean(desc); }
-    private void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
+    private void setAmount(String amount) { this.amount = Sanitizer.floatValue(amount); }
     // Category can be set later
     public void setCat(String cat) { this.cat = Sanitizer.clean(cat); }
 
     public String getCat() { return cat; }
+    public String getDate() { return date; }
     public String getDesc() { return desc; }
     public String getAmount() { return amount; }
 

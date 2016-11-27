@@ -5,6 +5,10 @@ package com.endless.tools;
  */
 public class Sanitizer {
 
+    public static String floatValue(String dirtyValue) {
+        return dirtyValue.replace(',', '.').replaceAll("[^0-9.]", "");
+    }
+
     public static String sanitize(String dirty) {
         // TODO: Sanitize.
         String clean = dirty; // .replaceAll("\\W", "");
@@ -15,7 +19,7 @@ public class Sanitizer {
         if (value == null)
             return "";
 
-        value = value.replace("\\n", "").replace("&nbsp;", " ").replace("&", "");
+        value = value.replace("\\n", "").replace("&nbsp;", " ").replace("&", "").replaceAll("\u00A0","");;
 //        if (value.contains("\n"))
 //            value = value.substring(0, value.indexOf('\n'));
 //        if (value.contains("&"))

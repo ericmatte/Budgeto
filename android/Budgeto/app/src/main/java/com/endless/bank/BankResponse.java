@@ -54,9 +54,14 @@ public class BankResponse {
         return addTransaction(date, desc, amount, null);
     }
 
-    /** Add a transaction only if the is not fetching else return false */
+    /** Add a transaction only if it is fetching else return false */
     public boolean addTransaction(String date, String desc, String amount, String cat) {
-        return (state == State.fetching) && transactions.add(new Transaction(bank, date, desc, amount, cat));
+        return (state == State.fetching) && this.transactions.add(new Transaction(bank, date, desc, amount, cat));
+    }
+
+    /** Add a transaction only if it is fetching else return false */
+    public boolean addTransactions(List<Transaction> transactions) {
+        return (state == State.fetching) && this.transactions.addAll(transactions);
     }
 
     public Bank getBank() { return bank; }
