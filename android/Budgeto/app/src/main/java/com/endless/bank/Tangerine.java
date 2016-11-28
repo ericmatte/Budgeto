@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Eric on 2016-09-09.
+ * Tangerine Bank Scraper
+ *
+ * @author  Eric Matte
+ * @version 1.0
  */
 public class Tangerine extends BankScraper {
 
@@ -21,8 +24,7 @@ public class Tangerine extends BankScraper {
     private List<String> accountsLink;
 
     public Tangerine(WebView webView) {
-        super(webView);
-        this.bank = Bank.Tangerine;
+        super(webView, Bank.Tangerine);
         this.loginUrl = baseUrl + "/web/InitialTangerine.html?command=displayLogin&device=web&locale=en_CA";
         this.logoutUrl = baseUrl + "/web/InitialTangerine.html?command=displayLogout&device=web&locale=en_CA";
     }
@@ -46,8 +48,7 @@ public class Tangerine extends BankScraper {
     public static List<Transaction> getAccountTransactions(Document documentHTML, Bank bank) {
         List<Transaction> transactions = new ArrayList<>();
 
-        Element table = documentHTML.getElementsByTag("table").first()
-                .getElementsByAttributeValue("data-target", "#transactionTable").first();
+        Element table = documentHTML.getElementsByAttributeValue("data-target", "#transactionTable").first();
         Elements rows = table.getElementsByTag("tbody").first().getElementsByTag("tr");
         for (Element tr : rows) {
             Elements td = tr.getElementsByTag("td");
@@ -66,15 +67,14 @@ public class Tangerine extends BankScraper {
     public static List<Transaction> getCreditCardAccountTransactions(Document documentHTML, Bank bank) {
         List<Transaction> transactions = new ArrayList<>();
 
-        Element table = documentHTML.getElementsByTag("table").first()
-                .getElementsByAttributeValue("data-target", "#transactionTable").first();
+        Element table = documentHTML.getElementsByAttributeValue("data-target", "#transactionTable").first();
         Elements rows = table.getElementsByTag("tbody").first().getElementsByTag("tr");
         for (Element tr : rows) {
             String date = tr.getElementsByClass("tr-date").first().text();
             String desc = tr.getElementsByClass("tr-desc").first().text();
 
-            Float amount = Float.valueOf(Sanitizer.floatValue(tr.getElementsByClass("tr-amount").first().text()));
-            amount = 0 - amount; // Inverse amount value for credit cards
+            // 0 - amount: Inverse amount value for credit cards
+            Float amount = 0 - Sanitizer.stringToFloat(tr.getElementsByClass("tr-amount").first().text());
 
             Element icon = tr.getElementsByClass("tr-icon").first().getElementsByTag("i").first();
             String cat = "-" + (icon != null ? icon.className() : "");
@@ -87,64 +87,39 @@ public class Tangerine extends BankScraper {
     }
 
     @Override
-    public void nextCall(String url, Document documentHTML) {
+    public void nextCall(String url, Document htmlDocument) {
         Logger.print(this.getClass(), url, "nextCall url");
 
-        if (url.contains("command=displayAccountSummary")) {
+        if (url.contains("command=displayAccountSummary") ||
+            url.contains("command=displayAccountDetails") ||
+            url.contains("command=displayCreditCardAccount")) {
 
-            // Connected, bank summary
-            if (documentHTML == null) {
+            if (!userAsLoggedIn) {
                 userAsLoggedIn = true;
                 dialog.hide();
-                getDocumentHTML(url);
-            } else if (accountsLink.size() == 0) {
-
-                accountsLink = getAccountsLink(documentHTML);
-                nextLink();
-
             }
 
-        } else if (url.contains("command=displayAccountDetails")) {
-
-            if (documentHTML == null) {
+            if (htmlDocument == null) {
                 getDocumentHTML(url);
-            } else {
-
-                bankResponse.addTransactions(getAccountTransactions(documentHTML, bank));
-                nextLink();
-
+                return;
             }
 
-        } else if (url.contains("command=displayCreditCardAccount")) {
+            if (url.contains("command=displayAccountSummary")) {
+                accountsLink = getAccountsLink(htmlDocument);
 
-            if (documentHTML == null) {
-                getDocumentHTML(url);
-            } else {
+            } else if (url.contains("command=displayAccountDetails")) {
+                bankResponse.addTransactions(getAccountTransactions(htmlDocument, bank));
 
-                bankResponse.addTransactions(getCreditCardAccountTransactions(documentHTML, bank));
-                nextLink();
-
+            } else if (url.contains("command=displayCreditCardAccount")) {
+                bankResponse.addTransactions(getCreditCardAccountTransactions(htmlDocument, bank));
             }
+
+            nextLink();
 
         } else if (url.contains("displayLogout")) {
-
             Logger.print(this.getClass(), "Operations successfully completed for " + String.valueOf(bank));
             loadUrl("about:blank");
-
-        } else {
-//            if (!url.startsWith("https://secure.tangerine.ca/web/Tangerine.html") &&
-//                    !url.startsWith("https://secure.tangerine.ca/web/InitialTangerine.html")) {
-//                Logger.print(this.getClass(), url, "User tried to ge else where! Canceling...");
-//
-//                if (!url.equals("about:blank")) {
-//                    loadUrl("about:blank");
-//                    dialog.cancel();
-//                }
-//            }
         }
-
-
-
     }
 
     private void nextLink() {

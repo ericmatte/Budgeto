@@ -21,6 +21,40 @@ abstract public class BankScraper {
     /** This is the list of all banks covered by budgeto */
     public enum Bank { Tangerine, Desjardins, TD }
 
+    protected Bank bank;
+    protected String loginUrl, logoutUrl;
+    protected BankResponse bankResponse; // The response after fetching transactions
+    protected BankCallable bankCallable; // The callback
+    protected WebView webView;
+    protected Dialog dialog;
+
+    private String referrerUrl; // Save the referrer url when asking to get document HTML
+
+    public BankScraper(WebView webView, Bank bank) {
+        this.bank = Bank.Tangerine;
+        this.bankResponse = new BankResponse(bank);
+
+        this.webView = webView;
+        this.webView.getSettings().setJavaScriptEnabled(true);
+        this.webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                nextCall(url, null);
+            }
+        });
+        class MyJavaScriptInterface {
+            @JavascriptInterface
+            @SuppressWarnings("unused")
+            public void processHTML(String html) {
+                String url = referrerUrl;
+                referrerUrl = null;
+                nextCall(url, Jsoup.parse(html));
+            }
+        }
+        this.webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
+    }
+
     /** Instantiate a specific bank scraper from the given bankName */
     public static BankScraper fromName(Bank bank, WebView webView) throws Exception {
         BankScraper bankFromName;
@@ -43,46 +77,11 @@ abstract public class BankScraper {
         webView.loadUrl(loginUrl);
     }
 
-    protected Bank bank;
-    protected String loginUrl, logoutUrl;
-    protected WebView webView;
-
-
-    protected BankResponse bankResponse;
-    protected BankCallable bankCallable;
-    protected Dialog dialog;
-
-    public BankScraper(WebView webView) {
-        this.bankResponse = new BankResponse(bank);
-        this.webView = webView;
-        this.webView.getSettings().setJavaScriptEnabled(true);
-        this.webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                nextCall(url, null);
-            }
-        });
-
-        class MyJavaScriptInterface
-        {
-            @JavascriptInterface
-            @SuppressWarnings("unused")
-            public void processHTML(String html) {
-                String url = referrerUrl;
-                referrerUrl = null;
-                nextCall(url, Jsoup.parse(html));
-            }
-        }
-        webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
-    }
-
-    protected void sendJavascript(String command) {
-        final String com = command;
+    protected void sendJavascript(final String command) {
         webView.post(new Runnable() {
             @Override
             public void run() {
-                webView.loadUrl("javascript:(function() { " + com + "})()");
+                webView.loadUrl("javascript:(function() { " + command + "})()");
             }
         });
     }
@@ -104,10 +103,7 @@ abstract public class BankScraper {
         });
     }
 
-    // Save the referrer url when asking to get document HTML
-    private String referrerUrl;
-
     /** List of calls to scrap a bank */
-    abstract protected void nextCall(String url, Document documentHTML);
+    abstract protected void nextCall(String url, Document htmlDocument);
 
 }

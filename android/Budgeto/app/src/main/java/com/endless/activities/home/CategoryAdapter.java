@@ -64,8 +64,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CatVie
         float categoryAmount = 0;
         for (int i = 0; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
-            if (!transaction.getAmount().equals(""))
-                categoryAmount += Float.parseFloat(((String) (transaction.getAmount())).replace(",", ".").replace(" ", ""));
+            categoryAmount += transaction.getAmount();
 
             TextView txtTrans = new TextView(holder.transactionList.getContext());
             txtTrans.setText(transaction.getAmount() + "$ -- " + transaction.getDesc());
