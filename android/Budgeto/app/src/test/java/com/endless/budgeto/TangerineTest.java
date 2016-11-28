@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -37,12 +36,7 @@ public class TangerineTest {
         // https://secure.tangerine.ca/web/Tangerine.html?command=displayAccountDetails&fill=1
         Document htmlDocument = Jsoup.parse(new File(relativePath + "ChequeAccount.html"), null);
 
-        List<Transaction> transactions = Tangerine.getAccountTransactions(htmlDocument, Bank.Tangerine);
-        assertTrue(transactions.size() > 0);
-        for (Transaction transaction : transactions) {
-            assertTrue(Float.valueOf(transaction.getAmount()) != 0);
-            assertTrue(transaction.getDate().matches("[0-9]+-[0-9]+-[0-9]+"));
-        }
+        validateTransactions(Tangerine.getAccountTransactions(htmlDocument, Bank.Tangerine));
     }
 
     @Test
@@ -50,10 +44,13 @@ public class TangerineTest {
         // https://secure.tangerine.ca/web/Tangerine.html?command=displayCreditCardAccount
         Document htmlDocument = Jsoup.parse(new File(relativePath + "CreditCardAccount.html"), null);
 
-        List<Transaction> transactions = Tangerine.getCreditCardAccountTransactions(htmlDocument, Bank.Tangerine);
+        validateTransactions(Tangerine.getCreditCardAccountTransactions(htmlDocument, Bank.Tangerine));
+    }
+
+    private void validateTransactions(List<Transaction> transactions) {
         assertTrue(transactions.size() > 0);
         for (Transaction transaction : transactions) {
-            assertTrue(Float.valueOf(transaction.getAmount()) != 0);
+            System.out.println(transaction.getDate()+", "+String.valueOf(transaction.getAmount())+"$ :  \t"+transaction.getDesc());
             assertTrue(transaction.getDate().matches("[0-9]+-[0-9]+-[0-9]+"));
         }
     }
