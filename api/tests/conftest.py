@@ -28,6 +28,7 @@ def set_current_user():
         yield
 
 
+@pytest.fixture
 def dummy_transaction(request):
     transaction = Transaction()
     transaction.user_id = 0

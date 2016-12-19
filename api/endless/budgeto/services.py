@@ -1,22 +1,21 @@
 from flask import request
 from werkzeug.exceptions import BadRequestKeyError
 
-from endless import db_session
 from endless.budgeto import budgeto_services
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category
+from server.database import db_session
 
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
 def get_transactions():
-    data = request.form
-    user = User.by_email(data['email'])
-    return HttpResponse(Transaction.by_user_id(user.id))
+    user = User.by_email(request.values['email'])
+    return HttpResponse(user.transactions)
 
 
-# Fonctionne si le device envoye seulement les nouvelles transactions
+# Fonctionne si le device envoit seulement les nouvelles transactions
 @budgeto_services.route('/set-transactions', methods=['POST'])
-def get_transactions():
+def set_transactions():
     try:
         data = request.form
         user = User.by_email(data['email'])

@@ -3,11 +3,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sshtunnel import SSHTunnelForwarder
 
+from endless.flask import app
 
 _db_session = None
 server = None
 DeclarativeBase = declarative_base()
-
 
 def get_session():
     if _db_session is None:
@@ -34,3 +34,13 @@ def init_db(db_connection_string, config):
     DeclarativeBase.session = _db_session
     DeclarativeBase.query = _db_session.query_property()
     DeclarativeBase.metadata.create_all(bind=engine)
+
+
+# Database init
+init_db(app.config['DB_CONNECTION_STRING'], app.config)
+db_session = get_session()
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
