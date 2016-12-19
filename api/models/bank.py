@@ -1,4 +1,5 @@
 from sqlalchemy import Column
+from sqlalchemy.orm import exc
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Unicode
 
@@ -18,3 +19,10 @@ class Bank(DeclarativeBase, BaseEntity):
     def users(self):
         """Return if the user is a BBI approver or not"""
         return self.query.join('Transaction').join('User').all()
+
+    @classmethod
+    def by_name(cls, name):
+        try:
+            return cls.query.filter(cls.name == name).one()
+        except exc.NoResultFound:
+            return None
