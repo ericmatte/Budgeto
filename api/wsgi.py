@@ -1,4 +1,6 @@
-from endless.flask import flask
+from endless import app
+from server.database import init_database
 
 if __name__ == "__main__":
-    flask.run(threaded=True)
+    init_database()
+    app.run(threaded=True)

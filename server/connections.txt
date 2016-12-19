@@ -1,2 +1,11 @@
-Main server   : endlessapi.ddns.net, port 22
-Backup server : endless.ddns.net, port 22
+*** Main server ***
+endlessapi.ddns.net:22 -u ubuntu -p elpotato23
+
+** MySQL **
+ROOT: -u root -p patate14
+DbAdmin (all rights): -u dbAdmin -p Glad0S
+
+
+
+*** Backup server ***
+endless.ddns.net:22 -u ubuntu -p patate14
