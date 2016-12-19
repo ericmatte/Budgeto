@@ -4,16 +4,15 @@ from flask.signals import appcontext_pushed
 import pytest
 
 from endless import app
-from server.database import init_database
+from server.database import server
 
 
 @pytest.fixture
 def client(request):
     app.config['TESTING'] = True
-    init_database()
 
     def teardown():
-        pass
+        server.stop()
     request.addfinalizer(teardown)
     return app.test_client()
 

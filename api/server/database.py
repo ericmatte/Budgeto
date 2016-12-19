@@ -5,6 +5,7 @@ from sshtunnel import SSHTunnelForwarder
 
 
 _db_session = None
+server = None
 DeclarativeBase = declarative_base()
 
 
@@ -15,7 +16,7 @@ def get_session():
 
 
 def init_db(db_connection_string, config):
-    global _db_session
+    global _db_session, server
     if config.get('USE_TUNNEL'):
         server = SSHTunnelForwarder(
             ('endlessapi.ddns.net', 22),
