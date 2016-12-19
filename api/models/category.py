@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import Table
+from sqlalchemy.orm import exc
 from sqlalchemy.orm import relation
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
@@ -20,3 +21,10 @@ class Category(DeclarativeBase, BaseEntity):
     name = Column('name', Unicode(30))
 
     keywords = relation('Keyword', secondary=category_has_keyword, backref='categories')
+
+    @classmethod
+    def by_name(cls, name):
+        try:
+            return cls.query.filter(cls.name == name).one()
+        except exc.NoResultFound:
+            return None
