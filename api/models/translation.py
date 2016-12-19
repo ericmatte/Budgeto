@@ -6,7 +6,6 @@ from sqlalchemy.orm import exc, relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, DateTime
 
-from models.language import Language
 from server.base import DeclarativeBase, BaseEntity
 
 
@@ -20,7 +19,7 @@ class Translation(DeclarativeBase, BaseEntity):
     translated_value = Column('translated_value', Text)
     update_time = Column('update_time', DateTime)
 
-    language = relationship(Language)
+    language = relationship('Language')
 
     @classmethod
     def _(cls, value):

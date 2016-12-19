@@ -1,7 +1,7 @@
 from endless.tools.rsa import RSA
 
 
-def test_rsa():
+def test_rsa(client):
     # We simulate the communication between client/server
     server = RSA("tests/resources/test_server.pem", "tests/resources/test_client.pub")
     client = RSA("tests/resources/test_client.pem", "tests/resources/test_server.pub")

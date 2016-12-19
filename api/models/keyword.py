@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
 
-from models.language import Language
 from server.base import DeclarativeBase, BaseEntity
 
 
@@ -15,5 +14,5 @@ class Keyword(DeclarativeBase, BaseEntity):
 
     name = Column('name', Unicode(30))
 
-    language = relationship(Language)
+    language = relationship('Language')
     categories = None  # back_ref from Category

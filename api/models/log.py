@@ -4,6 +4,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Unicode
+
 from server.base import DeclarativeBase, BaseEntity
 
 

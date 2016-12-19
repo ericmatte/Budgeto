@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
 
-from models.rsa import Rsa
 from server.base import DeclarativeBase, BaseEntity
 
 
@@ -20,5 +19,5 @@ class Device(DeclarativeBase, BaseEntity):
     mac_address = Column('mac_address', Unicode(32))
     update_time = Column('update_time', DateTime)
 
-    rsa = relationship(Rsa)
+    rsa = relationship('Rsa')
     users = None  # back_ref from User

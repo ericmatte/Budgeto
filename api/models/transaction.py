@@ -4,7 +4,6 @@ from sqlalchemy.orm import  relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, DateTime
 
-from models.bank import Bank
 from models.category import Category
 from server.base import DeclarativeBase, BaseEntity
 
@@ -24,4 +23,4 @@ class Transaction(DeclarativeBase, BaseEntity):
 
     category = relationship(Category)
     user = relationship('User')
-    bank = relationship(Bank)
+    bank = relationship('Bank')

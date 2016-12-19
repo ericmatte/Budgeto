@@ -4,10 +4,6 @@ from sqlalchemy.orm import exc, relationship, relation
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, String, DateTime
 
-from models.device import Device
-from models.language import Language
-from models.log import Log
-from models.transaction import Transaction
 from server.base import DeclarativeBase, BaseEntity, metadata
 
 # many-to-many relationship between user and device
@@ -29,10 +25,10 @@ class User(DeclarativeBase, BaseEntity):
     creation_time = Column('creation_time', DateTime)
     update_time = Column('update_time', DateTime)
 
-    language = relationship(Language)
-    transactions = relation(Transaction)
-    devices = relation(Device, secondary=user_has_device, backref='users')
-    logs = relationship(Log, lazy="dynamic")
+    language = relationship('Language')
+    transactions = relation('Transaction')
+    devices = relation('Device', secondary=user_has_device, backref='users')
+    logs = relationship('Log', lazy="dynamic")
 
     def __repr__(self):
         return ('<User: "%s %s" <%s>>' % (self.first_name, self.last_name, self.email)).encode('utf-8')
