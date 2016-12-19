@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import Float
+from sqlalchemy.orm import exc
 from sqlalchemy.orm import  relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, DateTime
@@ -24,3 +25,10 @@ class Transaction(DeclarativeBase, BaseEntity):
     category = relationship(Category)
     user = relationship('User')
     bank = relationship('Bank')
+
+    @classmethod
+    def by_user_id(cls, user_id):
+        try:
+            return cls.query.filter(cls.user_id == user_id).all()
+        except exc.NoResultFound:
+            return None

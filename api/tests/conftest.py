@@ -1,9 +1,12 @@
 from contextlib import contextmanager
+from datetime import datetime
+
 from flask.globals import g
 from flask.signals import appcontext_pushed
 import pytest
 
-from endless import app
+from endless import app, db_session
+from models import Transaction
 from server.database import server
 
 
@@ -23,3 +26,19 @@ def set_current_user():
         g.user = 'ericmatte.inbox@gmail.com'
     with appcontext_pushed.connected_to(handler, app):
         yield
+
+
+def dummy_transaction(request):
+    transaction = Transaction()
+    transaction.user_id = 0
+    transaction.bank_id = 0
+    transaction.category_id = 0
+    transaction.description = 'test'
+    transaction.amount = 1337.37
+    transaction.date = datetime.now()
+
+    def teardown():
+        db_session.delete(transaction)
+
+    request.addfinalizer(teardown)
+    return transaction

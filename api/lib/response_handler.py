@@ -2,7 +2,6 @@ import traceback
 
 from flask import Response
 from flask import json
-from werkzeug.http import HTTP_STATUS_CODES
 
 
 class HttpResponse(Response):
