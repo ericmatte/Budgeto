@@ -1,4 +1,4 @@
-from endless.tools.rsa import RSA
+from lib.rsa import RSA
 
 
 def test_rsa(client):
