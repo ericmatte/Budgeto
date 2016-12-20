@@ -1,7 +1,7 @@
 import sqlalchemy.orm.properties
 from sqlalchemy.sql.functions import func
 
-from server.database import DeclarativeBase
+from endless.server.database import DeclarativeBase
 
 metadata = DeclarativeBase.metadata
 

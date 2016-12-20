@@ -1,13 +1,13 @@
 from contextlib import contextmanager
 from datetime import datetime
 
+import pytest
 from flask.globals import g
 from flask.signals import appcontext_pushed
-import pytest
 
-from endless import app, db_session
+from endless import app
+from endless.server.flask import server
 from models import Transaction
-from server.database import server
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def dummy_transaction(request):
     transaction.date = datetime.now()
 
     def teardown():
-        db_session.delete(transaction)
+        pass # db_session.delete(transaction)  # transaction not even added to db at first
 
     request.addfinalizer(teardown)
     return transaction

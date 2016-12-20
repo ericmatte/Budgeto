@@ -1,6 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Unicode
-from server.base import DeclarativeBase, BaseEntity
+
+from endless.server.base import DeclarativeBase, BaseEntity
 
 
 class Language(DeclarativeBase, BaseEntity):
