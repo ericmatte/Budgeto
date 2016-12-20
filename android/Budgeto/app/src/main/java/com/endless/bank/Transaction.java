@@ -16,7 +16,8 @@ import java.util.UUID;
  */
 public class Transaction {
     private Bank bank;
-    private String date, desc, amount, cat;
+    private String date, desc, cat;
+    private float amount;
 
     public Transaction(Bank bank, String date, String desc, String amount, String cat) {
         this.bank = bank;
@@ -26,15 +27,16 @@ public class Transaction {
         if (cat != null) setCat(cat);
     }
 
-    private void setDate(String date) { this.date = Sanitizer.clean(date); }
-    private void setDesc(String desc) { this.desc = Sanitizer.clean(desc); }
-    private void setAmount(String amount) { this.amount = Sanitizer.clean(amount); }
+    private void setDate(String date) { this.date = Sanitizer.stringDateFormat(date); }
+    private void setDesc(String desc) { this.desc = Sanitizer.cleanString(desc); }
+    private void setAmount(String amount) { this.amount = Sanitizer.stringToFloat(amount); }
     // Category can be set later
-    public void setCat(String cat) { this.cat = Sanitizer.clean(cat); }
+    public void setCat(String cat) { this.cat = Sanitizer.cleanString(cat); }
 
     public String getCat() { return cat; }
+    public String getDate() { return date; }
     public String getDesc() { return desc; }
-    public String getAmount() { return amount; }
+    public float getAmount() { return amount; }
 
     private String getTransactionUuid() {
         String s = date + desc + amount + bank;

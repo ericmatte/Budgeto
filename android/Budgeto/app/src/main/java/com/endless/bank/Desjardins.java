@@ -4,6 +4,8 @@ import android.webkit.WebView;
 
 import com.endless.tools.Logger;
 
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +23,14 @@ public class Desjardins extends BankScraper {
     private int accountUrlsIndex = 0;
 
     public Desjardins(WebView webView) {
-        super(webView);
-        this.bank = Bank.Desjardins;
+        super(webView, Bank.Desjardins);
         this.loginUrl = "https://accweb.mouv.desjardins.com/identifiantunique/identification";
     }
 
     @Override
-    public void nextCall(String url, String response) {
+    public void nextCall(String url, Document htmlDocument) {
+        // TODO: This code is break.
+        String response = "";
         Logger.print(this.getClass(), url, "nextCall url");
 
         if (url.startsWith(baseUrl + "detention")) {

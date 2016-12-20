@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp">
 
     <TextView
@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Category"
-        android:id="@+id/txtCat" />
+        android:id="@+id/txtTitle" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -30,7 +30,13 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/linearTrans"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/linearTrans" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider"/>
 
 </LinearLayout>

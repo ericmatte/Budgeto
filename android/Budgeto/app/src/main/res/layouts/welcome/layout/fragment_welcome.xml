@@ -44,6 +44,15 @@
             android:layout_marginTop="@dimen/fab_margin"
             android:gravity="center_horizontal"
             android:textColor="@color/abc_secondary_text_material_dark" />
+
+        <ImageView
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgForward"
+            android:src="@drawable/ic_arrow_forward"
+            android:forceHasOverlappingRendering="false" />
     </LinearLayout>
+
 
 </RelativeLayout>
