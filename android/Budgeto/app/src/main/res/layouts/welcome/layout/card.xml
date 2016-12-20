@@ -45,7 +45,7 @@
 
 
                     <TextView
-                        android:text="Par mesure de sécurité,\naucun mot de passe ne sera jamais enregistré."
+                        android:text="Par mesure de sécurité,\naucun mot de passe ne sera enregistré."
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />

@@ -19,10 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.endless.activities.home.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -36,7 +32,10 @@
             android:label="@string/title_activity_setup"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.endless.activities.home.LoginActivity" />
+        <activity
+            android:name="com.endless.activities.home.BudgetActivity"
+            android:label="@string/title_activity_budget"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
