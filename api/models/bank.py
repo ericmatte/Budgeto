@@ -3,7 +3,7 @@ from sqlalchemy.orm import exc
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Unicode
 
-from server.base import DeclarativeBase, BaseEntity
+from endless.server.base import DeclarativeBase, BaseEntity
 
 
 class Bank(DeclarativeBase, BaseEntity):

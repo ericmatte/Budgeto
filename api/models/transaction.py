@@ -5,8 +5,8 @@ from sqlalchemy.orm import  relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, DateTime
 
+from endless.server.base import DeclarativeBase, BaseEntity
 from models.category import Category
-from server.base import DeclarativeBase, BaseEntity
 
 
 class Transaction(DeclarativeBase, BaseEntity):

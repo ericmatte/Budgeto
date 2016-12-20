@@ -1,4 +1,5 @@
 from operator import and_
+
 from flask import g
 from sqlalchemy import Column
 from sqlalchemy import Text
@@ -6,7 +7,7 @@ from sqlalchemy.orm import exc, relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, DateTime
 
-from server.base import DeclarativeBase, BaseEntity
+from endless.server.base import DeclarativeBase, BaseEntity
 
 
 class Translation(DeclarativeBase, BaseEntity):

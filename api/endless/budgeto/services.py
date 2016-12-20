@@ -2,9 +2,9 @@ from flask import request
 from werkzeug.exceptions import BadRequestKeyError
 
 from endless.budgeto import budgeto_services
+from endless.server.flask import db_session
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category
-from server.database import db_session
 
 
 @budgeto_services.route('/get-transactions', methods=['GET'])

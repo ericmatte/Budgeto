@@ -4,7 +4,8 @@ from sqlalchemy.orm import exc
 from sqlalchemy.orm import relation
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
-from server.base import DeclarativeBase, BaseEntity, metadata
+
+from endless.server.base import DeclarativeBase, BaseEntity, metadata
 
 # many-to-many relationship between user and device
 category_has_keyword = Table('category_has_keyword', metadata,

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
 
-from server.base import DeclarativeBase, BaseEntity
+from endless.server.base import DeclarativeBase, BaseEntity
 
 
 class Keyword(DeclarativeBase, BaseEntity):

@@ -2,7 +2,7 @@ from sqlalchemy import Column
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Unicode, DateTime
 
-from server.base import DeclarativeBase, BaseEntity
+from endless.server.base import DeclarativeBase, BaseEntity
 
 
 class Rsa(DeclarativeBase, BaseEntity):

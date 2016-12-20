@@ -1,6 +1,6 @@
-from endless import app
-from server.database import init_database
+import os
+os.environ['MODE'] = 'PROD'
 
 if __name__ == "__main__":
-    init_database()
+    from endless import app
     app.run(threaded=True)

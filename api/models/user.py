@@ -4,7 +4,7 @@ from sqlalchemy.orm import exc, relationship, relation
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, String, DateTime
 
-from server.base import DeclarativeBase, BaseEntity, metadata
+from endless.server.base import DeclarativeBase, BaseEntity, metadata
 
 # many-to-many relationship between user and device
 user_has_device = Table('user_has_device', metadata,
