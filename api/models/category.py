@@ -1,4 +1,6 @@
 from sqlalchemy import Column
+from sqlalchemy import DateTime
+from sqlalchemy import FetchedValue
 from sqlalchemy import Table
 from sqlalchemy.orm import exc
 from sqlalchemy.orm import relation
@@ -18,14 +20,35 @@ class Category(DeclarativeBase, BaseEntity):
     __tablename__ = 'category'
 
     category_id = Column('category_id', Integer, primary_key=True)
+    parent_id = Column('parent_id', ForeignKey('category.category_id'))
 
     name = Column('name', Unicode(30))
+    creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
+    update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
     keywords = relation('Keyword', secondary=category_has_keyword, backref='categories')
 
     @classmethod
     def by_name(cls, name):
+        from sqlalchemy import func
         try:
-            return cls.query.filter(cls.name == name).one()
+            return cls.query.filter(func.lower(cls.name) == name.lower()).one()
         except exc.NoResultFound:
-            return None
+            try:
+                from models import Keyword
+                keyword = Keyword.query.filter(func.lower(Keyword.name) == name.lower()).one()
+
+                # TODO: Apply AI categorizer from keywords intelligence here
+                return keyword.categories[0] if len(keyword.categories) > 0 else None
+            except exc.NoResultFound:
+                cls.add_keyword(name)
+                return None
+
+    @staticmethod
+    def add_keyword(name):
+        from endless import db_session
+        from models import Keyword
+        keyword = Keyword()
+        keyword.name = name
+        db_session.add(keyword)
+        db_session.commit()
