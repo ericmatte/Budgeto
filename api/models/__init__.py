@@ -9,3 +9,6 @@ from .transaction import Transaction
 from .translation import Translation
 from .user import User
 
+def set_object_attributes(sql_object, dict):
+    for key, value in dict.items():
+        setattr(sql_object, key, value)
