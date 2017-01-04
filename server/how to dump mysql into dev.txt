@@ -1,0 +1,1 @@
+mysqldump -u dbAdmin --password=Glad0S budgeto | mysql -u dbAdmin --password=Glad0S -h localhost budgeto_dev

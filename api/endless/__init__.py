@@ -1,4 +1,6 @@
 from flask import g
+from flask import redirect
+from flask import url_for
 
 from endless.budgeto.controllers import budgeto
 from endless.budgeto.services import budgeto_services
@@ -16,7 +18,7 @@ def get_current_user():
 
 @app.route('/', methods=['GET'])
 def index():
-    return 'Endless API'
+    return redirect(url_for('main.home'))
 
 
 @app.teardown_appcontext
