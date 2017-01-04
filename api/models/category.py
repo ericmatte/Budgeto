@@ -44,6 +44,13 @@ class Category(DeclarativeBase, BaseEntity):
                 cls.add_keyword(name)
                 return None
 
+    @classmethod
+    def get_all_hierarchical(cls, parent_id=None):
+        """Get all the categories in a hierarchical way"""
+        children_categories = cls.query.filter(cls.parent_id == parent_id).all()
+        return {child.category_id: {'category': child, 'children': cls.get_all_hierarchical(child.category_id)}
+                for child in children_categories}
+
     @staticmethod
     def add_keyword(name):
         from endless import db_session
