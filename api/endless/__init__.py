@@ -1,5 +1,8 @@
 from flask import g
+from flask import redirect
+from flask import url_for
 
+from endless.budgeto.controllers import budgeto
 from endless.budgeto.services import budgeto_services
 from endless.main.controllers import main
 from endless.server.flask import app, db_session
@@ -15,7 +18,7 @@ def get_current_user():
 
 @app.route('/', methods=['GET'])
 def index():
-    return 'Endless API'
+    return redirect(url_for('main.home'))
 
 
 @app.teardown_appcontext
@@ -25,4 +28,5 @@ def shutdown_session(exception=None):
 
 # Blueprints
 app.register_blueprint(main, url_prefix='/endless')
+app.register_blueprint(budgeto, url_prefix='/budgeto')
 app.register_blueprint(budgeto_services, url_prefix='/budgeto')
