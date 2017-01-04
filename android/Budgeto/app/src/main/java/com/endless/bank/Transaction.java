@@ -6,8 +6,6 @@ import com.endless.bank.BankScraper.Bank;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.UUID;
-
 /**
  * Represent a bank transaction
  *
@@ -38,19 +36,18 @@ public class Transaction {
     public String getDesc() { return desc; }
     public float getAmount() { return amount; }
 
-    private String getTransactionUuid() {
-        String s = date + desc + amount + bank;
-        return UUID.nameUUIDFromBytes(s.getBytes()).toString();
-    }
+//    private String getTransactionUuid() {
+//        String s = date + desc + amount + bank;
+//        return UUID.nameUUIDFromBytes(s.getBytes()).toString();
+//    }
 
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         try {
-            obj.put("uuid", getTransactionUuid());
             obj.put("date", date);
             obj.put("desc", desc);
             obj.put("cat", cat);
-            obj.put("amount", amount);
+            obj.put("amount", String.valueOf(amount));
             obj.put("bank", bank);
         } catch (JSONException e) {
             e.printStackTrace();
