@@ -7,6 +7,16 @@
         margin-right: 4px;
         font-size: 1em;
         line-height: 2;
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Chrome/Safari/Opera */
+        -khtml-user-select: none; /* Konqueror */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                              not supported by any browser */
     }
     .child-icon {
         color: #999999;
@@ -19,9 +29,9 @@
 {% block body %}
 
 {% macro create_keyword_div(keyword) %}
-<span data-id="{{ keyword.keyword_id }}" class="label label-default keyword">
+<div data-id="{{ keyword.keyword_id }}" class="label label-default keyword">
     {{ keyword.name or ('&nbsp;' | safe) }}
-</span>
+</div>
 {% endmacro %}
 
 {% macro create_categories_panels(cat_dict) %}
@@ -41,7 +51,7 @@
             </a>
         </div>
         <div id="{{ value.category.category_id }}" class="panel-collapse collapse {% if value.category.parent_id is none %}in{% endif %}">
-            <div class="panel-body draggable-container">
+            <div class="panel-body draggable-container" data-id="{{ value.category.category_id }}">
                 {% for k in keywords[value.category.category_id] %}
                 {{ create_keyword_div(k) }}
                 {% endfor %}
@@ -84,7 +94,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-    dragula(Array.prototype.slice.call(document.querySelectorAll('.draggable-container')));
+    drake = dragula(Array.prototype.slice.call(document.querySelectorAll('.draggable-container')));
+
+    drake.on('drop',function(el, target, source) {
+       if (target != source) {
+           $.ajax({
+               url: "{{ url_for('budgeto_services.link_keyword_to_category') }}",
+               type: 'post',
+               data: { categoryId: $(target).data('id'),
+                       keywordId: $(el).data('id')
+               }
+           }).done(function() {
+              //do something else
+           });
+       }
+    });
 </script>
 
 {% endblock %}
