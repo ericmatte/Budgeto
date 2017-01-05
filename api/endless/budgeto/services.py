@@ -9,7 +9,15 @@ from endless.budgeto import budgeto_services
 from endless.server.flask import db_session
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category, set_object_attributes
+from models import Keyword
 
+
+@budgeto_services.route('/link-keyword-to-category', methods=['POST'])
+def link_keyword_to_category():
+    keyword = Keyword.query.get(request.values['keywordId'])
+    category = Category.query.get(request.values['categoryId'])
+    keyword.categories = [category]
+    db_session.commit()
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
 def get_transactions():

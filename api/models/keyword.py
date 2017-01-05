@@ -28,8 +28,9 @@ class Keyword(DeclarativeBase, BaseEntity):
         c_dict = {c.category_id: [] for c in Category.get_all()}
         c_dict[-1] = []
         for k in cls.get_all():
-            for c in list(k.categories):
-                c_dict[c.category_id].append(k)
+            if len(k.categories) > 0:
+                for c in k.categories:
+                    c_dict[c.category_id].append(k)
             else:
                 c_dict[-1].append(k)
         return c_dict
