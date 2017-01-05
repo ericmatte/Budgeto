@@ -41,7 +41,8 @@
         <div class="panel-heading">
             <a data-toggle="collapse" href="#{{ value.category.category_id }}">
                 {% if value.category.icon %}<i class="fa {{ value.category.icon }}" aria-hidden="true"></i>{% endif %}
-                <span name="name">{{ value.category.name }}</span> (#<span name="id">{{ value.category.category_id }}</span>)
+                <span name="name">{{ value.category.name }}</span>
+                (<span data-type="keywords-number">{{ keywords[value.category.category_id] | length }}</span>)
                 {% if value.children | length > 0 %}
                 :
                 {% for child_key, child_value in value.children.items() %}
@@ -75,6 +76,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <i class="fa fa-align-justify" aria-hidden="true"></i> Keywords
+                (<span data-type="keywords-number">{{ keywords[-1] | length }}</span>)
             </div>
             <div class="panel-body draggable-container" data-id="-1">
                 {% for k in keywords[-1] %}
@@ -98,6 +100,10 @@
 
     drake.on('drop',function(el, target, source) {
        if (target != source) {
+           var old_category_counter = $("[data-type='keywords-number']:first", $(source).parent().parent());
+           var category_counter = $("[data-type='keywords-number']:first", $(target).parent().parent());
+           old_category_counter.html(parseInt(old_category_counter.html())-1);
+           category_counter.html(parseInt(category_counter.html())+1);
            $.ajax({
                url: "{{ url_for('budgeto_services.link_keyword_to_category') }}",
                type: 'post',
