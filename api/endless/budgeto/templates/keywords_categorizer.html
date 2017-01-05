@@ -76,7 +76,7 @@
             <div class="panel-heading">
                 <i class="fa fa-align-justify" aria-hidden="true"></i> Keywords
             </div>
-            <div class="panel-body draggable-container" id="left">
+            <div class="panel-body draggable-container" data-id="-1">
                 {% for k in keywords[-1] %}
                 {{ create_keyword_div(k) }}
                 {% endfor %}

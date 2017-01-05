@@ -15,9 +15,10 @@ from models import Keyword
 @budgeto_services.route('/link-keyword-to-category', methods=['POST'])
 def link_keyword_to_category():
     keyword = Keyword.query.get(request.values['keywordId'])
-    category = Category.query.get(request.values['categoryId'])
-    keyword.categories = [category]
+    category_id = request.values['categoryId']
+    keyword.categories = [Category.query.get(category_id)] if category_id != '-1' else []
     db_session.commit()
+    return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
 def get_transactions():
