@@ -1,18 +1,18 @@
 from setuptools import setup
 
+# Packages to install in linux
+# sudo apt-get install build-essential libssl-dev libffi-dev python-dev python-dev3
+
 setup(
     name='Flask API',
-    version='1.0',
+    version='1.1',
     long_description=__doc__,
-    packages=['flask-api'],
-    include_package_data=True,
-    zip_safe=False,
     install_requires=[
         'Flask >= 0.11.1',
         'sqlalchemy >= 0.9.9',
         'Flask-SQLAlchemy >= 2.0',
         'PyMySQL >= 0.6.6',
-        'sshtunnel >= 0.1.2'
+        'sshtunnel >= 0.1.2',
         'Jinja2 >= 2.8',
         'MarkupSafe >= 0.23',
         'Werkzeug >= 0.11.10',
@@ -20,5 +20,5 @@ setup(
         'itsdangerous >= 0.24',
         'pytest >= 3.0.3',
         'rsa >= 3.4.2'
-    ]
+   ]
 )

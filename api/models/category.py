@@ -22,7 +22,8 @@ class Category(DeclarativeBase, BaseEntity):
     category_id = Column('category_id', Integer, primary_key=True)
     parent_id = Column('parent_id', ForeignKey('category.category_id'))
 
-    name = Column('name', Unicode(30))
+    name = Column('name', Unicode(45))
+    icon = Column('icon', Unicode(45))
     creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
     update_time = Column('update_time', DateTime, server_default=FetchedValue())
 

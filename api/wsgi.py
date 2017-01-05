@@ -1,6 +1,6 @@
 import os
 os.environ['MODE'] = 'PROD'
 
-if __name__ == "__main__":
-    from endless import app
+from endless.server.flask import app
+if __name__ == '__main__':
     app.run(threaded=True)
