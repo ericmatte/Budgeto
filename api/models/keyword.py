@@ -20,3 +20,16 @@ class Keyword(DeclarativeBase, BaseEntity):
 
     language = relationship('Language')
     categories = None  # back_ref from Category
+
+    @classmethod
+    def get_all_by_category(cls, parent_id=None):
+        """Get all the categories in a hierarchical way"""
+        from models import Category
+        c_dict = {c.category_id: [] for c in Category.get_all()}
+        c_dict[-1] = []
+        for k in cls.get_all():
+            for c in list(k.categories):
+                c_dict[c.category_id].append(k)
+            else:
+                c_dict[-1].append(k)
+        return c_dict
