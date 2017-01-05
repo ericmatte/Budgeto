@@ -15,7 +15,7 @@ class Log(DeclarativeBase, BaseEntity):
     user_id = Column('user_id', ForeignKey('user.user_id'))
 
     action = Column('action', Unicode(128))
-    description = Column('description', Unicode(128))
+    description = Column('description', Unicode(256))
     old_value = Column('old_value', Text)
     new_value = Column('new_value', Text)
     date = Column('date', DateTime)

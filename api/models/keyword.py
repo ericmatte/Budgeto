@@ -14,7 +14,7 @@ class Keyword(DeclarativeBase, BaseEntity):
     keyword_id = Column('keyword_id', Integer, primary_key=True)
     language_id = Column('language_id', ForeignKey('language.language_id'))
 
-    name = Column('name', Unicode(30))
+    name = Column('name', Unicode(45))
     creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
     update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
