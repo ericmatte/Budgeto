@@ -1,6 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import FetchedValue
+from sqlalchemy import and_
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
@@ -14,7 +15,8 @@ class Keyword(DeclarativeBase, BaseEntity):
     keyword_id = Column('keyword_id', Integer, primary_key=True)
     language_id = Column('language_id', ForeignKey('language.language_id'))
 
-    name = Column('name', Unicode(45))
+    value = Column('value', Unicode(256))
+    description = Column('description', Unicode(256))
     creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
     update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
@@ -22,12 +24,12 @@ class Keyword(DeclarativeBase, BaseEntity):
     categories = None  # back_ref from Category
 
     @classmethod
-    def get_all_by_category(cls, parent_id=None):
+    def get_all_by_category(cls):
         """Get all the categories in a hierarchical way"""
         from models import Category
         c_dict = {c.category_id: [] for c in Category.get_all()}
         c_dict[-1] = []
-        for k in cls.get_all():
+        for k in cls.query.filter(and_(cls.value != None, cls.value != '')).all():
             if len(k.categories) > 0:
                 for c in k.categories:
                     c_dict[c.category_id].append(k)

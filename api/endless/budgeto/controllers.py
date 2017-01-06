@@ -5,9 +5,10 @@ from models import Category
 from models import Keyword
 
 
-@budgeto.route('/keywords-editor', methods=['GET'])
-def keywords_editor():
-    return render_template('keywords_editor.html', title="Keywords Editor")
+@budgeto.route('/keywords-creator', methods=['GET'])
+def keywords_creator():
+    remaining_keywords = Keyword.query.filter(Keyword.value == None).all()
+    return render_template('keywords_creator.html', title="Keywords Creator", keywords=remaining_keywords)
 
 
 

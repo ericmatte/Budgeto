@@ -37,7 +37,7 @@ class Category(DeclarativeBase, BaseEntity):
         except exc.NoResultFound:
             try:
                 from models import Keyword
-                keyword = Keyword.query.filter(func.lower(Keyword.name) == name.lower()).one()
+                keyword = Keyword.query.filter(func.lower(Keyword.value) == name.lower()).one()
 
                 # TODO: Apply AI categorizer from keywords intelligence here
                 return keyword.categories[0] if len(keyword.categories) > 0 else None
@@ -57,6 +57,6 @@ class Category(DeclarativeBase, BaseEntity):
         from endless import db_session
         from models import Keyword
         keyword = Keyword()
-        keyword.name = name
+        keyword.value = name
         db_session.add(keyword)
         db_session.commit()
