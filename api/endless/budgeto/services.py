@@ -12,6 +12,22 @@ from models import Bank,  Transaction, User, Category, set_object_attributes
 from models import Keyword
 
 
+@budgeto_services.route('/set-keywords', methods=['POST'])
+def set_keywords():
+    json = request.get_json(silent=True)
+    for key, values in json['keywords'].items():
+        keyword = Keyword.query.get(key)
+        description = keyword.description
+        for i in range(len(values)):
+            keyword.value = values[i]
+            db_session.commit()
+            if i != len(values)-1:
+                keyword = Keyword()
+                keyword.description = description
+                db_session.add(keyword)
+    return HttpResponse('Keywords set!')
+
+
 @budgeto_services.route('/link-keyword-to-category', methods=['POST'])
 def link_keyword_to_category():
     keyword = Keyword.query.get(request.values['keywordId'])
@@ -19,6 +35,7 @@ def link_keyword_to_category():
     keyword.categories = [Category.query.get(category_id)] if category_id != '-1' else []
     db_session.commit()
     return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
+
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
 def get_transactions():
@@ -35,8 +52,8 @@ def fetch_transactions():
 
         return HttpResponse('Transactions received!')
     except BadRequestKeyError as e:
-        HttpErrorResponse(e)  # Log the error
-        return HttpResponse('A field is missing: ' + str(', '.join(e.args)), status=400)
+        return HttpErrorResponse(e, 'A field is missing: ' + str(', '.join(e.args)), status=400)
+
 
 def fetch_transactions_with_db(user, transactions):
     for transaction in transactions:
@@ -61,3 +78,13 @@ def fetch_transactions_with_db(user, transactions):
         set_object_attributes(t, t_dict)
         db_session.commit()
 
+        generate_keyword_from_description(t_dict['description'])
+
+
+def generate_keyword_from_description(description=''):
+    if description != '':
+        if len(Keyword.query.filter(Keyword.description == description).all()) == 0:
+            keyword = Keyword()
+            keyword.description = description
+            db_session.add(keyword)
+            db_session.commit()

@@ -30,7 +30,7 @@
 
 {% macro create_keyword_div(keyword) %}
 <div data-id="{{ keyword.keyword_id }}" class="label label-default keyword">
-    {{ keyword.name or ('&nbsp;' | safe) }}
+    {{ keyword.value or ('&nbsp;' | safe) }}
 </div>
 {% endmacro %}
 

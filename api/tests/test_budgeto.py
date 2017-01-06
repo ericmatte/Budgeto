@@ -1,9 +1,9 @@
-def test_get_transaction(client, dummy_transaction):
-    trans = dummy_transaction.__dict__
-    print('test')
-    assert True
+# def test_get_transaction(client, dummy_transaction):
+#     trans = dummy_transaction.__dict__
+#     print('test')
+#     assert True
 
-def test_set_transaction(client, dummy_transaction):
+def test_fetch_transaction(client):
     data = {'email': 'ericmatte.inbox@gmail.com'}
     with open("resources/test_transactions.txt", 'r') as file:
         data['transactions'] = file.read()

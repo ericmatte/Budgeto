@@ -1,0 +1,124 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<style>
+    table tr td:first-child {
+        text-align: right;
+        vertical-align:middle;
+    }
+    .editable-button {
+        margin-left: 7px;
+    }
+    #keywords-table input {
+        min-width: 300px;
+    }
+    #keywords-table a {
+        display:table-row;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<br>
+<div class="" style="margin-bottom:15px">
+    <button type="button" onclick="save()" class="btn btn-primary">Save</button>
+    <button type="button" onclick="location.reload()" class="btn btn-default">Cancel</button>
+</div>
+
+<table id="keywords-table" class="table table-bordered table-striped" style="clear: both">
+    <thead>
+        <tr>
+            <td width="40%"><b>Description</b></td>
+            <td width="60%"><b>Values</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for keyword in keywords %}
+        <tr>
+            <td>{{ keyword.description }}</td>
+            <td><a href="" data-type="text" data-id="{{ keyword.keyword_id }}" data-title="Enter the keyword value" class="editable editable-click">{{ keyword.description }}</a></td>
+        </tr>
+        {% else %}
+        No keyword pending creation.
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="row">
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript">
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editableform.buttons =
+            '<button type="submit" class="btn btn-primary btn-sm editable-submit"><i class="glyphicon glyphicon-ok"></i></button>' +
+            '<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>' +
+            '<button onclick="duplicateKeyword()" type="button" class="btn btn-default btn-sm editable-button"><i class="glyphicon glyphicon-duplicate"></i> Duplicate</button>' +
+            '<button onclick="deleteKeyword()" type="button" class="btn btn-default btn-sm editable-button"><i class="glyphicon glyphicon-remove"></i> Remove</button>';
+
+    $(document).ready(function() {
+        editable();
+    });
+
+    function editable(object) {
+        object = object != undefined ? object : $('.editable');
+        object.editable({onblur: 'ignore'});
+        object.on('hidden', function (e, reason) {
+            if (reason === 'save' || reason === 'nochange') {
+                var $next = $(this).next().hasClass('editable') ? $(this).next() : $(this).closest('tr').next().find('.editable');
+                setTimeout(function () {
+                    $next.editable('show');
+                }, 50);
+            }
+        });
+    }
+    function duplicateKeyword() {
+        var selectedEditable = $('.editable-open'),
+            textToDuplicate = $("span.editable-container input").val(),
+            id = selectedEditable.data('id'),
+            html = '<a href="" name="keyword-editable" data-type="text" data-id="'+parseInt(id)+
+                '" data-title="Enter the keyword value" class="editable editable-click">'+
+                textToDuplicate+'</a></td>';
+        selectedEditable.editable('hide');
+        selectedEditable.after(html);
+        editable(selectedEditable.next());
+        selectedEditable.editable('show');
+    }
+
+    function deleteKeyword() {
+        var selectedEditable = $('.editable-open');
+        selectedEditable.editable('hide');
+        if (selectedEditable.before().prop("tagName") == 'BR')
+            selectedEditable.before().remove();
+        selectedEditable.remove();
+    }
+
+    function save() {
+        var editedFields = $(".editable.editable-unsaved");
+        data = {keywords: {}};
+        for (i=0; i<editedFields.length; i++) {
+            var id = $(editedFields[i]).data('id'),
+                value = $(editedFields[i]).text();
+            if (data['keywords'][parseInt(id)] == undefined)
+                data['keywords'][parseInt(id)] = [];
+            if (data['keywords'][parseInt(id)].indexOf(value) === -1)
+                data['keywords'][parseInt(id)].push(value);
+        }
+        $.ajax({
+            url: "{{ url_for('budgeto_services.set_keywords') }}",
+            method: 'post',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(data)
+        }).done(function() {
+            location.reload()
+        });
+    }
+</script>
+{% endblock %}
