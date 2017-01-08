@@ -6,7 +6,7 @@ from flask.globals import g
 from flask.signals import appcontext_pushed
 
 from endless import app
-from endless.server.flask import server
+from endless.flask import server
 from models import Transaction
 
 

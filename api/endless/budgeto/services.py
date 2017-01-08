@@ -6,7 +6,7 @@ from flask import request
 from werkzeug.exceptions import BadRequestKeyError
 
 from endless.budgeto import budgeto_services
-from endless.server.flask import db_session
+from endless.flask import db_session
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category, set_object_attributes
 from models import Keyword

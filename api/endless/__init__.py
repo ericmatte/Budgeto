@@ -4,8 +4,8 @@ from flask import url_for
 
 from endless.budgeto.controllers import budgeto
 from endless.budgeto.services import budgeto_services
+from endless.flask import app, db_session
 from endless.main.controllers import main
-from endless.server.flask import app, db_session
 from models.user import User
 
 
