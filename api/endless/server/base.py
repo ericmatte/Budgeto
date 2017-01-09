@@ -1,4 +1,5 @@
 import sqlalchemy.orm.properties
+from sqlalchemy.orm import exc
 from sqlalchemy.sql.functions import func
 
 from endless.server.database import DeclarativeBase
@@ -8,22 +9,20 @@ metadata = DeclarativeBase.metadata
 
 class BaseEntity:
     @classmethod
-    def get(cls, **kwargs):
-        q = cls.query
-        q = cls.apply_filter(q, **kwargs)
-        return q.one()
+    def get(cls, *args, **kwargs):
+        try:
+            return cls.filter(*args, **kwargs).one()
+        except exc.NoResultFound:
+            return None
 
     @classmethod
-    def get_all(cls, **kwargs):
-        q = cls.query
-        q = cls.apply_filter(q, **kwargs)
-        return q.all()
+    def get_all(cls, *args, **kwargs):
+        return cls.filter(*args, **kwargs).all()
 
     # Override in class for specific filtering
     @classmethod
-    def apply_filter(cls, query, **kwargs):
-        query = query.filter_by(**kwargs)
-        return query
+    def filter(cls, *args, **kwargs):
+        return cls.query.filter(*args).filter_by(**kwargs)
 
     @classmethod
     def apply_sorting(cls, query, **kw):

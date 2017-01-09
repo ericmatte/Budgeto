@@ -8,6 +8,7 @@ app = Flask(__name__)
 selected_config_file = ('../../deployment_config/config_{0}.cfg'
                         .format('prod' if os.environ.get('MODE', '') == 'PROD' else 'debug'))
 app.config.from_pyfile(selected_config_file)
+app.secret_key = 'f3c82c4584527c7ba650b18c38237cca'
 
 # Database init
 db_session, server = init_db(app.config)

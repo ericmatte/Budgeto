@@ -8,7 +8,7 @@ from werkzeug.exceptions import BadRequestKeyError
 from endless.budgeto import budgeto_services
 from endless.flask import db_session
 from lib.response_handler import HttpResponse, HttpErrorResponse
-from models import Bank,  Transaction, User, Category, set_object_attributes
+from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
 from models import Keyword
 
 
@@ -16,23 +16,23 @@ from models import Keyword
 def set_keywords():
     json = request.get_json(silent=True)
     for key, values in json['keywords'].items():
-        keyword = Keyword.query.get(key)
+        keyword = Keyword.get(keyword_id=key)
         description = keyword.description
         for i in range(len(values)):
             keyword.value = values[i]
             db_session.commit()
             if i != len(values)-1:
-                keyword = Keyword()
-                keyword.description = description
+                # Creating new keyword for multiple values
+                keyword = set_attributes(Keyword(), description=description)
                 db_session.add(keyword)
     return HttpResponse('Keywords set!')
 
 
 @budgeto_services.route('/link-keyword-to-category', methods=['POST'])
 def link_keyword_to_category():
-    keyword = Keyword.query.get(request.values['keywordId'])
+    keyword = Keyword.get(keyword_id=request.values['keywordId'])
     category_id = request.values['categoryId']
-    keyword.categories = [Category.query.get(category_id)] if category_id != '-1' else []
+    keyword.categories = [Category.get(category_id=category_id)] if category_id != '-1' else []
     db_session.commit()
     return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
 
@@ -75,7 +75,7 @@ def fetch_transactions_with_db(user, transactions):
         transaction_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_string))
 
         t = Transaction.by_uuid(transaction_uuid, True)
-        set_object_attributes(t, t_dict)
+        set_attributes(t, **t_dict)
         db_session.commit()
 
         generate_keyword_from_description(t_dict['description'])
@@ -83,8 +83,5 @@ def fetch_transactions_with_db(user, transactions):
 
 def generate_keyword_from_description(description=''):
     if description != '':
-        if len(Keyword.query.filter(Keyword.description == description).all()) == 0:
-            keyword = Keyword()
-            keyword.description = description
-            db_session.add(keyword)
-            db_session.commit()
+        if len(Keyword.get_all(Keyword.description == description)) == 0:
+            add_to_db(Keyword(), description=description)
