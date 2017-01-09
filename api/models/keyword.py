@@ -7,6 +7,7 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
 
 from endless.server.base import DeclarativeBase, BaseEntity
+from models import Category
 
 
 class Keyword(DeclarativeBase, BaseEntity):
@@ -36,3 +37,17 @@ class Keyword(DeclarativeBase, BaseEntity):
             else:
                 c_dict[-1].append(k)
         return c_dict
+
+    @classmethod
+    def get_all_hierarchical(cls, parent_id=None):
+        """Get all the categories in a hierarchical way"""
+        categories = {}
+        for category in Category.get_all(parent_id=parent_id):
+            keywords = cls.get_all(cls.categories.any(category_id=category.category_id))
+            children_categories = cls.get_all_hierarchical(category.category_id)
+            keywords_count = len(keywords) + sum([c['count'] for k, c in children_categories.items()])
+            categories[category.category_id] = {'category': category,
+                                                'count': keywords_count,
+                                                'keywords': keywords,
+                                                'children': children_categories}
+        return categories

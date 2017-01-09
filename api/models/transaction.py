@@ -51,12 +51,12 @@ class Transaction(DeclarativeBase, BaseEntity):
                 return None
 
     @classmethod
-    def get_all_hierarchical(cls, parent_id=None):
+    def get_all_hierarchical(cls, user_id, parent_id=None):
         """Get all the categories in a hierarchical way"""
         categories = {}
         for category in Category.get_all(parent_id=parent_id):
-            transactions = cls.get_all(category_id=category.category_id)
-            children_categories = cls.get_all_hierarchical(category.category_id)
+            transactions = cls.get_all(user_id=user_id, category_id=category.category_id)
+            children_categories = cls.get_all_hierarchical(user_id, category.category_id)
             transactions_count = len(transactions) + sum([c['count'] for k, c in children_categories.items()])
             categories[category.category_id] = {'category': category,
                                                 'count': transactions_count,
