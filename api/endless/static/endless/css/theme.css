@@ -3,6 +3,11 @@
     font-weight: bolder;
 }
 
+.sidebar hr {
+    border-top: 1px solid rgba(180, 180, 180, 0.3);
+    right: 10%;
+    width: 80%;
+}
 
 
 

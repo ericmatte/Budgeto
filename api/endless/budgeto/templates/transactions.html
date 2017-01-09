@@ -1,0 +1,47 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="card card-plain">
+    <div class="card-header" data-background-color="purple">
+        <h4 class="title">Your banking transactions</h4>
+        <p class="category">From the beginning</p>
+    </div>
+    <div class="card-content table-responsive">
+        <table class="table table-hover">
+            <thead><tr>
+                <th>ID</th>
+                <th>Bank</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr></thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.transaction_id }}</td>
+                    <td>{{ t.bank.name }}</td>
+                    <td><i class="fa {{ t.category.icon }}" aria-hidden="true"></i> {{ t.category.name }}</td>
+                    <td>{{ t.description }}</td>
+                    <td>{{ t.amount }}</td>
+                    <td>{{ t.date }}</td>
+                </tr>
+                {% else %}
+                You currently have no transactions.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

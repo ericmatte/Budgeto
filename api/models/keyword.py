@@ -29,7 +29,7 @@ class Keyword(DeclarativeBase, BaseEntity):
         from models import Category
         c_dict = {c.category_id: [] for c in Category.get_all()}
         c_dict[-1] = []
-        for k in cls.query.filter(and_(cls.value != None, cls.value != '')).all():
+        for k in cls.get_all(and_(cls.value != None, cls.value != '')):
             if len(k.categories) > 0:
                 for c in k.categories:
                     c_dict[c.category_id].append(k)

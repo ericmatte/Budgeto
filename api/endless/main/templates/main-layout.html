@@ -54,18 +54,28 @@
 					{% macro option(title, icon, url) %}
 	                <li {% if request.path == url %}class="active"{% endif %}>
 	                    <a href="{{ url }}">
-                            {{ icon | safe }}
+							<i class="material-icons">{{ icon }}</i>
 	                        <p>{{ title }}</p>
 	                    </a>
 	                </li>
                     {% endmacro %}
 
-                    {{ option('Keywords Categorizer', '<i class="material-icons">storage</i>', url_for("budgeto.keywords_categorizer")) }}
+                    {{ option('Admin Dashboard', 'dashboard', url_for("main.home")) }}
 
-                    {{ option('Keywords Creator', '<i class="material-icons">loyalty</i>', url_for("budgeto.keywords_creator")) }}
+					<hr>
+
+                    {{ option('Keywords Categorizer', 'storage', url_for("budgeto.keywords_categorizer")) }}
+
+                    {{ option('Keywords Creator', 'loyalty', url_for("budgeto.keywords_creator")) }}
+
+					<hr>
+
+                    {{ option('Transactions', 'trending_up', url_for("budgeto.transactions")) }}
+
+                    {{ option('Budget', 'attach_money', url_for("budgeto.budget")) }}
 
 					<li class="bottom-option">
-                        <a href="http://demos.creative-tim.com/material-dashboard/examples/dashboard.html" target="_blank">
+                        <a href="http://demos.creative-tim.com/material-dashboard/documentation/tutorial-components.html" target="_blank">
 	                        <i class="material-icons">web</i>
 	                        <p>Template Demo</p>
 	                    </a>
