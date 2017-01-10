@@ -39,15 +39,24 @@ class Keyword(DeclarativeBase, BaseEntity):
         return c_dict
 
     @classmethod
-    def get_all_hierarchical(cls, parent_id=None):
+    def get_all_hierarchically(cls):
         """Get all the categories in a hierarchical way"""
-        categories = {}
-        for category in Category.get_all(parent_id=parent_id):
-            keywords = cls.get_all(cls.categories.any(category_id=category.category_id))
-            children_categories = cls.get_all_hierarchical(category.category_id)
-            keywords_count = len(keywords) + sum([c['count'] for k, c in children_categories.items()])
-            categories[category.category_id] = {'category': category,
-                                                'count': keywords_count,
-                                                'keywords': keywords,
-                                                'children': children_categories}
-        return categories
+        def get_category_keywords(category, keywords):
+            return [k for k in keywords if category in k.categories]
+
+        def get_children(parent_id, categories, keywords):
+            node_categories = {}
+            for category in categories:
+                if category.parent_id == parent_id:
+                    children_categories = get_children(category.category_id, categories, keywords)
+                    node_keywords = get_category_keywords(category, keywords)
+                    keywords_count = len(node_keywords) + sum([c['count'] for k, c in children_categories.items()])
+                    node_categories[category.category_id] = {'category': category,
+                                                             'children': children_categories,
+                                                             'count': keywords_count,
+                                                             'keywords': node_keywords}
+            return node_categories
+
+        categories = Category.get_all()
+        keywords = Keyword.get_all()
+        return get_children(None, categories, keywords)

@@ -15,7 +15,7 @@
 
 {% macro create_categories_panels(cat_dict) %}
 {% for key, value in cat_dict recursive %}
-<div class="{% if value.category.parent_id is none %}parent-panel{% endif %}">
+<div class="{% if value.category.parent_id is none %}parent-panel col-md-6{% endif %}">
     <div class="panel panel-default">
         <div class="panel-heading">
             <a data-toggle="collapse" href="#{{ value.category.category_id }}">
@@ -38,11 +38,10 @@
                         {% for t in value.transactions %}
                         {% if t.category_id == value.category.category_id %}
                         <tr>
-                            <td>{{ t.transaction_id }}</td>
-                            <td>{{ t.bank.name }}</td>
                             <td>{{ t.description }}</td>
                             <td>{{ t.amount }}</td>
                             <td>{{ t.date }}</td>
+                            <td>{{ t.bank.name }}</td>
                         </tr>
                         {% endif %}
                         {% endfor %}

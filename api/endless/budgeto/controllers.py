@@ -1,4 +1,6 @@
 import copy
+
+from flask import g
 from flask import render_template
 from flask import request
 from flask import session
@@ -12,7 +14,7 @@ from models import User, Transaction
 
 @budgeto.route('/keywords-categorizer', methods=['GET'])
 def keywords_categorizer():
-    keywords_tree = Keyword.get_all_hierarchical()
+    keywords_tree = Keyword.get_all_hierarchically()
     return render_template('keywords_categorizer.html', title="Keywords Categorizer",
                            keywords_tree=keywords_tree,
                            unassociated_keywords=Keyword.get_all(and_(~Keyword.categories.any(), Keyword.value != None)))
@@ -26,17 +28,14 @@ def keywords_creator():
 
 @budgeto.route('/transactions', methods=['GET'])
 def transactions():
-    session['email'] = 'ericmatte.inbox@gmail.com'
-    user = User.get(email=session['email'])
+    user = User.get(email=g.email)
     return render_template('transactions.html', title="Transactions",
                            transactions=user.transactions)
 
 
 @budgeto.route('/budget', methods=['GET'])
 def budget():
-    session['email'] = 'ericmatte.inbox@gmail.com'
-    user = User.get(email=session['email'])
-    transactions_tree = Transaction.get_all_hierarchical(user.user_id)
+    transactions_tree = Transaction.get_all_hierarchically(g.email)
     return render_template('budget.html', title="Budget",
                            transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
 

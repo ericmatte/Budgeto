@@ -6,15 +6,12 @@ type = ['','info','success','warning','danger'];
 
 endless = {
 
-	showNotification: function(from, align){
-    	color = Math.floor((Math.random() * 4) + 1);
-
+	showNotification: function(from, align, icon, message, type){
     	$.notify({
-        	icon: "notifications",
-        	message: "Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer."
-
+        	icon: icon || "notifications",
+        	message: message
         },{
-            type: type[color],
+            type: type,
             timer: 4000,
             placement: {
                 from: from,
