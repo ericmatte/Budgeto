@@ -12,10 +12,10 @@ from models import Transaction
 
 @pytest.fixture
 def client(request):
-    app.config['TESTING'] = True
+    app.config.update({ 'TESTING': True })
 
     def teardown():
-        server.stop()
+        pass
     request.addfinalizer(teardown)
     return app.test_client()
 
@@ -23,9 +23,10 @@ def client(request):
 @contextmanager
 def set_current_user():
     def handler(sender, **kwargs):
-        g.user = 'ericmatte.inbox@gmail.com'
+        g.email = 'ericmatte.inbox@gmail.com'
     with appcontext_pushed.connected_to(handler, app):
-        yield
+        with app.app_context():
+            yield
 
 
 @pytest.fixture

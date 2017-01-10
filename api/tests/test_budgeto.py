@@ -5,7 +5,7 @@
 
 def test_fetch_transaction(client):
     data = {'email': 'ericmatte.inbox@gmail.com'}
-    with open("resources/test_transactions.txt", 'r') as file:
+    with open("tests/resources/test_transactions.txt", 'r') as file:
         data['transactions'] = file.read()
 
     response = client.post('/budgeto/fetch-transactions', data=data)

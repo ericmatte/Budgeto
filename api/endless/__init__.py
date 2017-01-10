@@ -1,5 +1,6 @@
 from flask import g
 from flask import redirect
+from flask import session
 from flask import url_for
 
 from endless.budgeto.controllers import budgeto
@@ -11,9 +12,8 @@ from models.user import User
 
 @app.before_request
 def get_current_user():
-    g.user = getattr(g, 'user', None)
-    user = User.by_email('email')
-    db_session.commit()
+    session['email'] = 'ericmatte.inbox@gmail.com'
+    g.email = session['email']
 
 
 @app.route('/', methods=['GET'])

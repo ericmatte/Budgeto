@@ -28,6 +28,33 @@ def set_keywords():
     return HttpResponse('Keywords set!')
 
 
+@budgeto_services.route('/create-keywords', methods=['POST'])
+def create_keywords():
+    values = request.values['keyword'].split(',')
+    keywords = Keyword.get_all(Keyword.value.in_(values))
+    if len(keywords) == 0:
+        keywords = [add_to_db(Keyword(), value=v) for v in values]
+        return HttpResponse({'keywords': [{'value': k.value, 'id': k.keyword_id} for k in keywords]}, 202)
+    else:
+        if len(keywords[0].categories) > 0:
+            return HttpResponse('Keyword "{0}" already exists in category "{1}"!'
+                                .format(keywords[0].value, keywords[0].categories[0].name), 302)
+        else:
+            return HttpResponse('Keyword "{0}" already exists!'.format(keywords[0].value), 302)
+
+
+@budgeto_services.route('/delete-keywords', methods=['POST'])
+def delete_keywords():
+    ids = request.values['keywordIds'].split(',')
+    keywords = Keyword.get_all(Keyword.keyword_id.in_(ids))
+    for keyword in keywords:
+        keyword.categories = []
+        db_session.delete(keyword)
+    db_session.commit()
+    return HttpResponse('Keywords deleted.')
+
+
+
 @budgeto_services.route('/link-keyword-to-category', methods=['POST'])
 def link_keyword_to_category():
     keyword = Keyword.get(keyword_id=request.values['keywordId'])

@@ -10,6 +10,7 @@ setup(
     install_requires=[
         'pip >= 9.0.1'
         'Flask >= 0.11.1',
+        'blinker >= 1.4',
         'sqlalchemy >= 0.9.9',
         'Flask-SQLAlchemy >= 2.0',
         'PyMySQL >= 0.6.6',

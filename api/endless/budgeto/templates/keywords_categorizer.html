@@ -23,6 +23,9 @@
         text-shadow: 1px 1px 1px #ccc;
         font-size: 0.9em;
     }
+    .checkbox label {
+        color: rgba(0, 0, 0, 0.58);
+    }
 </style>
 {% endblock %}
 
@@ -71,15 +74,34 @@
 
 <div class="row">
     <div class="col-lg-3">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <i class="fa fa-align-justify" aria-hidden="true"></i> Keywords
-                (<span data-type="keywords-number">{{ unassociated_keywords | length }}</span>)
+        <div>
+            <div id="unassociated-keywords-panel" class="panel panel-primary">
+                <div class="panel-heading">
+                    <button class="btn btn-white btn-round btn-just-icon pull-right" title="Add keywords" data-toggle="modal" data-target="#add-keyword">
+                        <i class="material-icons">add</i>
+                    </button>
+                    <i class="fa fa-align-justify" aria-hidden="true"></i> Keywords
+                    (<span data-type="keywords-number">{{ unassociated_keywords | length }}</span>)
+                </div>
+                <div class="panel-body draggable-container" data-id="-1">
+                    {% for k in unassociated_keywords %}
+                    {{ create_keyword_div(k) }}
+                    {% endfor %}
+                </div>
             </div>
-            <div class="panel-body draggable-container" data-id="-1">
-                {% for k in unassociated_keywords %}
-                {{ create_keyword_div(k) }}
-                {% endfor %}
+        </div>
+
+        <div>
+            <div id="trash-panel" class="panel panel-danger">
+                <div class="panel-heading">
+                    <button id="empty-trash" class="btn btn-white btn-round btn-just-icon pull-right" title="Delete all keywords in trash">
+                        <i class="material-icons">delete_forever</i>
+                    </button>
+                    <i class="fa fa-trash" aria-hidden="true"></i> Trash
+                    (<span data-type="keywords-number">0</span>)
+                </div>
+                <div id="trash" class="panel-body draggable-container">
+                </div>
             </div>
         </div>
     </div>
@@ -89,12 +111,91 @@
 
 {% endblock %}
 
+
+{% block modals %}
+<div id="add-keyword" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="keyword-form" action="{{ url_for('budgeto_services.create_keywords') }}" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="material-icons">loyalty</i> Add keywords</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Keywords (separated by commas)</label>
+                            <input type="text" class="form-control" name="keyword" required>
+                        </div>
+                        <div class="checkbox">
+                            <label onchange="window.location='{{ url_for("budgeto.keywords_creator") }}'">
+                            <input type="checkbox">
+                            Create keywords from a transaction's description
+                            </label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><i class="material-icons">add</i> Add</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
 {% block js %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
     drake = dragula(Array.prototype.slice.call(document.querySelectorAll('.draggable-container')));
+
+    $("#keyword-form").submit(function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: $(this).attr("method"),
+            url: $(this).attr("action"),
+            data: $(this).serialize(),
+            success: function (data) {
+                for (i=0; i<data.keywords.length; i++) {
+                    $("[data-id='-1']").append('<div data-id="'+data.keywords[i].id+'" class="label label-default keyword">'+data.keywords[i].value+'</div>');
+                }
+                var category_counter = $("#unassociated-keywords-panel [data-type='keywords-number']");
+                category_counter.html(parseInt(category_counter.html())+1);
+                endless.showNotification('bottom', 'right', 'done', 'Keyword "'+data.value+'" added successfully!', 'success');
+            },
+            error: function(e) {
+                endless.showNotification('bottom', 'right', 'error', e.responseJSON.description, 'danger');
+            },
+            complete: function () {
+                $('#add-keyword').modal('hide');
+            }
+        });
+    });
+
+    $("#empty-trash").click(function() {
+        var keywords_selector = $("#trash .label"),
+            keywords = [];
+        for (i=0; i<keywords_selector.length; i++) {
+            keywords.push($(keywords_selector[i]).data('id'));
+        }
+        $.ajax({
+            url: "{{ url_for('budgeto_services.delete_keywords') }}",
+            type: 'post',
+            data: { keywordIds: keywords.join() },
+            success: function () {
+                endless.showNotification('bottom', 'right', 'done', 'Keywords removed!', 'info');
+            },
+            error: function(e) {
+                console.log(e);
+                endless.showNotification('bottom', 'right', 'error', 'Unable to remove the keywords', 'danger');
+            },
+            complete: function() {
+                $("#trash").html('');
+            }
+       });
+    });
 
     var draggingObject = undefined;
     drake.on('drop',function(el, target, source) {
@@ -103,15 +204,17 @@
            var category_counter = $("[data-type='keywords-number']:first", $(target).parent().parent());
            old_category_counter.html(parseInt(old_category_counter.html())-1);
            category_counter.html(parseInt(category_counter.html())+1);
-           $.ajax({
-               url: "{{ url_for('budgeto_services.link_keyword_to_category') }}",
-               type: 'post',
-               data: { categoryId: $(target).data('id'),
-                       keywordId: $(el).data('id')
-               }
-           }).done(function() {
-              //do something else
-           });
+           if ($(target).data('id') != undefined) {
+               $.ajax({
+                   url: "{{ url_for('budgeto_services.link_keyword_to_category') }}",
+                   type: 'post',
+                   data: { categoryId: $(target).data('id'),
+                           keywordId: $(el).data('id')
+                   }
+               }).done(function() {
+                  //do something else
+               });
+           }
        }
     });
 
