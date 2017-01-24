@@ -1,4 +1,5 @@
 from sqlalchemy import Column, func, or_
+from sqlalchemy import FetchedValue
 from sqlalchemy import Table
 from sqlalchemy.orm import exc, relationship, relation
 from sqlalchemy.schema import ForeignKey
@@ -21,9 +22,11 @@ class User(DeclarativeBase, BaseEntity):
 
     first_name = Column('first_name', Unicode(45))
     last_name = Column('last_name', Unicode(45))
+    picture = Column('picture', Unicode(256))
     email = Column('email', String(128))
-    creation_time = Column('creation_time', DateTime)
-    update_time = Column('update_time', DateTime)
+    google_id = Column('google_id', String(30))
+    creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
+    update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
     language = relationship('Language')
     transactions = relation('Transaction')
@@ -33,12 +36,9 @@ class User(DeclarativeBase, BaseEntity):
     def __repr__(self):
         return ('<User: "%s %s" <%s>>' % (self.first_name, self.last_name, self.email)).encode('utf-8')
 
-    @classmethod
-    def by_email(cls, email):
-        try:
-            return cls.query.filter(cls.email == email).one()
-        except exc.NoResultFound:
-            return None
+    @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
 
     @classmethod
     def apply_filter(cls, query, **kwargs):

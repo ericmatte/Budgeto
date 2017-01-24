@@ -8,8 +8,9 @@ setup(
     version='1.1',
     long_description=__doc__,
     install_requires=[
-        'pip >= 9.0.1'
+        'pip >= 9.0.1',
         'Flask >= 0.11.1',
+        'oauth2client',
         'blinker >= 1.4',
         'sqlalchemy >= 0.9.9',
         'Flask-SQLAlchemy >= 2.0',

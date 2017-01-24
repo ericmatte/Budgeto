@@ -7,12 +7,14 @@ from flask import session
 from sqlalchemy import and_
 
 from endless.budgeto import budgeto
+from endless.main.services import login_required
 from models import Category
 from models import Keyword
 from models import User, Transaction
 
 
 @budgeto.route('/keywords-categorizer', methods=['GET'])
+@login_required
 def keywords_categorizer():
     keywords_tree = Keyword.get_all_hierarchically()
     return render_template('keywords_categorizer.html', title="Keywords Categorizer",
@@ -21,21 +23,23 @@ def keywords_categorizer():
 
 
 @budgeto.route('/keywords-creator', methods=['GET'])
+@login_required
 def keywords_creator():
     remaining_keywords = Keyword.get_all(value=None)
     return render_template('keywords_creator.html', title="Keywords Creator", keywords=remaining_keywords)
 
 
 @budgeto.route('/transactions', methods=['GET'])
+@login_required
 def transactions():
-    user = User.get(email=g.email)
     return render_template('transactions.html', title="Transactions",
-                           transactions=user.transactions)
+                           transactions=g.user.transactions)
 
 
 @budgeto.route('/budget', methods=['GET'])
+@login_required
 def budget():
-    transactions_tree = Transaction.get_all_hierarchically(g.email)
+    transactions_tree = Transaction.get_all_hierarchically(g.user)
     return render_template('budget.html', title="Budget",
                            transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
 

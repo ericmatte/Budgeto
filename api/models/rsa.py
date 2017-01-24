@@ -1,4 +1,5 @@
 from sqlalchemy import Column
+from sqlalchemy import FetchedValue
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Unicode, DateTime
 
@@ -11,6 +12,6 @@ class Rsa(DeclarativeBase, BaseEntity):
     rsa_id = Column('rsa_id', Integer, primary_key=True)
 
     public_key = Column('public_key', Unicode(4096))
-    creation_date = Column('creation_date', DateTime)
+    creation_date = Column('creation_date', DateTime, server_default=FetchedValue())
 
     device = relationship('Device')

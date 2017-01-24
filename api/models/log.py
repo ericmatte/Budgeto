@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import DateTime
+from sqlalchemy import FetchedValue
 from sqlalchemy import ForeignKey
 from sqlalchemy import Text
 from sqlalchemy.orm import relationship
@@ -18,6 +19,6 @@ class Log(DeclarativeBase, BaseEntity):
     description = Column('description', Unicode(256))
     old_value = Column('old_value', Text)
     new_value = Column('new_value', Text)
-    date = Column('date', DateTime)
+    date = Column('date', DateTime, server_default=FetchedValue())
 
     user = relationship('User')

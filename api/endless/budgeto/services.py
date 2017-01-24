@@ -66,7 +66,7 @@ def link_keyword_to_category():
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
 def get_transactions():
-    user = User.by_email(request.values['email'])
+    user = User.get(email=request.values['email'])
     return HttpResponse(user.transactions)
 
 
@@ -74,7 +74,7 @@ def get_transactions():
 def fetch_transactions():
     try:
         data = request.form
-        user = User.by_email(data['email'])
+        user = User.get(email=data['email'])
         fetch_transactions_with_db(user, json.loads(data['transactions']))
 
         return HttpResponse('Transactions received!')

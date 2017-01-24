@@ -2,6 +2,7 @@ from operator import and_
 
 from flask import g
 from sqlalchemy import Column
+from sqlalchemy import FetchedValue
 from sqlalchemy import Text
 from sqlalchemy.orm import exc, relationship
 from sqlalchemy.schema import ForeignKey
@@ -18,7 +19,7 @@ class Translation(DeclarativeBase, BaseEntity):
 
     value = Column('value', Text)
     translated_value = Column('translated_value', Text)
-    update_time = Column('update_time', DateTime)
+    update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
     language = relationship('Language')
 

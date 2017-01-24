@@ -1,19 +1,28 @@
+from functools import wraps
+
 from flask import g
 from flask import redirect
+from flask import request
 from flask import session
 from flask import url_for
 
 from endless.budgeto.controllers import budgeto
 from endless.budgeto.services import budgeto_services
 from endless.flask import app, db_session
+from endless.main.services import main_services
 from endless.main.controllers import main
 from models.user import User
 
-
 @app.before_request
 def get_current_user():
-    session['email'] = 'ericmatte.inbox@gmail.com'
-    g.email = session['email']
+    if 'email' in session:
+        g.user = User.get(email=session['email'])
+    else:
+        g.user = None
+
+    if '127.0.0.1' in request.host:
+        # In order for Google Sign in to works
+        return redirect(request.url.replace('127.0.0.1', 'localhost'))
 
 
 @app.route('/', methods=['GET'])
@@ -28,5 +37,6 @@ def shutdown_session(exception=None):
 
 # Blueprints
 app.register_blueprint(main, url_prefix='/endless')
+app.register_blueprint(main_services, url_prefix='/api')
 app.register_blueprint(budgeto, url_prefix='/budgeto')
 app.register_blueprint(budgeto_services, url_prefix='/budgeto')

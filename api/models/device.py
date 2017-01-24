@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import DateTime
+from sqlalchemy import FetchedValue
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode
@@ -17,7 +18,7 @@ class Device(DeclarativeBase, BaseEntity):
     model = Column('model', Unicode(128))
     version = Column('version', Unicode(32))
     mac_address = Column('mac_address', Unicode(32))
-    update_time = Column('update_time', DateTime)
+    update_time = Column('update_time', DateTime, server_default=FetchedValue())
 
     rsa = relationship('Rsa')
     users = None  # back_ref from User
