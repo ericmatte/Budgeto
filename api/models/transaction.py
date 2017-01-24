@@ -51,7 +51,7 @@ class Transaction(DeclarativeBase, BaseEntity):
                 return None
 
     @classmethod
-    def get_all_hierarchically(cls, user_email):
+    def get_all_hierarchically(cls, user):
         """Get all the categories in a hierarchical way"""
         get_category_transactions = lambda category_id, transactions: [t for t in transactions if t.category_id == category_id]
 
@@ -68,7 +68,5 @@ class Transaction(DeclarativeBase, BaseEntity):
                                                              'transactions': node_transactions}
             return node_categories
 
-        from models import User
         categories = Category.get_all()
-        user = User.get(email=user_email)
         return get_children(None, categories, user.transactions)

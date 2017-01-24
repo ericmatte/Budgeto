@@ -1,0 +1,28 @@
+{% extends "main-layout.html" %}
+
+{% block body %}
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+{% endblock %}
+
+
+{% block js %}
+<script type="application/javascript">
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+
+        var id_token = googleUser.getAuthResponse().id_token;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '{{ url_for("main_services.google_token_signin") }}');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            console.log('Signed in as: ' + xhr.responseText);
+            window.location = "{{ request.args.get('redirect', '') }}";
+        };
+        xhr.send('idtoken=' + id_token);
+    }
+</script>
+{% endblock %}
