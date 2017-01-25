@@ -15,10 +15,7 @@ from models.user import User
 
 @app.before_request
 def get_current_user():
-    if 'email' in session:
-        g.user = User.get(email=session['email'])
-    else:
-        g.user = None
+    g.user = User.get(email=session['email']) if session.get('email') else None
 
     if '127.0.0.1' in request.host:
         # In order for Google Sign in to works

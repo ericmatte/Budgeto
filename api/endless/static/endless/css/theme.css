@@ -9,7 +9,11 @@
     width: 80%;
 }
 
-
+.dropdown-menu li > b,
+.dropdown-menu li > label {
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 
 

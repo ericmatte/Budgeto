@@ -8,6 +8,7 @@
     #transactions table {
         margin-bottom: 0;
     }
+
 </style>
 {% endblock %}
 
@@ -60,7 +61,7 @@
 {% endfor %}
 {% endmacro %}
 
-<div id="transactions">
+<div id="transactions" class="row">
     {{ create_categories_panels(transactions_tree.items()) }}
 </div>
 
@@ -68,7 +69,8 @@
 {% endblock %}
 
 {% block js %}
+<script src="{{ url_for('static', filename='bootstrap-mansonry/masonry.pkgd.min.js') }}"></script>
 <script type="text/javascript">
-
+    $('#transactions').masonry({ itemSelector: '.parent-panel' });
 </script>
 {% endblock %}

@@ -1,5 +1,8 @@
 import time
 from functools import wraps
+
+from flask import render_template
+
 from endless.flask import app, db_session
 from flask import g
 from flask import redirect
@@ -23,9 +26,25 @@ def login_required(f):
     return decorated_function
 
 
+def required_roles(*roles):
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not any([r not in roles for r in g.user.roles]):
+                return render_template('unauthorized.html')
+            return f(*args, **kwargs)
+        return wrapped
+    return wrapper
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
 @main_services.route('/logout', methods=['POST'])
 def logout():
-    del session['email']
+    session['email'] = None
     return HttpResponse('Success logout!')
 
 

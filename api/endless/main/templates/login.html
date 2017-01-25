@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<body lang="en">
 <head>
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
@@ -104,6 +104,26 @@
             display: block;
             margin-top: 10px;
         }
+
+        html {
+            background: url({{ url_for('static', filename='endless/img/login-wallpaper.jpg') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        body, html {
+            height: 100%;
+        }
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .login-title {
+            color: #ffffff;
+        }
+        .row {
+            margin-top: 50px;
+        }
     </style>
 
 </head>
@@ -124,13 +144,15 @@
                             <!--<input type="checkbox" value="remember-me">-->
                             <!--Remember me-->
                         <!--</label>-->
-                        <div id="signin">
-                        </div>
-                        <a href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20login" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                        <br>
+                        <div id="signin"></div>
+                        <br>
+                        <a href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20login" class="pull-right need-help"><b>Need help?</b></a>
+                        <span class="clearfix"></span>
                     </form>
                 </div>
 
-                <a href="#" class="text-center new-account">Create an account </a>
+                <a href="#" class="text-center new-account" onclick="endless.showNotification('top','right',undefined,'Use the Sign in with Google button to connect.','Tip!')"><b>Create an account</b></a>
             </div>
         </div>
     </div>
@@ -171,7 +193,7 @@
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 console.log('Signed in as: ' + xhr.responseText);
-                window.location = "{{ request.args.get('redirect', url_for('main.home')) }}";
+                window.location = "{{ request.args.get('redirect', url_for('budgeto.budget')) }}";
             };
             xhr.send('idtoken=' + id_token);
         }
@@ -181,7 +203,7 @@
         function renderButton() {
           gapi.signin2.render('signin', {
             'scope': 'profile email',
-            'width': 240,
+            'width': 300,
             'height': 50,
             'longtitle': true,
             'onsuccess': onSuccess,
@@ -190,4 +212,5 @@
         }
     </script>
 
-</html>}
+</body>
+</html>
