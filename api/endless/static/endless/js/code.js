@@ -12,7 +12,7 @@ endless = {
         	message: message
         },{
             type: type,
-            timer: 4000,
+            timer: 3000,
             placement: {
                 from: from,
                 align: align

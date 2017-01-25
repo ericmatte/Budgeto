@@ -7,14 +7,15 @@ from flask import session
 from sqlalchemy import and_
 
 from endless.budgeto import budgeto
-from endless.main.services import login_required
+from endless.main.services import login_required, required_roles
 from models import Category
 from models import Keyword
-from models import User, Transaction
+from models import Transaction
 
 
 @budgeto.route('/keywords-categorizer', methods=['GET'])
 @login_required
+@required_roles('admin')
 def keywords_categorizer():
     keywords_tree = Keyword.get_all_hierarchically()
     return render_template('keywords_categorizer.html', title="Keywords Categorizer",
@@ -24,6 +25,7 @@ def keywords_categorizer():
 
 @budgeto.route('/keywords-creator', methods=['GET'])
 @login_required
+@required_roles('admin')
 def keywords_creator():
     remaining_keywords = Keyword.get_all(value=None)
     return render_template('keywords_creator.html', title="Keywords Creator", keywords=remaining_keywords)
@@ -36,6 +38,7 @@ def transactions():
                            transactions=g.user.transactions)
 
 
+@budgeto.route('/', methods=['GET'])
 @budgeto.route('/budget', methods=['GET'])
 @login_required
 def budget():
