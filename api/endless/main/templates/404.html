@@ -3,9 +3,12 @@
 <head>
     <meta property="og:title" content="{{ title or 'Endless' }}"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="http://endlessapi.ddns.net:8080/"/>
-    <meta property="og:image" content="http://endlessapi.ddns.net:8080/static/endless/img/favicon.png"/>
-    <meta property="og:site_name" content="Endless"/>
+    <meta property="og:url" content="{{ request.url + '/' }}"/>
+    <meta property="og:image" content="http://endlessapi.ddns.net:8080/static/endless/img/favicon_xl.png"/>
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:site_name" content="Endless Budgeto"/>
     <meta property="og:description" content="A free budget app"/>
 
 	<meta charset="utf-8" />
