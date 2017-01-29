@@ -65,7 +65,7 @@
         <li><div class="divider"></div></li>
         <li><a class="subheader">Your account</a></li>
         <li><a class="waves-effect waves-teal" href="#"><i class="material-icons">settings</i>Settings</a></li>
-        <li><a class="waves-effect waves-teal" href="#" onclick="signOut();"><i class="material-icons">exit_to_app</i>Signout</a></li>
+        <li><a class="waves-effect waves-teal" href="" onclick="signOut();"><i class="material-icons">exit_to_app</i>Signout</a></li>
         <li><a class="waves-effect waves-teal" href="#"><i class="material-icons">help</i>Help & feedback</a></li>
     </ul>
 
@@ -113,6 +113,27 @@
     <script src="{{ url_for('static', filename='materialize/js/materialize.js') }}"></script>
     <script src="{{ url_for('static', filename='perfect-scrollbar/perfect-scrollbar.jquery.min.js') }}"></script>
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <script type="application/javascript">
+        function onLoad() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init();
+            });
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                $.ajax({
+                    url: "{{ url_for('main_services.logout') }}",
+                    method: 'post'
+                }).done(function() {
+                    console.log('User signed out.');
+                    location.reload()
+                });
+            });
+        }
+    </script>
+
     <script src="{{ url_for('static', filename='endless/js/init.js') }}"></script>
     {% block js %}{% endblock %}
 </body>
