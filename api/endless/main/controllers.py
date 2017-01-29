@@ -1,4 +1,6 @@
+from flask import redirect
 from flask import render_template
+from flask import url_for
 
 from endless.main import main
 from endless.main.services import login_required, required_roles
@@ -8,7 +10,7 @@ from endless.main.services import login_required, required_roles
 @login_required
 @required_roles('admin')
 def home():
-    return render_template('home.html', title='Main Admin Panel')
+    return redirect(url_for('budgeto.budget'))
 
 
 @main.route('/login', methods=['GET'])
