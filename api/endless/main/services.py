@@ -21,7 +21,10 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None:
-            return redirect(url_for('main.login', redirect=request.url))
+            if request.method == 'GET':
+                return redirect(url_for('main.login', redirect=request.url))
+            else: # POST, PUT, etc.
+                return HttpResponse("You must be login in order to complete this request.", status=401)
         return f(*args, **kwargs)
     return decorated_function
 
@@ -31,7 +34,10 @@ def required_roles(*roles):
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not any([r not in roles for r in g.user.roles]):
-                return render_template('unauthorized.html')
+                if request.method == 'GET':
+                    return render_template('unauthorized.html')
+                else: # POST, PUT, etc.
+                    return HttpResponse("You don't have the required privileges to complete this request", status=403)
             return f(*args, **kwargs)
         return wrapped
     return wrapper
