@@ -8,6 +8,7 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Integer, Unicode, DateTime
 
 from endless.server.base import DeclarativeBase, BaseEntity
+from models import Bank
 from models import Category
 
 
@@ -28,13 +29,6 @@ class Transaction(DeclarativeBase, BaseEntity):
     category = relationship(Category)
     user = relationship('User')
     bank = relationship('Bank')
-
-    @classmethod
-    def by_user_id(cls, user_id):
-        try:
-            return cls.query.filter(cls.user_id == user_id).all()
-        except exc.NoResultFound:
-            return None
 
     @classmethod
     def by_uuid(cls, uuid, create_if_not_exists):
@@ -70,3 +64,13 @@ class Transaction(DeclarativeBase, BaseEntity):
 
         categories = Category.get_all()
         return get_children(None, categories, user.transactions)
+
+    @classmethod
+    def get_all_by_bank(cls, user):
+        """Get all the categories in a hierarchical way"""
+        banks = [bank.__dict__ for bank in Bank.get_all()]
+        transactions = user.transactions
+
+        for bank in banks:
+            bank['transactions'] = [t for t in transactions if t.bank_id == bank['bank_id']]
+        return banks

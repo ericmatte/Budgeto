@@ -1,47 +1,81 @@
 {% extends "main-layout.html" %}
 
 {% block head %}
+<style type='text/css'>
+    .card .card-image .card-title {
+        padding: 12px;
+        padding-left: 24px;
+    }
+    .card .card-content {
+        padding: 0;
+    }
+    table tr td:first-child, table tr th:first-child {
+        padding-left: 15px;
+    }
+    table tr td:last-child, table tr th:last-child {
+        padding-right: 15px;
+    }
+</style>
 {% endblock %}
+
 
 {% block body %}
 
-<div class="card card-plain">
-    <div class="card-header" data-background-color="purple">
-        <h4 class="title">Your banking transactions</h4>
-        <p class="category">From the beginning</p>
+
+{% macro show_transactions(transactions) %}
+<table class="striped">
+    <thead><tr>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+    </tr></thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td><i class="fa {{ t.category.icon }}" aria-hidden="true"></i> {{ t.category.name }}</td>
+            <td>{{ t.description }}</td>
+            <td>{{ t.amount }}</td>
+            <td>{{ t.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+
+
+{% set b = {'has_transactions': False} %}
+{% for bank in banks %}
+    {% if bank.transactions | length > 0 %}
+    {% if b.update({'has_transactions': True}) %}{% endif %}
+    <div class="section">
+        <div class="row">
+            <div class="col s12 m12">
+                <div class="card">
+                    <div class="card-image" style="background-color: #{{ bank.color }}">
+                        <span class="card-title black-text">{{ bank.name }}</span>
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" height="60px" style="padding: 10px">
+                        <a class="btn-floating halfway-fab waves-effect waves-light red" onclick="addTransaction({{ bank.bank_id }})"><i class="material-icons">add</i></a>
+                    </div>
+                    <div class="card-content">
+                        {{ show_transactions(bank.transactions) }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-content table-responsive">
-        <table class="table table-hover">
-            <thead><tr>
-                <th>ID</th>
-                <th>Bank</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Date</th>
-            </tr></thead>
-            <tbody>
-                {% for t in transactions %}
-                <tr>
-                    <td>{{ t.transaction_id }}</td>
-                    <td>{{ t.bank.name }}</td>
-                    <td><i class="fa {{ t.category.icon }}" aria-hidden="true"></i> {{ t.category.name }}</td>
-                    <td>{{ t.description }}</td>
-                    <td>{{ t.amount }}</td>
-                    <td>{{ t.date }}</td>
-                </tr>
-                {% else %}
-                You currently have no transactions.
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% endif %}
+{% endfor %}
+
+{% if not b.has_transactions %}
+<div class="section">
+    <h5>You currently have no transactions.</h5>
 </div>
+{% endif %}
 
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript">
-
 </script>
 {% endblock %}

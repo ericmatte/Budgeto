@@ -1,4 +1,6 @@
 import copy
+from itertools import groupby
+from operator import itemgetter
 
 from flask import g
 from flask import render_template
@@ -8,6 +10,7 @@ from sqlalchemy import and_
 
 from endless.budgeto import budgeto
 from endless.main.services import login_required, required_roles
+from models import Bank
 from models import Category
 from models import Keyword
 from models import Transaction
@@ -35,7 +38,7 @@ def keywords_creator():
 @login_required
 def transactions():
     return render_template('transactions.html', title="Transactions",
-                           transactions=g.user.transactions)
+                           banks=Transaction.get_all_by_bank(g.user))
 
 
 @budgeto.route('/', methods=['GET'])

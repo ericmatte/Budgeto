@@ -22,13 +22,16 @@
 
     <title>{{ title or 'Endless' }}</title>
 
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <link href="{{ url_for('static', filename='perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename='materialize/css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ url_for('static', filename='endless/css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+    {% block head %}{% endblock %}
+
 </head>
 
 <body>
@@ -110,6 +113,7 @@
     {% endblock %}
 
     <script src="{{ url_for('static', filename='materialize/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="{{ url_for('static', filename='materialize/js/materialize.js') }}"></script>
     <script src="{{ url_for('static', filename='perfect-scrollbar/perfect-scrollbar.jquery.min.js') }}"></script>
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
