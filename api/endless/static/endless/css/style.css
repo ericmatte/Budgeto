@@ -31,3 +31,6 @@ header, main, footer {
 .icon-block .material-icons {
     font-size: inherit;
 }
+
+.modal { overflow-y:inherit !important; }
+.modal-content { overflow-y:inherit !important; }

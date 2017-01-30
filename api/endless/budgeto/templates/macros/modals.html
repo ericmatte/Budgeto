@@ -1,0 +1,61 @@
+{% macro add_transaction(banks, categories) %}
+    <div id="new-transaction-modal" class="modal modal-fixed-footer">
+        <form id="new-transaction-form">
+            <div class="modal-content">
+                <h4>Add a new transaction</h4>
+
+                <div class="input-field col s12">
+                    <input name="description" id="description" type="text" data-length="256">
+                    <label for="description">Description</label>
+                </div>
+
+                <div class="input-field col s4">
+                    <select>
+                        {% for bank in banks %}
+                        <option value="{{ bank.bank_id }}">{{ bank.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Bank</label>
+                </div>
+
+                <div class="input-field col s4">
+                    <input name="amount" id="amount" type="text">
+                    <label for="amount">Amount</label>
+                </div>
+
+                <div class="input-field col s4">
+                    <input name="date" id="date" type="date" class="datepicker">
+                    <label for="date">Date</label>
+                </div>
+
+                <div class="switch center-align" style="line-height:5">
+                    <label>
+                    Select Category
+                    <input type="checkbox" name="selectCategory" disabled="">
+                    <span class="lever"></span>
+                    Use Suggested Category
+                    </label>
+                </div>
+
+                <div class="input-field col s6">
+                    <select>
+                        {% for category in categories %}
+                        <option value="{{ category.category_id }}" data-html="{{ category.icon }}" class="circle">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Category</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input name="suggestedCategory" id="suggested-category" type="text" disabled="" value="Category">
+                    <label for="suggested-category">Suggested Category</label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Add</a>
+                <a type="button" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endmacro %}
