@@ -1,0 +1,50 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+<style>
+    .error-message {
+        margin-top: 80px;
+    }
+    .error-details, .error-actions {
+        margin-top: 30px;
+    }
+    .btn {
+        margin: 5px;
+        height: 50px;
+        line-height: 50px;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block full_body %}
+<div class="container">
+    <div class="error-message center-align">
+        {% if page.title %}<h2 class="light">{{ page.title }}</h2>{% endif %}
+        {% if page.sub_title %}<h4 class="light">{{ page.sub_title }}</h4>{% endif %}
+
+        {% if page.description %}
+        <div class="error-details">
+            {% if page.image %}<img src="{{ page.image }}" width="180" height="180"><br>{% endif %}
+            {{ page.description }}
+        </div>
+        {% endif %}
+
+        <div class="error-actions">
+            <a href="{{ url_for('budgeto.budget') }}" class="waves-effect waves-light btn">
+                <i class="material-icons left">home</i>
+                Take Me Home
+            </a>
+            <a href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20{{ (page.sub_title or page.title) | e }}"
+               class="waves-effect waves-light btn grey">
+                <i class="material-icons left">mail</i>
+                Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

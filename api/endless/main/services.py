@@ -30,8 +30,10 @@ def required_roles(*roles):
     def wrapper(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
-            if not any([r not in roles for r in g.user.roles]):
-                return render_template('unauthorized.html')
+            if not any([r in roles for r in g.user.roles]):
+                return render_template('message.html',
+                                       page={'title': "Oops!", 'sub_title': "403 Unauthorized",
+                                             'description': "Sorry, it's seems that you don't have to permission to access this content!"})
             return f(*args, **kwargs)
         return wrapped
     return wrapper
@@ -39,7 +41,10 @@ def required_roles(*roles):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('message.html',
+                           page={'title': "Oops!", 'sub_title': "404 Not found",
+                                 'image': url_for('static', filename='endless/img/unicorn.png'),
+                                 'description': "Sorry, this page, like unicorns, does not exist!"}), 404
 
 
 @main_services.route('/logout', methods=['POST'])
