@@ -38,7 +38,8 @@ def keywords_creator():
 @login_required
 def transactions():
     return render_template('transactions.html', title="Transactions",
-                           banks=Transaction.get_all_by_bank(g.user))
+                           banks=Transaction.get_all_by_bank(g.user),
+                           categories=Category.get_all())
 
 
 @budgeto.route('/', methods=['GET'])
