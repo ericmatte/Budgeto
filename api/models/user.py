@@ -41,10 +41,6 @@ class User(DeclarativeBase, BaseEntity):
         return self.first_name + ' ' + self.last_name
 
     @property
-    def is_admin(self):
-        return self.user_id in [1,2]
-
-    @property
     def roles(self):
         """To be changed with real roles"""
         return ['admin', 'user'] if self.user_id in [1,2] else ['user']

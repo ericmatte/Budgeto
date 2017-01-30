@@ -1,0 +1,33 @@
+/* Custom Stylesheet */
+/**
+* Use this file to override Materialize files so you can update
+* the core Materialize files in the future
+*
+* Made By MaterializeCSS.com
+*/
+
+body {
+    background-color: #F7F7F7;
+    color: #3C4858;
+}
+
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+       padding-left: 0;
+   }
+}
+
+.side-nav > li:first-child {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.icon-block {
+    padding: 0 15px;
+}
+.icon-block .material-icons {
+    font-size: inherit;
+}

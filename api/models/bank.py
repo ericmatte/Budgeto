@@ -12,12 +12,12 @@ class Bank(DeclarativeBase, BaseEntity):
     bank_id = Column('bank_id', Integer, primary_key=True)
 
     name = Column('name', Unicode(30))
+    color = Column('color', Unicode(6))
 
     transactions = relationship('Transaction', lazy="dynamic")
 
     @property
     def users(self):
-        """Return if the user is a BBI approver or not"""
         return self.query.join('Transaction').join('User').all()
 
     @classmethod
