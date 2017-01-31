@@ -1,6 +1,15 @@
+from flask import url_for
+
+from endless import app
 from endless import db_session
 from endless.main.services import update_user
 from models import User
+
+
+def test_routes(client):
+        for route in app.url_map.iter_rules():
+            if 'GET' in route.methods:
+                assert client.post(route).status_code == 200
 
 
 def test_update_user(client, dummy_google_user_info):

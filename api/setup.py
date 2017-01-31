@@ -2,6 +2,9 @@ from setuptools import setup
 
 # Packages to install in linux
 # sudo apt-get install build-essential libssl-dev libffi-dev python-dev python-dev3
+testpkgs = [
+    'pytest',
+]
 
 setup(
     name='Flask API',
@@ -23,5 +26,7 @@ setup(
         'itsdangerous >= 0.24',
         'pytest >= 3.0.3',
         'rsa >= 3.4.2'
-   ]
+    ],
+    test_suite='nose.collector',
+    tests_require=testpkgs,
 )
