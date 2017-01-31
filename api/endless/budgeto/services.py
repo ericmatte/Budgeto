@@ -69,13 +69,6 @@ def link_keyword_to_category():
     return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
 
 
-@budgeto_services.route('/get-transactions', methods=['GET'])
-@login_required
-def get_transactions():
-    user = User.get(email=request.values['email'])
-    return HttpResponse(user.transactions)
-
-
 @budgeto_services.route('/fetch-transactions', methods=['POST'])
 @login_required
 def fetch_transactions():
