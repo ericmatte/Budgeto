@@ -1,61 +1,78 @@
 {% macro add_transaction(banks, categories) %}
-    <div id="new-transaction-modal" class="modal modal-fixed-footer">
+    <div id="new-transaction-modal" class="modal">
         <form id="new-transaction-form">
             <div class="modal-content">
-                <h4>Add a new transaction</h4>
+                <h4><i class="material-icons">add_circle</i> Add a new transaction</h4>
 
-                <div class="input-field col s12">
-                    <input name="description" id="description" type="text" data-length="256">
-                    <label for="description">Description</label>
+                <!--Description-->
+                <div class="input-field col m12 s12">
+                    <i class="material-icons prefix">textsms</i>
+                    <input name="description" id="transaction-description" type="text" data-length="256">
+                    <label for="transaction-description">Description</label>
                 </div>
 
-                <div class="input-field col s4">
-                    <select>
+                <!--Amount-->
+                <div class="input-field col m4 s12">
+                    <i class="material-icons prefix">attach_money</i>
+                    <input name="amount" id="transaction-amount" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate">
+                    <label for="transaction-amount" data-error="Please enter a amount like 123 or 456.50">Amount</label>
+                </div>
+
+                <!--Date-->
+                <div class="input-field col m4 s12">
+                    <i class="material-icons prefix">date_range</i>
+                    <input name="date" id="transaction-date" type="text" pattern="[12][0-9]{3}/[0-9]{2}/[0-9]{2}" class="validate">
+                    <label for="transaction-date" data-error="Please enter a date using like YYYY/MM/DD">Date</label>
+                </div>
+
+                <!--Bank-->
+                <div class="input-field col m4 s12">
+                    <i class="material-icons prefix">account_balance</i>
+                    <select name="bank">
                         {% for bank in banks %}
-                        <option value="{{ bank.bank_id }}">{{ bank.name }}</option>
+                        <option value="{{ bank.bank_id }}" data-color="{{ bank.color }}">{{ bank.name }}</option>
                         {% endfor %}
                     </select>
                     <label>Bank</label>
                 </div>
 
-                <div class="input-field col s4">
-                    <input name="amount" id="amount" type="text">
-                    <label for="amount">Amount</label>
-                </div>
-
-                <div class="input-field col s4">
-                    <input name="date" id="date" type="date" class="datepicker">
-                    <label for="date">Date</label>
-                </div>
-
-                <div class="switch center-align" style="line-height:5">
-                    <label>
-                    Select Category
-                    <input type="checkbox" name="selectCategory" disabled="">
-                    <span class="lever"></span>
-                    Use Suggested Category
-                    </label>
-                </div>
-
-                <div class="input-field col s6">
-                    <select>
+                <!--Category-->
+                <div class="input-field col m12 s12">
+                    <select name="category">
                         {% for category in categories %}
-                        <option value="{{ category.category_id }}" data-html="{{ category.icon }}" class="circle">{{ category.name }}</option>
+                        <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
                         {% endfor %}
                     </select>
                     <label>Category</label>
                 </div>
 
-                <div class="input-field col s6">
-                    <input name="suggestedCategory" id="suggested-category" type="text" disabled="" value="Category">
-                    <label for="suggested-category">Suggested Category</label>
-                </div>
+                <!--<div class="col m12 s12 switch center-align" style="line-height:5">-->
+                    <!--<label>-->
+                    <!--Select Category-->
+                    <!--<input type="checkbox" name="selectCategory" disabled="">-->
+                    <!--<span class="lever"></span>-->
+                    <!--Use Suggested Category-->
+                    <!--</label>-->
+                <!--</div>-->
+
+                <!--<div class="input-field col m6">-->
+                    <!--<input name="suggestedCategory" id="suggested-category" type="text" disabled="" value="Category">-->
+                    <!--<label for="suggested-category">Suggested Category</label>-->
+                <!--</div>-->
 
             </div>
             <div class="modal-footer">
-                <a type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Add</a>
-                <a type="button" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+                <a type="submit" class="modal-action modal-close waves-effect btn" style="margin-left:6px">
+                    <i class="material-icons left">add</i> Add
+                </a>
+                <a type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</a>
             </div>
         </form>
     </div>
+
+    <script type="text/javascript">
+        function addTransaction(bankId) {
+            $("#new-transaction-modal").modal('open');
+        }
+    </script>
 {% endmacro %}

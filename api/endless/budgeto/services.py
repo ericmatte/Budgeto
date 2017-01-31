@@ -7,12 +7,14 @@ from werkzeug.exceptions import BadRequestKeyError
 
 from endless.budgeto import budgeto_services
 from endless.flask import db_session
+from endless.main.services import login_required
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
 from models import Keyword
 
 
 @budgeto_services.route('/set-keywords', methods=['POST'])
+@login_required
 def set_keywords():
     json = request.get_json(silent=True)
     for key, values in json['keywords'].items():
@@ -29,6 +31,7 @@ def set_keywords():
 
 
 @budgeto_services.route('/create-keywords', methods=['POST'])
+@login_required
 def create_keywords():
     values = request.values['keyword'].split(',')
     keywords = Keyword.get_all(Keyword.value.in_(values))
@@ -44,6 +47,7 @@ def create_keywords():
 
 
 @budgeto_services.route('/delete-keywords', methods=['POST'])
+@login_required
 def delete_keywords():
     ids = request.values['keywordIds'].split(',')
     keywords = Keyword.get_all(Keyword.keyword_id.in_(ids))
@@ -56,6 +60,7 @@ def delete_keywords():
 
 
 @budgeto_services.route('/link-keyword-to-category', methods=['POST'])
+@login_required
 def link_keyword_to_category():
     keyword = Keyword.get(keyword_id=request.values['keywordId'])
     category_id = request.values['categoryId']
@@ -65,12 +70,14 @@ def link_keyword_to_category():
 
 
 @budgeto_services.route('/get-transactions', methods=['GET'])
+@login_required
 def get_transactions():
     user = User.get(email=request.values['email'])
     return HttpResponse(user.transactions)
 
 
 @budgeto_services.route('/fetch-transactions', methods=['POST'])
+@login_required
 def fetch_transactions():
     try:
         data = request.form

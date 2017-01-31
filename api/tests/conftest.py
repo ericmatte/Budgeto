@@ -1,15 +1,14 @@
 from contextlib import contextmanager
-from datetime import datetime
 
 import pytest
-from flask.globals import g
-from flask.signals import appcontext_pushed
+from datetime import datetime
 
-from endless import app
-from endless.flask import server, db_session
+from flask import appcontext_pushed
+from flask import g
+
+from endless.flask import app, db_session
 from models import Transaction
 from models import User
-
 
 @pytest.fixture
 def client(request):
