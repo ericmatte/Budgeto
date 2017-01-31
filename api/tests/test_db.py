@@ -1,11 +1,10 @@
-import pytest
 from flask import g
 
 from lib.time_calculator import TimeCalculator
 from models import Keyword
 from models import Transaction
 from models.user import User
-from tests.conftest import set_current_user
+from tests import set_current_user
 
 
 def test_db(client):
@@ -23,8 +22,6 @@ def test_get_all_keywords_hierarchically(client):
     t = TimeCalculator('keywords_hierarchically')
     assertion(Keyword.get_all_hierarchically())
     t.get_running_time()
-
-
 
 
 def test_get_all_transactions_hierarchically(client):

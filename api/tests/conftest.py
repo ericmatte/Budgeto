@@ -19,16 +19,6 @@ def client(request):
     request.addfinalizer(teardown)
     return app.test_client()
 
-
-@contextmanager
-def set_current_user():
-    def handler(sender, **kwargs):
-        g.user = User.get(user_id=1)
-    with appcontext_pushed.connected_to(handler, app):
-        with app.app_context():
-            yield
-
-
 @pytest.fixture
 def dummy_transaction(request):
     transaction = Transaction()

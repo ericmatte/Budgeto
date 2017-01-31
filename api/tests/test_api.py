@@ -1,15 +1,20 @@
+from flask import g
 from flask import url_for
 
 from endless import app
 from endless import db_session
 from endless.main.services import update_user
 from models import User
+from tests import set_current_user
 
 
-def test_routes(client):
+def test_get_routes(client):
+    with set_current_user():
         for route in app.url_map.iter_rules():
-            if 'GET' in route.methods:
-                assert client.post(route).status_code == 200
+            if 'GET' in route.methods and route.endpoint != 'static':
+                req = client.get(route.rule)
+                assert req.status_code < 400
+                print("Route to {0} validated with status '{1}'".format(route.rule, req.status))
 
 
 def test_update_user(client, dummy_google_user_info):
