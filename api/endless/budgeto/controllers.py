@@ -1,16 +1,11 @@
 import copy
-from itertools import groupby
-from operator import itemgetter
 
 from flask import g
 from flask import render_template
-from flask import request
-from flask import session
 from sqlalchemy import and_
 
 from endless.budgeto import budgeto
 from endless.main.services import login_required, required_roles
-from models import Bank
 from models import Category
 from models import Keyword
 from models import Transaction

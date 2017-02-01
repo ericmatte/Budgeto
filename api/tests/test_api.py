@@ -13,8 +13,8 @@ def test_get_routes(client):
         for route in app.url_map.iter_rules():
             if 'GET' in route.methods and route.endpoint != 'static':
                 req = client.get(route.rule)
-                assert req.status_code < 400
                 print("Route to {0} validated with status '{1}'".format(route.rule, req.status))
+                assert req.status_code < 400
 
 
 def test_update_user(client, dummy_google_user_info):

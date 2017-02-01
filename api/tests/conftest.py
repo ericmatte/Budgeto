@@ -1,10 +1,7 @@
-from contextlib import contextmanager
-
 import pytest
 from datetime import datetime
 
-from flask import appcontext_pushed
-from flask import g
+from sqlalchemy import event
 
 from endless.flask import app, db_session
 from models import Transaction
@@ -14,8 +11,17 @@ from models import User
 def client(request):
     app.config.update({ 'TESTING': True })
 
+    # start the session in a SAVEPOINT...
+    db_session.begin_nested()
+    # then each time that SAVEPOINT ends, reopen it
+    @event.listens_for(db_session, "after_transaction_end")
+    def restart_savepoint(session, transaction):
+        if transaction.nested and not transaction._parent.nested:
+            db_session.begin_nested()
     def teardown():
-        pass
+        db_session.rollback()
+        db_session.close()
+
     request.addfinalizer(teardown)
     return app.test_client()
 
