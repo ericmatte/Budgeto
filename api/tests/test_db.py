@@ -1,15 +1,17 @@
 from flask import g
+from sqlalchemy import event
 
+from endless import db_session
 from lib.time_calculator import TimeCalculator
-from models import Keyword
+from models import Keyword, add_to_db
+from models import Log
 from models import Transaction
 from models.user import User
 from tests import set_current_user
 
 
 def test_db(client):
-    users = User.get_all()
-    assert len(users) > 0
+    assert User.get(user_id=1) is not None
 
 
 def test_get_all_keywords_hierarchically(client):

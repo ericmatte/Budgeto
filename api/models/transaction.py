@@ -36,11 +36,8 @@ class Transaction(DeclarativeBase, BaseEntity):
             return cls.query.filter(cls.uuid == uuid).one()
         except exc.NoResultFound:
             if create_if_not_exists:
-                from endless import db_session
-                t = Transaction()
-                t.uuid = uuid
-                db_session.add(t)
-                return t
+                from models import add_to_db
+                return add_to_db(Transaction(), uuid=uuid)
             else:
                 return None
 

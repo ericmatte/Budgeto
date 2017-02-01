@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+from flask import g
 from flask import json
 from flask import request
 from werkzeug.exceptions import BadRequestKeyError
@@ -13,11 +14,18 @@ from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
 from models import Keyword
 
 
+@budgeto_services.route('/add-transaction', methods=['POST'])
+@login_required
+def add_transaction():
+    data = request.get_json(silent=True)
+
+
+
 @budgeto_services.route('/set-keywords', methods=['POST'])
 @login_required
 def set_keywords():
-    json = request.get_json(silent=True)
-    for key, values in json['keywords'].items():
+    data = request.get_json(silent=True)
+    for key, values in data['keywords'].items():
         keyword = Keyword.get(keyword_id=key)
         description = keyword.description
         for i in range(len(values)):
@@ -73,10 +81,7 @@ def link_keyword_to_category():
 @login_required
 def fetch_transactions():
     try:
-        data = request.form
-        user = User.get(email=data['email'])
-        fetch_transactions_with_db(user, json.loads(data['transactions']))
-
+        fetch_transactions_with_db(g.user, json.loads(request.form['transactions']))
         return HttpResponse('Transactions received!')
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'A field is missing: ' + str(', '.join(e.args)), status=400)
@@ -93,7 +98,7 @@ def fetch_transactions_with_db(user, transactions):
         }
 
         # If a category is found for this transaction, get its id
-        t_cat = Category.by_name(transaction['cat'])
+        t_cat = Category.get(category_id=transaction['cat']) if transaction['cat'].isdigit() else Category.by_name(transaction['cat'])
         if t_cat is not None:
             t_dict['category_id'] = t_cat.category_id
 
