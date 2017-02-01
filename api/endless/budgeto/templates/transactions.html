@@ -30,7 +30,7 @@
 {% macro show_transactions(transactions) %}
 <table class="striped">
     <thead><tr>
-        <th>Category</th>
+        <th><span class="hide-on-small-only">Category</span></th>
         <th>Description</th>
         <th>Amount</th>
         <th>Date</th>
@@ -38,7 +38,10 @@
     <tbody>
         {% for t in transactions | sort(attribute='date', reverse=True) %}
         <tr>
-            <td><i class="fa {{ t.category.icon }}" aria-hidden="true"></i> {{ t.category.name }}</td>
+            <td>
+                <i class="fa {{ t.category.icon }}" aria-hidden="true"></i>
+                <span class="hide-on-small-only">{{ t.category.name }}</span>
+            </td>
             <td>{{ t.description }}</td>
             <td>{{ t.amount }}</td>
             <td>{{ t.date }}</td>
