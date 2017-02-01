@@ -29,6 +29,7 @@
     <link href="{{ url_for('static', filename='perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename='materialize/css/materialize.min.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ url_for('static', filename='endless/css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script src="{{ url_for('static', filename='materialize/js/jquery-3.1.1.min.js') }}"></script>
 
     {% block head %}{% endblock %}
 
@@ -109,11 +110,9 @@
 		</div>
     </main>
 
-    {% block modals %}{% endblock %}
-
     {% endblock %}
 
-    <script src="{{ url_for('static', filename='materialize/js/jquery-3.1.1.min.js') }}"></script>
+
     <!--<script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>-->
     <script src="{{ url_for('static', filename='materialize/js/materialize.js') }}"></script>
     <script src="{{ url_for('static', filename='perfect-scrollbar/perfect-scrollbar.jquery.min.js') }}"></script>
@@ -141,6 +140,7 @@
         }
     </script>
     {% endblock %}
+
 
     <script src="{{ url_for('static', filename='endless/js/init.js') }}"></script>
     {% block js %}{% endblock %}

@@ -87,15 +87,17 @@
 {% import "macros/modals.html" as modals %}
 {{ modals.add_transaction(banks, categories, today) }}
 
-
 {% endblock %}
+
+
+
 
 {% block js %}
 <script type="text/javascript">
     function addTransaction(bankId) {
         var form = $("#new-transaction-form");
         form.trigger('reset');
-        $("[name='bank']", form).val(bankId);
+        $("[name='bank']", form).val(bankId).change().material_select();
         $("#new-transaction-modal").modal('open');
     }
 
@@ -106,12 +108,13 @@
             url: "{{ url_for('budgeto_services.add_transaction') }}",
             data: $(this).serialize(),
             success: function (data) {
-            },
-            error: function(e) {
-            },
-            complete: function () {
                 $("#new-transaction-modal").modal('close');
                 location.reload();
+            },
+            error: function(e) {
+                Materialize.toast('Error while adding the transaction. Please try later.', 4000);
+            },
+            complete: function () {
             }
         });
     });
