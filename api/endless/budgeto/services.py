@@ -17,8 +17,25 @@ from models import Keyword
 @budgeto_services.route('/add-transaction', methods=['POST'])
 @login_required
 def add_transaction():
-    data = request.get_json(silent=True)
-
+    try:
+        data = request.form
+        t_attributes = {
+            'user_id': g.user.user_id,
+            'bank_id': int(data['bank']),
+            'category_id': int(data['cat']),
+            'description': data['desc'],
+            'amount': float(data['amount']),
+            'date': datetime.strptime(data['date'], '%d-%m-%Y')
+        }
+        t_attributes['uuid'] = Transaction.generate_uuid(**t_attributes)
+        if Transaction.get(uuid=t_attributes['uuid']) is not None:
+            return HttpResponse('Transactions is already existing!', {'transaction': uuid}, status=302)
+        else:
+            transaction = add_to_db(Transaction(), **t_attributes)
+            Keyword.generate_from_description(transaction.description)
+            return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
+    except BadRequestKeyError as e:
+        return HttpErrorResponse(e, 'Unable to add the transaction.', status=400)
 
 
 @budgeto_services.route('/set-keywords', methods=['POST'])

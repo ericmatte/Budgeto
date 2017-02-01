@@ -1,4 +1,4 @@
-{% macro add_transaction(banks, categories) %}
+{% macro add_transaction(banks, categories, today) %}
     <div id="new-transaction-modal" class="modal">
         <form id="new-transaction-form">
             <div class="modal-content">
@@ -7,7 +7,7 @@
                 <!--Description-->
                 <div class="input-field col m12 s12">
                     <i class="material-icons prefix">textsms</i>
-                    <input name="description" id="transaction-description" type="text" data-length="256">
+                    <input name="desc" id="transaction-description" type="text" data-length="256">
                     <label for="transaction-description">Description</label>
                 </div>
 
@@ -21,8 +21,8 @@
                 <!--Date-->
                 <div class="input-field col m4 s12">
                     <i class="material-icons prefix">date_range</i>
-                    <input name="date" id="transaction-date" type="text" pattern="[12][0-9]{3}/[0-9]{2}/[0-9]{2}" class="validate">
-                    <label for="transaction-date" data-error="Please enter a date using like YYYY/MM/DD">Date</label>
+                    <input name="date" id="transaction-date" value="{{ today }}" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[12][0-9]{3}" class="validate valid">
+                    <label for="transaction-date" data-error="Please enter a date using like DD-MM-YYYY">Date</label>
                 </div>
 
                 <!--Bank-->
@@ -38,7 +38,7 @@
 
                 <!--Category-->
                 <div class="input-field col m12 s12">
-                    <select name="category">
+                    <select name="cat">
                         {% for category in categories %}
                         <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
                         {% endfor %}
@@ -62,10 +62,10 @@
 
             </div>
             <div class="modal-footer">
-                <a type="submit" class="modal-action modal-close waves-effect btn" style="margin-left:6px">
+                <button type="submit" class="waves-effect btn" style="margin-left:6px">
                     <i class="material-icons left">add</i> Add
-                </a>
-                <a type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</a>
+                </button>
+                <button type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</button>
             </div>
         </form>
     </div>

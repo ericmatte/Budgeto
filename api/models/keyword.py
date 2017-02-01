@@ -9,7 +9,6 @@ from sqlalchemy.types import Integer, Unicode
 from endless.server.base import DeclarativeBase, BaseEntity
 from models import Category
 
-
 class Keyword(DeclarativeBase, BaseEntity):
     __tablename__ = 'keyword'
 
@@ -23,6 +22,14 @@ class Keyword(DeclarativeBase, BaseEntity):
 
     language = relationship('Language')
     categories = None  # back_ref from Category
+
+    @classmethod
+    def generate_from_description(cls, description=''):
+        """Create a new keyword from the description of a transaction"""
+        if description != '':
+            if len(cls.get_all(Keyword.description == description)) == 0:
+                from models import add_to_db
+                add_to_db(Keyword(), description=description)
 
     @classmethod
     def get_all_by_category(cls):
