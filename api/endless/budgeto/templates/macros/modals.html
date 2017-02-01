@@ -4,46 +4,47 @@
             <div class="modal-content">
                 <h4><i class="material-icons">add_circle</i> Add a new transaction</h4>
 
+                <!--Category-->
+                <div class="input-field col m4 s12">
+                    <i id="transaction-cat-icon" class="fa {{ categories[0].icon }} prefix" aria-hidden="true"></i>
+                    <select name="cat" id="transaction-cat">
+                        {% for category in categories %}
+                        <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Category</label>
+                </div>
+
                 <!--Description-->
-                <div class="input-field col m12 s12">
+                <div class="input-field col m8 s12">
                     <i class="material-icons prefix">textsms</i>
-                    <input name="desc" id="transaction-description" type="text" data-length="256">
-                    <label for="transaction-description">Description</label>
+                    <input name="desc" id="transaction-description" placeholder="Optional, will use the category name if empty." type="text" class="validate" data-length="256" pattern="^.{0,256}$">
+                    <label for="transaction-description" data-error="The description must not exceed than 256 characters.">Description</label>
                 </div>
 
                 <!--Amount-->
                 <div class="input-field col m4 s12">
                     <i class="material-icons prefix">attach_money</i>
-                    <input name="amount" id="transaction-amount" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate">
+                    <input name="amount" id="transaction-amount" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate" required>
                     <label for="transaction-amount" data-error="Please enter a amount like 123 or 456.50">Amount</label>
                 </div>
 
                 <!--Date-->
                 <div class="input-field col m4 s12">
                     <i class="material-icons prefix">date_range</i>
-                    <input name="date" id="transaction-date" value="{{ today }}" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[12][0-9]{3}" class="validate valid">
+                    <input name="date" id="transaction-date" value="{{ today }}" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[12][0-9]{3}" class="validate">
                     <label for="transaction-date" data-error="Please enter a date using like DD-MM-YYYY">Date</label>
                 </div>
 
                 <!--Bank-->
                 <div class="input-field col m4 s12">
-                    <i class="material-icons prefix">account_balance</i>
-                    <select name="bank">
+                    <i id="transaction-bank-icon" class="material-icons prefix" style="color:#{{ banks[0].color }}">account_balance</i>
+                    <select name="bank" id="transaction-bank">
                         {% for bank in banks %}
                         <option value="{{ bank.bank_id }}" data-color="{{ bank.color }}">{{ bank.name }}</option>
                         {% endfor %}
                     </select>
                     <label>Bank</label>
-                </div>
-
-                <!--Category-->
-                <div class="input-field col m12 s12">
-                    <select name="cat">
-                        {% for category in categories %}
-                        <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Category</label>
                 </div>
 
                 <!--<div class="col m12 s12 switch center-align" style="line-height:5">-->
@@ -69,10 +70,67 @@
             </div>
         </form>
     </div>
-
     <script type="text/javascript">
-        function addTransaction(bankId) {
-            $("#new-transaction-modal").modal('open');
-        }
+        $(document).ready(function() {
+            /** Change the current category icon when selecting a new value */
+            $("#transaction-cat").change(function(e) {
+                var parentSelect = $(e.target).closest(".select-wrapper"),
+                    currentValue = $("select", parentSelect).val(),
+                    currentIcon = $("select option[value='"+currentValue+"']", parentSelect).data('material-icon');
+                document.getElementById("transaction-cat-icon").className = "fa prefix " + currentIcon;
+            });
+
+            /** Change the current bank icon color according to the new value */
+            $("#transaction-bank").change(function(e) {
+                var parentSelect = $(e.target).closest(".select-wrapper"),
+                    currentValue = $("select", parentSelect).val(),
+                    currentColor = $("select option[value='"+currentValue+"']", parentSelect).data('color');
+                $("#transaction-bank-icon").css('color', "#"+currentColor);
+            });
+        });
+    </script>
+{% endmacro %}
+
+
+{% macro category_options() %}
+    <div id="category-options" class="modal bottom-sheet">
+        <form id="category-options-form">
+            <div class="modal-content">
+                <h4>
+                    <i id="category-icon" class="fa" aria-hidden="true"></i>
+                    <span id="category-title"></span> options
+                </h4>
+
+                <div class="switch col m4 offset-m2 s12 center-align" style="line-height:5">
+                    <label>
+                        Off
+                        <input name="setALimit" id="category-limit-lever" type="checkbox">
+                        <span class="lever"></span>
+                        Set a limit for this category
+                    </label>
+                </div>
+
+                <div class="input-field col m6 s12">
+                    <i class="material-icons prefix">attach_money</i>
+                    <input name="limit" id="category-limit" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate" required disabled>
+                    <label for="transaction-amount" data-error="Please enter a money limit like 1000 or 10.50">Limit</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="waves-effect btn" style="margin-left:6px">
+                    <i class="material-icons left">save</i> Save
+                </button>
+                <button type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /** Enable/disable limit setter */
+            $("#category-limit-lever").change(function() {
+                var isEnabled = !$(this).is(':checked');
+                $("#category-limit").prop('disabled', isEnabled);
+            });
+        });
     </script>
 {% endmacro %}
