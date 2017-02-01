@@ -14,11 +14,11 @@ def init_db(config):
             ssh_password=config['SHH_PWD'],
             remote_bind_address=('localhost', 3306),
             local_bind_address=('localhost', config['SHH_TUNNEL_PORT']))
-    try:
+        try:
             _server.start()
             print('Tunneling {0} on port {1}'.format(_server.ssh_host, str(_server.local_bind_port)))
-    except Exception:
-        _server.close()
+        except Exception:
+            _server.close()
     # import all modules here that might define models so that
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
