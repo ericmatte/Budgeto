@@ -1,5 +1,6 @@
 import copy
 
+from datetime import date
 from flask import g
 from flask import render_template
 from sqlalchemy import and_
@@ -34,7 +35,8 @@ def keywords_creator():
 def transactions():
     return render_template('transactions.html', title="Transactions",
                            banks=Transaction.get_all_by_bank(g.user),
-                           categories=Category.get_all())
+                           categories=Category.get_all(),
+                           today=date.today().strftime("%d-%m-%Y"))
 
 
 @budgeto.route('/', methods=['GET'])

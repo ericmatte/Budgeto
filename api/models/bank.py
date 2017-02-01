@@ -19,10 +19,3 @@ class Bank(DeclarativeBase, BaseEntity):
     @property
     def users(self):
         return self.query.join('Transaction').join('User').all()
-
-    @classmethod
-    def by_name(cls, name):
-        try:
-            return cls.query.filter(cls.name == name).one()
-        except exc.NoResultFound:
-            return None
