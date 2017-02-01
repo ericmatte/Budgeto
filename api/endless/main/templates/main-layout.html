@@ -67,9 +67,9 @@
         
         <li><div class="divider"></div></li>
         <li><a class="subheader">Your account</a></li>
-        <li><a class="waves-effect waves-teal" href="#"><i class="material-icons">settings</i>Settings</a></li>
-        <li><a class="waves-effect waves-teal" href="" onclick="signOut();"><i class="material-icons">exit_to_app</i>Signout</a></li>
-        <li><a class="waves-effect waves-teal" href="#"><i class="material-icons">help</i>Help & feedback</a></li>
+        <li><a class="waves-effect waves-teal" onclick="Materialize.toast('Settings is not available yet.', 4000)"><i class="material-icons">settings</i>Settings</a></li>
+        <li><a class="waves-effect waves-teal" onclick="signOut();"><i class="material-icons">exit_to_app</i>Signout</a></li>
+        <li><a class="waves-effect waves-teal" href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20{{ (title or 'Endless') | e }}"><i class="material-icons">help</i>Help & feedback</a></li>
     </ul>
 
 
@@ -78,7 +78,8 @@
             <div class="nav-wrapper container">
                 <a id="logo-container" href="#" class="brand-logo">Budgeto</a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="#" onclick="signOut();">Signout</a></li>
+                    {% block options %}{% endblock %}
+                    <li><a onclick="signOut();">Signout</a></li>
                 </ul>
                 <a href="#" data-activates="side-bar" class="button-collapse"><i class="material-icons">menu</i></a>
             </div>
