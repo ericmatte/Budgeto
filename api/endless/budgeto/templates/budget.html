@@ -9,6 +9,24 @@
         margin-bottom: 0;
     }
 
+    @media only screen and (max-width: 599px) {
+        .collapsible.popout > li {
+            margin: 0 6px;
+        }
+        .collapsible.popout li .collapsible-body {
+            padding: 6px 10px;
+        }
+        .show-on-small .material-icons {
+            font-size: 14px;
+        }
+        .show-on-small .material-icons:not(:first-child) {
+            margin: 0 0 0 10px;
+        }
+        td {
+            padding: 10px 5px 10px 5px;
+        }
+    }
+
 </style>
 {% endblock %}
 
@@ -24,10 +42,17 @@
             {% for t in transactions %}
             {# if t.category_id == value.category.category_id #}
             <tr>
-                <td><b>{{ t.description }}</b></td>
-                <td class="amount">{{ t.amount }}</td>
-                <td>{{ t.date }}</td>
-                <td>{{ t.bank.name }}</td>
+                <td>
+                    <b>{{ t.description }}</b>
+                    <span class="hide-on-med-and-up show-on-small">
+                        <i class="material-icons">attach_money</i> {{ t.amount }}
+                        <i class="material-icons">date_range</i> {{ t.date }}
+                        <i class="material-icons">account_balance</i> {{ t.bank.name }}
+                    </span>
+                </td>
+                <td class="amount hide-on-small-only">{{ t.amount }}</td>
+                <td class="hide-on-small-only">{{ t.date }}</td>
+                <td class="hide-on-small-only">{{ t.bank.name }}</td>
             </tr>
             {# endif #}
             {% endfor %}
@@ -64,7 +89,8 @@
                             <div class="collapsible-header">
                                 <i class="material-icons">more_horiz</i>
                                 <span name="name">Autres</span>
-                                <span class="badge" data-badge-caption="transactions">{{ value.transactions | length }}</span>
+                                <span class="badge hide-on-med-and-up">{{ value.transactions | length }}</span>
+                                <span class="badge hide-on-small-only" data-badge-caption="transactions">{{ value.transactions | length }}</span>
                             </div>
                             <div class="collapsible-body" style="display: block;">
                                 {{ show_transactions(value.transactions) }}
@@ -83,7 +109,8 @@
             <div class="collapsible-header">
                 {% if value.category.icon %}<i class="fa {{ value.category.icon }}" aria-hidden="true"></i>{% endif %}
                 <span name="name">{{ value.category.name }}</span>
-                <span class="badge" data-badge-caption="transactions">{{ value.count }}</span>
+                <span class="badge hide-on-med-and-up">{{ value.count }}</span>
+                <span class="badge hide-on-small-only" data-badge-caption="transactions">{{ value.count }}</span>
             </div>
             <div class="collapsible-body" style="display: block;">
                 {{ show_transactions(value.transactions) }}
