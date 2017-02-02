@@ -25,8 +25,9 @@ class User(DeclarativeBase, BaseEntity):
     picture = Column('picture', Unicode(256))
     email = Column('email', String(128))
     google_id = Column('google_id', String(30))
-    creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
+    heartbeat = Column('heartbeat', DateTime)
     update_time = Column('update_time', DateTime, server_default=FetchedValue())
+    creation_time = Column('creation_time', DateTime, server_default=FetchedValue())
 
     language = relationship('Language')
     transactions = relation('Transaction')

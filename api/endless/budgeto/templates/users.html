@@ -1,0 +1,42 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+<style type='text/css'>
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<table>
+    <thead>
+    <tr>
+        <th data-field="id">User</th>
+        <th data-field="name">Email</th>
+        <th data-field="price">Transactions</th>
+        <th data-field="price">Last Heartbeat</th>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% for user in users | sort(attribute='heartbeat', reverse=True) %}
+        <tr>
+            <td><b>{{ user.full_name }}</b></td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.transactions | length }}</td>
+            <td>{{ user.heartbeat }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
+
+
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
