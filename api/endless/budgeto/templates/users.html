@@ -19,7 +19,7 @@
     </thead>
 
     <tbody>
-        {% for user in users | sort(attribute='heartbeat', reverse=True) %}
+        {% for user in users | sort(attribute='full_name', reverse=True) %}
         <tr>
             <td><b>{{ user.full_name }}</b></td>
             <td>{{ user.email }}</td>
