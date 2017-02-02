@@ -24,7 +24,7 @@ def get_current_user():
 
 @app.route('/', methods=['GET'])
 def index():
-    return redirect(url_for('budgeto.budget'))
+    return redirect(url_for('budgeto.promotion'))
 
 
 @app.teardown_appcontext

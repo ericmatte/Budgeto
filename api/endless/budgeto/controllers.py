@@ -39,13 +39,17 @@ def transactions():
                            today=date.today().strftime("%d-%m-%Y"))
 
 
-@budgeto.route('/', methods=['GET'])
 @budgeto.route('/budget', methods=['GET'])
 @login_required
 def budget():
     transactions_tree = Transaction.get_all_hierarchically(g.user)
     return render_template('budget.html', title="Budget",
                            transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
+
+
+@budgeto.route('/', methods=['GET'])
+def promotion():
+    return render_template('promotion.html')
 
 
 def clean_empty_leaves_on_tree(tree, count_key='count', children_key='children'):

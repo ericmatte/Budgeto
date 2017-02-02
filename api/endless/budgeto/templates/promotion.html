@@ -1,0 +1,53 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+<style>
+</style>
+{% endblock %}
+
+
+
+{% block full_body %}
+<div class="container">
+    <div class="card teal darken-1">
+        <div class="card-content white-text">
+            <span class="card-title"><h4>Endless Budgeto</h4></span>
+            <p>Budgeto is a new simple app that let you create and track your budget.</p>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col s4">
+          <div class="center promo promo-example">
+            <i class="material-icons">flash_on</i>
+            <p class="promo-caption">Speeds up budgeting</p>
+            <p class="light center">With Budgeto, you can quickly add transaction to your budget.</p>
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="center promo promo-example">
+            <i class="material-icons">group</i>
+            <p class="promo-caption">Automatically sort by category</p>
+            <p class="light center">Budgeto merge all your bank transaction into one simple view and sort every transaction by category.</p>
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="center promo promo-example">
+            <i class="material-icons">settings</i>
+            <p class="promo-caption">Set limits</p>
+            <p class="light center">Set and track limits for your budget. This will help you find on what category spend the most.</p>
+          </div>
+        </div>
+    </div>
+    <br>
+    <div class="center-align">
+        <a href="{{ url_for('main.login') }}" class="center-align waves-effect waves-light btn-large"><i class="left material-icons">exit_to_app</i>Sign in to begin</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
