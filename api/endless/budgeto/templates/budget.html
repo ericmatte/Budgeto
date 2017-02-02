@@ -22,6 +22,9 @@
         .show-on-small .material-icons:not(:first-child) {
             margin: 0 0 0 10px;
         }
+        .badge.hide-on-med-and-up {
+            min-width: 30px;
+        }
         td {
             padding: 10px 5px 10px 5px;
         }
@@ -132,6 +135,14 @@
 
                 <span class="badge hide-on-med-and-up">{{ value.count }}</span>
                 <span class="badge hide-on-small-only" data-badge-caption="transactions">{{ value.count }}</span>
+
+                <span name="dollar-bill"></span>
+
+                {% if value.limit %}
+                <div class="progress">
+                    <div name="limit" data-limit="{{ value.limit.value }}" class="determinate" style="width: 0%"></div>
+                </div>
+                {% endif %}
             </div>
             <div class="collapsible-body" style="display: block;">
 
@@ -169,11 +180,27 @@
 
     // Get total amount for all cat
     $(".cat").each(function() {
-        var total = 0.0;
+        var total = 0.0,
+            parent = $(".collapsible-header", this);
         $(".amount", this).each(function() {
             total += parseFloat(this.textContent)
         });
-        $(".collapsible-header:first", this).append('<span class="new badge" data-badge-caption="$">'+total.toFixed(2)+'</span>');
+        var limit = $("[name='limit']", parent).data('limit'),
+            percent = Math.round((total/parseFloat(limit))*100),
+            progressBar = $("[name='limit']", parent),
+            tooltip = "";
+
+        if (progressBar.length != 0) {
+            tooltip = 'tooltipped" data-tooltip="'+total.toFixed(2)+'$ used out of '+limit+'$ ('+percent+'%)" data-position="left" data-delay="50';
+
+            if (percent < 100) {
+                progressBar.css('width', percent+'%');
+            } else {
+                progressBar.css('width', '100%').addClass('red darken-4');
+            }
+        }
+
+        $("[name='dollar-bill']", parent).html('<span class="new badge '+tooltip+'" data-badge-caption="$">'+total.toFixed(2)+'</span>');
     });
 
     $(".collapsible-header .options").click(function(e) {
@@ -181,8 +208,19 @@
         var form = $("#category-options-form");
         form.trigger('reset');
         var category = $(event.target).closest(".collapsible-header");
+
+        // Setting title
         $("#category-icon", form).attr("class", $("i.fa", category).attr("class"));
         $("#category-title", form).html($("[name='name']", category).html());
+        $("[name='cat']", form).val(category.parent().attr('id'));
+
+        // Setting limit
+        var limit = $("[name='limit']", category);
+        $("[name='limit']", form).val(limit.length != 0 ? limit.data('limit') : "")
+            .prop('disabled', limit.length == 0);
+        Materialize.updateTextFields();
+        $("[name='setLimit']").prop('checked', limit.length != 0);
+
         $("#category-options").modal('open');
     });
 
@@ -190,7 +228,7 @@
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "",
+            url: "{{ url_for('budgeto_services.save_category_options') }}",
             data: $(this).serialize(),
             success: function (data) {
                 $("#category-options-modal").modal('close');

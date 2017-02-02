@@ -96,6 +96,7 @@
     <div id="category-options" class="modal bottom-sheet">
         <form id="category-options-form">
             <div class="modal-content">
+                <input type="hidden" name="cat">
                 <h4>
                     <i id="category-icon" class="fa" aria-hidden="true"></i>
                     <span id="category-title"></span> options
@@ -104,7 +105,7 @@
                 <div class="switch col m4 offset-m2 s12 center-align" style="line-height:5">
                     <label>
                         Off
-                        <input name="setALimit" id="category-limit-lever" type="checkbox">
+                        <input name="setLimit" id="category-limit-lever" type="checkbox">
                         <span class="lever"></span>
                         Set a limit for this category
                     </label>
@@ -128,8 +129,8 @@
         $(document).ready(function() {
             /** Enable/disable limit setter */
             $("#category-limit-lever").change(function() {
-                var isEnabled = !$(this).is(':checked');
-                $("#category-limit").prop('disabled', isEnabled);
+                var isEnabled = $(this).is(':checked');
+                $("#category-limit").prop('disabled', !isEnabled);
             });
         });
     </script>

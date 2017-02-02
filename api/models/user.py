@@ -43,7 +43,7 @@ class User(DeclarativeBase, BaseEntity):
     @property
     def roles(self):
         """To be changed with real roles"""
-        return ['admin', 'user'] if self.user_id in [1,2] else ['user']
+        return ['admin', 'user'] if self.user_id == 1 else ['user']
 
     @classmethod
     def apply_filter(cls, query, **kwargs):
