@@ -32,5 +32,24 @@ header, main, footer {
     font-size: inherit;
 }
 
-.modal { overflow-y:inherit !important; }
-.modal-content { overflow-y:inherit !important; }
+
+/*@media only screen and (max-device-width: 480px) {*/
+@media only screen and (max-width: 600px) {
+    .modal {
+        overflow-y: auto !important;
+        max-height: 80%;
+        width: 90%;
+    }
+
+    .modal-content {
+        overflow-y: auto !important;
+    }
+}
+
+.modal {
+    overflow-y: inherit;
+}
+
+.modal-content {
+    overflow-y: inherit;
+}

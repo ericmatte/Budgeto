@@ -12,6 +12,9 @@
     <meta property="og:site_name" content="Endless Budgeto"/>
     <meta property="og:description" content="A free budget app"/>
 
+    <!-- Chrome Android -->
+    <meta name="theme-color" content="#00897b" />
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='endless/img/favicon.png') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='endless/img/favicon.png') }}" />
@@ -77,7 +80,7 @@
     <header>
         <nav class="teal darken-1" role="navigation">
             <div class="nav-wrapper container">
-                <a id="logo-container" href="#" class="brand-logo">Budgeto</a>
+                <a id="logo-container" href="#" class="brand-logo">{{ title or 'Budgeto' }}</a>
                 <ul class="right hide-on-med-and-down">
                     {% block options %}{% endblock %}
                     <li><a onclick="signOut();">Signout</a></li>
