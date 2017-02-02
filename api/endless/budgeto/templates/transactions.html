@@ -13,7 +13,7 @@
         padding-left: 15px;
     }
     table tr td:last-child, table tr th:last-child {
-        padding-right: 15px;
+        padding-right: 0;
     }
 </style>
 {% endblock %}
@@ -36,7 +36,7 @@
         <th>Date</th>
     </tr></thead>
     <tbody>
-        {% for t in transactions | sort(attribute='date', reverse=True) %}
+        {% for t in transactions | sort(attribute='upload_time', reverse=True) %}
         <tr>
             <td>
                 <i class="fa {{ t.category.icon }}" aria-hidden="true"></i>
@@ -45,6 +45,7 @@
             <td>{{ t.description }}</td>
             <td>{{ t.amount }}</td>
             <td>{{ t.date }}</td>
+            <td><a href="#" onclick="deleteTransaction({{ t.transaction_id }})">x</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -86,7 +87,7 @@
 
 {% import "macros/modals.html" as modals %}
 {{ modals.add_transaction(banks, categories, today) }}
-
+{{ modals.warning_message() }}
 {% endblock %}
 
 
@@ -107,12 +108,36 @@
             type: "POST",
             url: "{{ url_for('budgeto_services.add_transaction') }}",
             data: $(this).serialize(),
-            success: function (data) {
+            success: function () {
                 $("#new-transaction-modal").modal('close');
                 location.reload();
             },
             error: function(e) {
                 Materialize.toast('Error while adding the transaction. Please try later.', 4000);
+            },
+            complete: function () {
+            }
+        });
+    });
+
+    function deleteTransaction(transactionId) {
+        var modal = $("#warning-modal");
+        $("[name='id']", modal).val(transactionId);
+        modal.modal('open');
+    }
+
+    $("#warning-form").submit(function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('budgeto_services.delete_transaction') }}",
+            data: $(this).serialize(),
+            success: function () {
+                $("#new-transaction-modal").modal('close');
+                location.reload();
+            },
+            error: function(e) {
+                Materialize.toast('Error while removing the transaction. Please try later.', 4000);
             },
             complete: function () {
             }

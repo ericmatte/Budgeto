@@ -8,7 +8,7 @@
                 <div class="input-field col m4 s12">
                     <i id="transaction-cat-icon" class="fa {{ categories[0].icon }} prefix" aria-hidden="true"></i>
                     <select name="cat" id="transaction-cat">
-                        {% for category in categories %}
+                        {% for category in categories | sort(attribute='name') %}
                         <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
                         {% endfor %}
                     </select>
@@ -134,4 +134,23 @@
             });
         });
     </script>
+{% endmacro %}
+
+
+
+{% macro warning_message() %}
+<div id="warning-modal" class="modal">
+    <form id="warning-form">
+        <div class="modal-content">
+            <input type="hidden" name="id">
+            <p>Are you sure you want to delete this transaction?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="waves-effect btn" style="margin-left:6px">
+                <i class="material-icons left">check</i> Yes
+            </button>
+            <button type="button" class="modal-action modal-close waves-effect btn-flat">No</button>
+        </div>
+    </form>
+</div>
 {% endmacro %}
