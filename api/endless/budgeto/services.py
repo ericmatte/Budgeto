@@ -28,13 +28,9 @@ def add_transaction():
             'amount': float(data['amount']),
             'date': datetime.strptime(data['date'], '%d-%m-%Y')
         }
-        t_attributes['uuid'] = Transaction.generate_uuid(**t_attributes)
-        if Transaction.get(uuid=t_attributes['uuid']) is not None:
-            return HttpResponse('Transactions is already existing!', {'transaction': uuid}, status=302)
-        else:
-            transaction = add_to_db(Transaction(), **t_attributes)
-            Keyword.generate_from_description(transaction.description)
-            return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
+        transaction = add_to_db(Transaction(), **t_attributes)
+        Keyword.generate_from_description(transaction.description)
+        return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to add the transaction.', status=400)
 
