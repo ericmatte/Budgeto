@@ -24,7 +24,7 @@ def add_transaction():
             'user_id': g.user.user_id,
             'bank_id': int(data['bank']),
             'category_id': int(data['cat']),
-            'description': data['desc'],
+            'description': data['desc'] or Category.get(category_id=int(data['cat'])).name,
             'amount': float(data['amount']),
             'date': datetime.strptime(data['date'], '%d-%m-%Y')
         }
@@ -37,6 +37,18 @@ def add_transaction():
             return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to add the transaction.', status=400)
+
+
+@budgeto_services.route('/delete-transaction', methods=['POST'])
+@login_required
+def delete_transaction():
+    try:
+        transaction = Transaction.get(transaction_id=request.form['id'])
+        db_session.delete(transaction)
+        db_session.commit()
+        return HttpResponse('Transactions deleted.', status=200)
+    except BadRequestKeyError as e:
+        return HttpErrorResponse(e, 'Unable to delete the transaction.', status=400)
 
 
 @budgeto_services.route('/save-category-options', methods=['POST'])
