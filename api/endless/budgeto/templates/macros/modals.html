@@ -40,7 +40,7 @@
                 <div class="input-field col m4 s12">
                     <i id="transaction-bank-icon" class="material-icons prefix" style="color:#{{ banks[0].color }}">account_balance</i>
                     <select name="bank" id="transaction-bank">
-                        {% for bank in banks %}
+                        {% for bank in banks | sort(attribute='name') %}
                         <option value="{{ bank.bank_id }}" data-color="{{ bank.color }}">{{ bank.name }}</option>
                         {% endfor %}
                     </select>
