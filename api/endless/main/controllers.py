@@ -7,10 +7,8 @@ from endless.main.services import login_required, required_roles
 
 
 @main.route('/', methods=['GET'])
-@login_required
-@required_roles('admin')
 def home():
-    return redirect(url_for('budgeto.budget'))
+    return redirect(url_for('budgeto.promotion'))
 
 
 @main.route('/login', methods=['GET'])
