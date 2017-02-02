@@ -158,13 +158,22 @@
             </div>
         </li>
         {% endif %}
+    {% else %}
+    <div class="section">
+        <h5>You have currently no transactions.</h5>
+        <p>Navigate to the Transactions section to add your first one.</p>
+    </div>
     {% endfor %}
 {% endmacro %}
 
 <div id="transactions" class="row">
     {{ create_categories_panels(transactions_tree.items()) }}
 </div>
-
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large red" href="{{ url_for('budgeto.transactions') }}">
+    <i class="material-icons">add</i>
+    </a>
+</div>
 
 {% import "macros/modals.html" as modals %}
 {{ modals.category_options() }}

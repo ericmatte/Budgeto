@@ -81,9 +81,16 @@
 
 {% if not b.has_transactions %}
 <div class="section">
-    <h5>You currently have no transactions.</h5>
+    <h5>You have currently no transactions.</h5>
+    <p>Click on the '+' button to add your first one!</p>
 </div>
 {% endif %}
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large red" onclick="addTransaction(1)">
+    <i class="material-icons">add</i>
+    </a>
+</div>
 
 {% import "macros/modals.html" as modals %}
 {{ modals.add_transaction(banks, categories, today) }}
