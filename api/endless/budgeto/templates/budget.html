@@ -200,11 +200,12 @@
             tooltip = "";
 
         if (progressBar.length != 0) {
-            tooltip = 'tooltipped" data-tooltip="'+total.toFixed(2)+'$ used out of '+limit+'$ ('+percent+'%)" data-position="left" data-delay="50';
 
             if (percent < 100) {
+                tooltip = 'tooltipped" data-tooltip="'+(limit-total).toFixed(2)+'$ remaining ('+percent+'% used)" data-position="left" data-delay="50';
                 progressBar.css('width', percent+'%');
             } else {
+                tooltip = 'tooltipped" data-tooltip="'+(total-limit).toFixed(2)+'$ exceeded! ('+percent+'%)" data-position="left" data-delay="50';
                 progressBar.css('width', '100%').addClass('red darken-4');
             }
         }

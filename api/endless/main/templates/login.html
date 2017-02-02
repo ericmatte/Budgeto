@@ -53,7 +53,7 @@
 
                 <img class="responsive-img circle" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" height="96" width="96">
                 <div id="signin"></div>
-                <br>
+                <p style="margin: 20px 0">By sign in with Google, Budgeto will only have access to your name, email and profile picture.</p>
                 <a href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20login" class=""><b>Need help?</b></a>
             </div>
         </div>
@@ -87,7 +87,7 @@
     function onLoad() {
       gapi.signin2.render('signin', {
         'scope': 'profile email',
-        'width': 300,
+        'width': 250,
         'height': 50,
         'longtitle': true,
         'onsuccess': onSuccess,
