@@ -64,6 +64,7 @@
         {% if 'admin' in g.user.roles %}
         <li><div class="divider"></div></li>
         <li><a class="subheader">Admin Tools</a></li>
+        {{ side_item('Users', 'supervisor_account', url_for("budgeto.users")) }}
         {{ side_item('Keywords Categorizer', 'storage', url_for("budgeto.keywords_categorizer")) }}
         {{ side_item('Keywords Creator', 'loyalty', url_for("budgeto.keywords_creator")) }}
         <li><a class="waves-effect waves-teal" href="http://materializecss.com/getting-started.html" target="_blank"><i class="material-icons">view_compact</i>Materialize</a></li>

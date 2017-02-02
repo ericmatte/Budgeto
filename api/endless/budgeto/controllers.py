@@ -10,6 +10,7 @@ from endless.main.services import login_required, required_roles
 from models import Category
 from models import Keyword
 from models import Transaction
+from models import User
 
 
 @budgeto.route('/keywords-categorizer', methods=['GET'])
@@ -50,6 +51,12 @@ def budget():
 @budgeto.route('/', methods=['GET'])
 def promotion():
     return render_template('promotion.html')
+
+
+@budgeto.route('/users', methods=['GET'])
+def users():
+    return render_template('users.html', title='Users',
+                           users=User.get_all())
 
 
 def clean_empty_leaves_on_tree(tree, count_key='count', children_key='children'):

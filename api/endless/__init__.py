@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import wraps
 
 from flask import g
@@ -16,6 +17,10 @@ from models.user import User
 @app.before_request
 def get_current_user():
     g.user = getattr(g, 'user', User.get(email=session['email']) if session.get('email') else None)
+
+    if g.user is not None:
+        g.user.heartbeat = datetime.now()
+        db_session.commit()
 
     if '127.0.0.1' in request.host:
         # In order for Google Sign in to works
