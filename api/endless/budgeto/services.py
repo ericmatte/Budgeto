@@ -12,6 +12,7 @@ from endless.main.services import login_required
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
 from models import Keyword
+from models.limit import Limit
 
 
 @budgeto_services.route('/add-transaction', methods=['POST'])
@@ -36,6 +37,35 @@ def add_transaction():
             return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to add the transaction.', status=400)
+
+
+@budgeto_services.route('/save-category-options', methods=['POST'])
+@login_required
+def save_category_options():
+    try:
+        data = request.form
+        # Setting category limit
+        limit_attributes = {
+            'user_id': g.user.user_id,
+            'category_id': int(data['cat']),
+            'value': float(data.get('limit', 0) or 0),
+        }
+
+        limit = Limit.get(user_id=g.user.user_id, category_id=limit_attributes['category_id'])
+        if data.get('setLimit') and limit_attributes['value'] > 0:
+            if limit is None:
+                add_to_db(Limit(), **limit_attributes)
+            else:
+                limit.value = limit_attributes['value']
+                db_session.commit()
+        else:
+            if limit is not None:
+                db_session.delete(limit)
+                db_session.commit()
+
+        return HttpResponse('Options saved!', status=200)
+    except BadRequestKeyError as e:
+        return HttpErrorResponse(e, 'Unable to save the options.', status=400)
 
 
 @budgeto_services.route('/set-keywords', methods=['POST'])

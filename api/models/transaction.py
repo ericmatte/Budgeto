@@ -12,6 +12,7 @@ from sqlalchemy.types import Integer, Unicode, DateTime
 from endless.server.base import DeclarativeBase, BaseEntity
 from models import Bank
 from models import Category
+from models.limit import Limit
 
 
 class Transaction(DeclarativeBase, BaseEntity):
@@ -61,6 +62,7 @@ class Transaction(DeclarativeBase, BaseEntity):
                     node_transactions = get_category_transactions(category.category_id, transactions)
                     keywords_count = len(node_transactions) + sum([c['count'] for k, c in children_categories.items()])
                     node_categories[category.category_id] = {'category': category,
+                                                             'limit': Limit.get(category=category, user=user),
                                                              'children': children_categories,
                                                              'count': keywords_count,
                                                              'transactions': node_transactions}
