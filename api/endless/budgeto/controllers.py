@@ -7,10 +7,48 @@ from sqlalchemy import and_
 
 from endless.budgeto import budgeto
 from endless.main.services import login_required, required_roles
+from models import Bank
 from models import Category
 from models import Keyword
 from models import Transaction
 from models import User
+
+
+@budgeto.route('/', methods=['GET'])
+def promotion():
+    return render_template('promotion.html')
+
+
+"""START OF User section"""
+@budgeto.route('/budget', methods=['GET'])
+@login_required
+def budget():
+    transactions_tree = Transaction.get_all_hierarchically(g.user)
+    return render_template('budget.html', title="Budget",
+                           banks=Bank.get_all(),
+                           categories=Category.get_all(),
+                           today=date.today().strftime("%d-%m-%Y"),
+                           transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
+
+
+@budgeto.route('/transactions', methods=['GET'])
+@login_required
+def transactions():
+    return render_template('transactions.html', title="Transactions",
+                           banks=Transaction.get_all_by_bank(g.user),
+                           categories=Category.get_all(),
+                           today=date.today().strftime("%d-%m-%Y"))
+"""END OF User section"""
+
+
+"""START OF Admin section"""
+# All route in this section must be set as @login_required and @required_roles('admin')
+@budgeto.route('/users', methods=['GET'])
+@login_required
+@required_roles('admin')
+def users():
+    return render_template('users.html', title='Users',
+                           users=User.get_all())
 
 
 @budgeto.route('/keywords-categorizer', methods=['GET'])
@@ -29,34 +67,7 @@ def keywords_categorizer():
 def keywords_creator():
     remaining_keywords = Keyword.get_all(value=None)
     return render_template('keywords_creator.html', title="Keywords Creator", keywords=remaining_keywords)
-
-
-@budgeto.route('/transactions', methods=['GET'])
-@login_required
-def transactions():
-    return render_template('transactions.html', title="Transactions",
-                           banks=Transaction.get_all_by_bank(g.user),
-                           categories=Category.get_all(),
-                           today=date.today().strftime("%d-%m-%Y"))
-
-
-@budgeto.route('/budget', methods=['GET'])
-@login_required
-def budget():
-    transactions_tree = Transaction.get_all_hierarchically(g.user)
-    return render_template('budget.html', title="Budget",
-                           transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
-
-
-@budgeto.route('/', methods=['GET'])
-def promotion():
-    return render_template('promotion.html')
-
-
-@budgeto.route('/users', methods=['GET'])
-def users():
-    return render_template('users.html', title='Users',
-                           users=User.get_all())
+"""END OF Admin section"""
 
 
 def clean_empty_leaves_on_tree(tree, count_key='count', children_key='children'):

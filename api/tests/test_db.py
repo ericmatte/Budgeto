@@ -34,6 +34,6 @@ def test_get_all_transactions_hierarchically(client):
         assert type(transactions[3]['transactions']) is list
 
     with set_current_user():
-            t = TimeCalculator('transactions_hierarchically')
-            assertion(Transaction.get_all_hierarchically(g.user))
-            t.get_running_time()
+        t = TimeCalculator('transactions_hierarchically')
+        assertion(Transaction.get_all_hierarchically(User.get(user_id=1)))
+        t.get_running_time()

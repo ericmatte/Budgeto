@@ -25,7 +25,7 @@ def test_add_transaction(client):
         response = client.post('/budgeto/add-transaction', data=data)
         assert response.status_code == 201
 
-        transaction = Transaction.get(uuid=json.loads(response.data)['transaction'])
+        transaction = Transaction.get_latest(Transaction.upload_time)
         assert transaction.user == g.user
         assert transaction.bank_id == int(data['bank'])
         assert transaction.description == data['desc']
@@ -64,6 +64,19 @@ def test_set_limit(client):
         response = post_limit({'cat': '36', 'setLimit':'off', 'limit': ''})
         assert response.status_code == 200
         assert Limit.get(user=g.user, category_id=data['cat']) is None
+
+
+def test_transaction_fetcher(client):
+    with set_current_user():
+        post = lambda data : client.post('/budgeto/transactions-fetcher', data=data)
+
+        with open("tests/resources/test_transactions.txt", 'r') as file:
+            data = {'transactions': file.read()}
+
+        response = post(data)
+        assert not response.status_code == 200
+
+
 
 
 

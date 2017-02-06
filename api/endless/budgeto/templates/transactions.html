@@ -44,7 +44,7 @@
             </td>
             <td>{{ t.description }}</td>
             <td>{{ t.amount }}</td>
-            <td>{{ t.date }}</td>
+            <td>{{ t.date.strftime("%d-%b-%Y") }}</td>
             <td><a href="#" onclick="deleteTransaction({{ t.transaction_id }})">x</a></td>
         </tr>
         {% endfor %}
@@ -86,7 +86,7 @@
 </div>
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    <a class="btn-floating btn-large red" onclick="addTransaction(1)">
+    <a class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="left" data-delay="50" data-tooltip="Add a transaction" onclick="addTransaction(1)">
     <i class="material-icons">add</i>
     </a>
 </div>
@@ -102,30 +102,8 @@
 
 {% block js %}
 <script type="text/javascript">
-    function addTransaction(bankId) {
-        var form = $("#new-transaction-form");
-        form.trigger('reset');
-        $("[name='bank']", form).val(bankId).change().material_select();
-        $("#new-transaction-modal").modal('open');
-    }
-
-    $("#new-transaction-form").submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "{{ url_for('budgeto_services.add_transaction') }}",
-            data: $(this).serialize(),
-            success: function () {
-                $("#new-transaction-modal").modal('close');
-                location.reload();
-            },
-            error: function(e) {
-                Materialize.toast('Error while adding the transaction. Please try later.', 4000);
-            },
-            complete: function () {
-            }
-        });
-    });
+    {% import "macros/modals.html" as modals %}
+    {{ modals.add_transaction_js() }}
 
     function deleteTransaction(transactionId) {
         var modal = $("#warning-modal");
@@ -135,19 +113,13 @@
 
     $("#warning-form").submit(function (event) {
         event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "{{ url_for('budgeto_services.delete_transaction') }}",
-            data: $(this).serialize(),
-            success: function () {
-                $("#new-transaction-modal").modal('close');
-                location.reload();
-            },
-            error: function(e) {
-                Materialize.toast('Error while removing the transaction. Please try later.', 4000);
-            },
-            complete: function () {
-            }
+        var url = "{{ url_for('budgeto_services.delete_transaction') }}",
+            data = $(this).serialize(),
+            errorMessage = "Error while removing the transaction. Please try later.";
+
+        endless.post(url, data, errorMessage).done(function() {
+            $("#warning-form").modal('close');
+            location.reload();
         });
     });
 </script>
