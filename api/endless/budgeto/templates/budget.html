@@ -64,12 +64,12 @@
                     <b>{{ t.description }}</b>
                     <span class="hide-on-med-and-up show-on-small">
                         <i class="material-icons">attach_money</i> {{ t.amount }}
-                        <i class="material-icons">date_range</i> {{ t.date }}
+                        <i class="material-icons">date_range</i> {{ t.date.strftime("%d-%b-%Y") }}
                         <i class="material-icons">account_balance</i> {{ t.bank.name }}
                     </span>
                 </td>
                 <td class="amount hide-on-small-only">{{ t.amount }}</td>
-                <td class="hide-on-small-only">{{ t.date }}</td>
+                <td class="hide-on-small-only">{{ t.date.strftime("%d-%b-%Y") }}</td>
                 <td class="hide-on-small-only">{{ t.bank.name }}</td>
             </tr>
             {# endif #}
@@ -170,24 +170,28 @@
     {{ create_categories_panels(transactions_tree.items()) }}
 </div>
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    <a class="btn-floating btn-large red" href="{{ url_for('budgeto.transactions') }}">
+    <a class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="left" data-delay="50" data-tooltip="Add a transaction" onclick="addTransaction(1)">
     <i class="material-icons">add</i>
     </a>
 </div>
 
 {% import "macros/modals.html" as modals %}
 {{ modals.category_options() }}
+{{ modals.add_transaction(banks, categories, today) }}
 
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript">
+    {% import "macros/modals.html" as modals %}
+    {{ modals.add_transaction_js() }}
+
     // Expand all sub-cat
     var subCat = $(".cat li .collapsible-body li .collapsible-header");
     subCat.addClass('active');
     subCat.parent().addClass('active');
 
-    // Get total amount for all cat
+    /* Get total amount of money for all category */
     $(".cat").each(function() {
         var total = 0.0,
             parent = $(".collapsible-header", this);
@@ -213,6 +217,7 @@
         $("[name='dollar-bill']", parent).html('<span class="new badge '+tooltip+'" data-badge-caption="$">'+total.toFixed(2)+'</span>');
     });
 
+    /* Function to open a category options modal */
     $(".collapsible-header .options").click(function(e) {
         e.stopPropagation();
         var form = $("#category-options-form");
@@ -234,21 +239,16 @@
         $("#category-options").modal('open');
     });
 
+    /* Saving category options changes */
     $("#category-options-form").submit(function (event) {
         event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "{{ url_for('budgeto_services.save_category_options') }}",
-            data: $(this).serialize(),
-            success: function (data) {
-                $("#category-options-modal").modal('close');
-                location.reload();
-            },
-            error: function(e) {
-                Materialize.toast('Error while saving options. Please try later.', 4000);
-            },
-            complete: function () {
-            }
+        var url = "{{ url_for('budgeto_services.save_category_options') }}",
+            data = $(this).serialize(),
+            errorMessage = "Error while saving options. Please try later.";
+
+        endless.post(url, data, errorMessage).done(function() {
+            $("#category-options-modal").modal('close');
+            location.reload();
         });
     });
 </script>

@@ -19,13 +19,18 @@ class BaseEntity:
     def get_all(cls, *args, **kwargs):
         return cls.filter(*args, **kwargs).all()
 
-    # Override in class for specific filtering
     @classmethod
     def filter(cls, *args, **kwargs):
         return cls.query.filter(*args).filter_by(**kwargs)
 
     @classmethod
+    def get_latest(cls, filtering_column):
+        """Get the latest created row"""
+        return cls.filter().order_by(filtering_column.desc()).first()
+
+    @classmethod
     def apply_sorting(cls, query, **kw):
+        """For Datatables"""
         if 'sidx' in kw and kw['sidx']:
             sort_idx = kw['sidx']
             sort_ord = kw['sord']

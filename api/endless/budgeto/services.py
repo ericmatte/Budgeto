@@ -15,6 +15,7 @@ from models import Keyword
 from models.limit import Limit
 
 
+"""START OF Transaction section"""
 @budgeto_services.route('/add-transaction', methods=['POST'])
 @login_required
 def add_transaction():
@@ -45,8 +46,10 @@ def delete_transaction():
         return HttpResponse('Transactions deleted.', status=200)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to delete the transaction.', status=400)
+"""END OF Transaction section"""
 
 
+"""START OF Category section"""
 @budgeto_services.route('/save-category-options', methods=['POST'])
 @login_required
 def save_category_options():
@@ -74,8 +77,10 @@ def save_category_options():
         return HttpResponse('Options saved!', status=200)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to save the options.', status=400)
+"""END OF Category section"""
 
 
+"""START OF Keyword section"""
 @budgeto_services.route('/set-keywords', methods=['POST'])
 @login_required
 def set_keywords():
@@ -130,6 +135,7 @@ def link_keyword_to_category():
     keyword.categories = [Category.get(category_id=category_id)] if category_id != '-1' else []
     db_session.commit()
     return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
+"""END OF Category section"""
 
 
 @budgeto_services.route('/fetch-transactions', methods=['POST'])

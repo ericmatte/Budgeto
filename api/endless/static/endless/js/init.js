@@ -19,8 +19,25 @@ $(function() {
 
 
 endless = {
-	// type = ['','info','success','warning','danger'];
-	showNotification: function(from, align, icon, message, type){
+	post: function(url, data, errorMessage) {
+        var call = $.ajax({
+            type: "POST",
+            url: url,
+            data: data
+        });
+        if (errorMessage != undefined) {
+            call.fail(function (jqXHR, textStatus, errorThrown) {
+                Materialize.toast(errorMessage, 4000);
+            });
+        }
+        return call;
+    	// .done(function( data, textStatus, jqXHR ) {});
+        // .fail(function( jqXHR, textStatus, errorThrown ) {});
+        // .always(function( data|jqXHR, textStatus, jqXHR|errorThrown ) { });
+	},
+
+    // type = ['','info','success','warning','danger'];
+    showNotification: function(from, align, icon, message, type){
     	$.notify({
         	icon: icon || "notifications",
         	message: message
@@ -33,4 +50,4 @@ endless = {
             }
         });
 	}
-}
+};

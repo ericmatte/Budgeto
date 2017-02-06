@@ -92,6 +92,28 @@
 {% endmacro %}
 
 
+{% macro add_transaction_js() %}
+    function addTransaction(bankId) {
+        var form = $("#new-transaction-form");
+        form.trigger('reset');
+        $("[name='bank']", form).val(bankId).change().material_select();
+        $("#new-transaction-modal").modal('open');
+    }
+
+    $("#new-transaction-form").submit(function (event) {
+        event.preventDefault();
+        var url = "{{ url_for('budgeto_services.add_transaction') }}",
+            data = $(this).serialize(),
+            errorMessage = "Error while adding the transaction. Please try later.";
+
+        endless.post(url, data, errorMessage).done(function() {
+            $("#new-transaction-modal").modal('close');
+            location.reload();
+        });
+    });
+{% endmacro %}
+
+
 {% macro category_options() %}
     <div id="category-options" class="modal bottom-sheet">
         <form id="category-options-form">
