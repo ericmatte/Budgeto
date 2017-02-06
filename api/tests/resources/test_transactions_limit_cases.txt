@@ -1,0 +1,27 @@
+[{"test":"", "desc":"Normal transaction","date":"31-10-2016","amount":"10.0","bank":"Tangerine"},
+{"test":"",  "desc":"Another normal transaction","date":"01-01-2016","amount":"25.0","bank":"Tangerine"},
+
+{"test":"bank", "desc":"Desjardins",       "date":"31-10-2016", "amount":"10.0", "bank":"Desjardins"},
+{"test":"bank", "desc":"Banque Scotia",    "date":"31-10-2016", "amount":"10.0", "bank":"Banque Scotia"},
+{"test":"bank", "desc":"TD",               "date":"31-10-2016", "amount":"10.0", "bank":"TD"},
+{"test":"bank", "desc":"Banque Nationale", "date":"31-10-2016", "amount":"10.0", "bank":"Banque Nationale"},
+
+{"test":"date", "desc":"No date",    "date":"",                            "amount":"10.0", "bank":"Tangerine"},
+{"test":"date", "desc":"Futur date", "date":"31-10-2034",                  "amount":"10.0", "bank":"Tangerine"},
+
+{"test":"amount", "desc":"No amount",       "date":"31-10-2016", "amount":"",                    "bank":"Tangerine"},
+{"test":"amount", "desc":"Comma amount",    "date":"31-10-2016", "amount":"10,0",                "bank":"Tangerine"},
+{"test":"amount", "desc":"Negative amount", "date":"31-10-2016", "amount":"-123.45",             "bank":"Tangerine"},
+
+{"title":"END OF correct transactions (count=11)"},
+{"title":"START OF wrong transactions (count=6+2)"},
+
+{"test":"bank", "desc":"No bank",    "date":"31-10-2016", "amount":"10.0", "bank":""},
+{"test":"bank", "desc":"Wrong bank", "date":"31-10-2016", "amount":"10.0", "bank":"Joe Violon"},
+
+{"test":"amount", "desc":"Wrong amount",    "date":"31-10-2016", "amount":"print('no monney');", "bank":"Tangerine"},
+
+{"test":"date", "desc":"Wrong date", "date":"31\"print('xss');\"-10-2016", "amount":"10.0", "bank":"Tangerine"},
+
+{"test":"desc", "desc":"","date":"31-10-2016","amount":"10.0","bank":"Tangerine"},
+{"test":"desc", "desc":"Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...Too long description...","date":"31-10-2016","amount":"10.0","bank":"Tangerine"}]
