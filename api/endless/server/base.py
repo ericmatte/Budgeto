@@ -24,9 +24,10 @@ class BaseEntity:
         return cls.query.filter(*args).filter_by(**kwargs)
 
     @classmethod
-    def get_latest(cls, filtering_column):
+    def get_latest(cls, filtering_column, limit=1):
         """Get the latest created row"""
-        return cls.filter().order_by(filtering_column.desc()).first()
+        q = cls.filter().order_by(filtering_column.desc()).first()
+        return q.first() if limit == 1 else q.limit(limit)
 
     @classmethod
     def apply_sorting(cls, query, **kw):
