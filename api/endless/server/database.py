@@ -9,7 +9,7 @@ def init_db(config):
     _server = None
     if config.get('USE_SSH_TUNNEL'):
         _server = SSHTunnelForwarder(
-            ('endlessapi.ddns.net', 22),
+            (config['HOSTNAME'], 22),
             ssh_username=config['SHH_USER'],
             ssh_password=config['SHH_PWD'],
             remote_bind_address=('localhost', 3306),
