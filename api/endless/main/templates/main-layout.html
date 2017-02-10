@@ -5,7 +5,7 @@
     <meta property="og:title" content="{{ title or 'Endless' }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="{{ request.url + '/' }}"/>
-    <meta property="og:image" content="http://endlessapi.ddns.net:8000/static/endless/img/favicon_xl.png"/>
+    <meta property="og:image" content="{{ config['ORIGIN_URI'] }}/static/endless/img/favicon_xl.png"/>
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:image:type" content="image/png" />
