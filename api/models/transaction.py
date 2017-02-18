@@ -34,17 +34,6 @@ class Transaction(DeclarativeBase, BaseEntity):
     bank = relationship('Bank')
 
     @classmethod
-    def by_uuid(cls, uuid, user_id, create_if_not_exists):
-        try:
-            return cls.query.filter(cls.uuid == uuid).one()
-        except exc.NoResultFound:
-            if create_if_not_exists:
-                from models import add_to_db
-                return add_to_db(Transaction(), uuid=uuid, user_id=user_id)
-            else:
-                return None
-
-    @classmethod
     def generate_uuid(cls, user_id, bank_id, amount, date, **kargs):
         uuid_string = "%d %d %d %s" % (user_id, bank_id, amount, date.strftime("%d-%m-%Y"))
         return str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_string))
