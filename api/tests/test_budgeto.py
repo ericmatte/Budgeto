@@ -82,8 +82,8 @@ def test_transaction_fetcher(client):
         response = post(json_data)
         assert response.status_code == 200
         fetched_transactions = json.loads(response.data)['count']
-        assert fetched_transactions == 11  # @see test_transactions_limit_cases.txt
         transactions = Transaction.get_latest(Transaction.upload_time, fetched_transactions)
+        assert fetched_transactions == 12  # @see test_transactions_limit_cases.txt
 
         response_dict = {"":0, "bank":0, "date":0, "amount":0, "desc":0}
         for i in range(fetched_transactions):
@@ -100,6 +100,7 @@ def test_transaction_fetcher(client):
 
         # Assertion of working transactions
         assert response_dict[""] == 2
+        assert response_dict["desc"] == 1
         assert response_dict["bank"] == 4
         assert response_dict["date"] == 2
         assert response_dict["amount"] == 3

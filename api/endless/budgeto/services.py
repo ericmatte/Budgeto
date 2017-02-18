@@ -9,6 +9,7 @@ from werkzeug.exceptions import BadRequestKeyError
 from endless.budgeto import budgeto_services
 from endless.flask import db_session
 from endless.main.services import login_required
+from lib.categorizer import Categorizer
 from lib.response_handler import HttpResponse, HttpErrorResponse
 from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
 from models import Keyword
@@ -46,6 +47,45 @@ def delete_transaction():
         return HttpResponse('Transactions deleted.', status=200)
     except BadRequestKeyError as e:
         return HttpErrorResponse(e, 'Unable to delete the transaction.', status=400)
+
+
+@budgeto_services.route('/transactions-fetcher', methods=['POST'])
+@login_required
+def transactions_fetcher():
+    truncate = lambda data, max: (data[:max-3] + '...') if len(data) > max-3 else data
+
+    transactions_count = 0
+    transactions = json.loads(request.form['transactions'])
+    for transaction in transactions:
+        try:
+            # Getting fields
+            attributes = {
+                'user': g.user,
+                'bank': Bank.get(name=transaction.get('bank')),
+                'description': truncate(transaction.get('desc', ''), 256),
+                'amount': float(transaction.get('amount', '0').replace(',', '.') or 0),
+                'date': datetime.strptime(transaction.get('date'), '%d-%m-%Y')
+                        if transaction.get('date') else datetime.today()
+            }
+            # Fields validation
+            if not attributes['description'] or not attributes['bank']:
+                continue
+            if attributes['date'] > datetime.today():
+                attributes['date'] = datetime.today()
+            # Trying to find a category
+            category = Categorizer.find_category(attributes['description'])
+            # Creating transaction
+            db_transaction = Transaction.get(**attributes)
+            if db_transaction is None:
+                db_transaction = add_to_db(Transaction(), **attributes)
+            if category is not None:
+                db_transaction.category = category
+                db_session.commit()
+            transactions_count += 1
+        except Exception as e:
+            pass  # Skip this transaction
+
+    return HttpResponse('Transactions fetched.', {'count': transactions_count}, status=200)
 """END OF Transaction section"""
 
 
@@ -136,45 +176,3 @@ def link_keyword_to_category():
     db_session.commit()
     return HttpResponse('Keyword {0} assigned to category {1}'.format(keyword.keyword_id, category_id))
 """END OF Category section"""
-
-
-@budgeto_services.route('/fetch-transactions', methods=['POST'])
-@login_required
-def fetch_transactions():
-    try:
-        fetch_transactions_with_db(g.user, json.loads(request.form['transactions']))
-        return HttpResponse('Transactions received!')
-    except BadRequestKeyError as e:
-        return HttpErrorResponse(e, 'A field is missing: ' + str(', '.join(e.args)), status=400)
-
-
-def fetch_transactions_with_db(user, transactions):
-    for transaction in transactions:
-        t_dict = {
-            'user_id': user.user_id,
-            'bank_id': Bank.by_name(transaction['bank']).bank_id,
-            'description': transaction['desc'],
-            'amount': float(transaction['amount']),
-            'date': datetime.strptime(transaction['date'], '%d-%m-%Y')
-        }
-
-        # If a category is found for this transaction, get its id
-        t_cat = Category.get(category_id=transaction['cat']) if transaction['cat'].isdigit() else Category.by_name(transaction['cat'])
-        if t_cat is not None:
-            t_dict['category_id'] = t_cat.category_id
-
-        # Each transactions must have a unique uuid
-        uuid_string = "%d %d %d %s" % (t_dict['user_id'], t_dict['bank_id'], t_dict['amount'], transaction['date'])
-        transaction_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_string))
-
-        t = Transaction.by_uuid(transaction_uuid, True)
-        set_attributes(t, **t_dict)
-        db_session.commit()
-
-        generate_keyword_from_description(t_dict['description'])
-
-
-def generate_keyword_from_description(description=''):
-    if description != '':
-        if len(Keyword.get_all(Keyword.description == description)) == 0:
-            add_to_db(Keyword(), description=description)
