@@ -9,6 +9,10 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_budget">Votre Budget</string>
+    <string name="loading">Téléchargement...</string>
+    <string name="signed_out">Déconnecté</string>
+    <string name="signed_in_fmt">Connecté en tant que: %s</string>
+    <string name="server_client_id">567386675874-5fqmolj2dt7cu9g2dam7cheq7k923p8q.apps.googleusercontent.com</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

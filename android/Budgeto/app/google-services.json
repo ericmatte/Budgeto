@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "567386675874",
+    "project_id": "firebase-budgeto"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567386675874:android:b9321f70a31009d5",
+        "android_client_info": {
+          "package_name": "com.endless.budgeto.signin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567386675874-5fqmolj2dt7cu9g2dam7cheq7k923p8q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2hQIxI-WvkV3MsmH5jK8ngdHKZQnXQ3M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567386675874:android:588b6f0f5f87999f",
+        "android_client_info": {
+          "package_name": "com.endless.budgeto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567386675874-dpkdsbem76h403pc165anpj4b6dggnck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.endless.budgeto",
+            "certificate_hash": "C88424F1909CF05CAA9B058A0B3DDA9E45F3C789"
+          }
+        },
+        {
+          "client_id": "567386675874-5fqmolj2dt7cu9g2dam7cheq7k923p8q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2hQIxI-WvkV3MsmH5jK8ngdHKZQnXQ3M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
