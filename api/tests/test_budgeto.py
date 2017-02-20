@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from flask import g
 from flask import json
 
@@ -69,11 +69,13 @@ def test_set_limit(client):
 def test_transaction_fetcher(client):
     with set_current_user():
         post = lambda json_data : client.post('/budgeto/transactions-fetcher', data={'transactions': json.dumps(json_data)})
+        truncate = lambda data, max: (data[:max - 3] + '...') if len(data) > max - 3 else data
 
         def validate_transaction(resp_t, json_t):
-            assert resp_t.description == json_t['desc']
+            print(json_t)
+            assert resp_t.description == truncate(json_t['desc'], 256)
             assert resp_t.amount == float(json_t['amount'].replace(',','.') or 0)
-            assert resp_t.date.strftime("%d-%m-%Y") == json_t['date']
+            assert resp_t.date.strftime("%d-%m-%Y") == json_t['date'] or datetime.today()
             assert resp_t.bank.name == json_t['bank']
 
         with open("tests/resources/test_transactions_limit_cases.txt", 'r') as file:
@@ -82,21 +84,16 @@ def test_transaction_fetcher(client):
         response = post(json_data)
         assert response.status_code == 200
         fetched_transactions = json.loads(response.data)['count']
-        transactions = Transaction.get_latest(Transaction.upload_time, fetched_transactions)
+        transactions = Transaction.get_latest(Transaction.transaction_id, fetched_transactions)
         assert fetched_transactions == 12  # @see test_transactions_limit_cases.txt
 
         response_dict = {"":0, "bank":0, "date":0, "amount":0, "desc":0}
         for i in range(fetched_transactions):
             t = json_data[i]
             # Normal transaction validation
-            validate_transaction(transactions[i], t)
+            validate_transaction(transactions[fetched_transactions-i-1], t)
             # Counting the number of success fetch
             response_dict[t['test']] += 1
-            # Custom key assertion
-            if t['test'] == 'date' and t['desc'] in ["No date", "Futur date"]:
-                assert transactions[i].date == date.today()
-            elif t['test'] == 'desc' and t['desc'] != "":
-                assert transactions[i].description.startwith("Too long description...")
 
         # Assertion of working transactions
         assert response_dict[""] == 2
@@ -106,14 +103,14 @@ def test_transaction_fetcher(client):
         assert response_dict["amount"] == 3
 
         # Testing duplicate values with one new value
-        new_data = json_data[11]
+        new_data = [json_data[0]]
         working_transaction = {"desc":"Working transaction","date":"23-01-2017","amount":"100.0","bank":"Tangerine"}
         new_data.append(working_transaction)
         response = post(new_data)
         assert response.status_code == 200
         fetched_transactions = json.loads(response.data)['count']
         assert fetched_transactions == 1  # @see test_transactions_limit_cases.txt
-        transaction = Transaction.get_latest(Transaction.upload_time)
+        transaction = Transaction.get_latest(Transaction.transaction_id)
         validate_transaction(transaction, working_transaction)
 
 
