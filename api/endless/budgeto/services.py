@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 
 from flask import g
@@ -11,7 +10,7 @@ from endless.flask import db_session
 from endless.main.services import login_required
 from lib.categorizer import Categorizer
 from lib.response_handler import HttpResponse, HttpErrorResponse
-from models import Bank,  Transaction, User, Category, set_attributes, add_to_db
+from models import Bank,  Transaction, Category, set_attributes, add_to_db
 from models import Keyword
 from models.limit import Limit
 
@@ -78,10 +77,11 @@ def transactions_fetcher():
             db_transaction = Transaction.get(**attributes)
             if db_transaction is None:
                 db_transaction = add_to_db(Transaction(), **attributes)
+                transactions_count += 1
+            # Finding or updating category
             if category is not None:
                 db_transaction.category = category
                 db_session.commit()
-            transactions_count += 1
         except Exception as e:
             pass  # Skip this transaction
 
