@@ -35,7 +35,8 @@
         <activity
             android:name="com.endless.activities.home.BudgetActivity"
             android:label="@string/title_activity_budget"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.endless.activities.splash.SigninActivity"></activity>
     </application>
 
 </manifest>
