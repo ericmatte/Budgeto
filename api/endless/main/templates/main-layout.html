@@ -71,10 +71,10 @@
         {% endif %}
         
         <li><div class="divider"></div></li>
-        <li><a class="subheader">Your account</a></li>
+        <li><a class="subheader">Votre compte</a></li>
         <!--<li><a class="waves-effect waves-teal" onclick="Materialize.toast('Settings is not available yet.', 4000)"><i class="material-icons">settings</i>Settings</a></li>-->
-        <li><a class="waves-effect waves-teal" onclick="signOut();"><i class="material-icons">exit_to_app</i>Logout</a></li>
-        <li><a class="waves-effect waves-teal" href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Need%20help%20with%20{{ (title or 'Endless') | e }}"><i class="material-icons">help</i>Help & feedback</a></li>
+        <li><a class="waves-effect waves-teal" onclick="signOut();"><i class="material-icons">exit_to_app</i>Déconnexion</a></li>
+        <li><a class="waves-effect waves-teal" href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Besoin%20d'aide%20avec%20{{ (title or 'Endless') | e }}"><i class="material-icons">help</i>Aide et commentaires</a></li>
     </ul>
 
 
@@ -84,7 +84,16 @@
                 <a id="logo-container" href="#" class="brand-logo">{{ title or 'Budgeto' }}</a>
                 <ul class="right hide-on-med-and-down">
                     {% block options %}{% endblock %}
-                    <li><a onclick="signOut();">Logout</a></li>
+                    <!--<li><a onclick="signOut();">Déconnexion</a></li>-->
+                    <!--<li class="divider"></li>-->
+                </ul>
+                <ul class="right hide-on-large-only">
+                    <li><a class="dropdown-button" href="#" data-activates="right-settings" data-constrainWidth="false" data-belowOrigin="true" data-alignment="right">
+                        <i class="material-icons">more_vert</i>
+                    </a></li>
+                    <ul id="right-settings" class="dropdown-content">
+                        {{ self.options() }}
+                    </ul>
                 </ul>
                 <a href="#" data-activates="side-bar" class="button-collapse"><i class="material-icons">menu</i></a>
             </div>

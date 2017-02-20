@@ -2,7 +2,7 @@
     <div id="new-transaction-modal" class="modal">
         <form id="new-transaction-form">
             <div class="modal-content">
-                <h4><i class="material-icons">add_circle</i> Add a new transaction</h4>
+                <h4><i class="material-icons">add_circle</i> Ajouter une nouvelle transaction</h4>
 
                 <!--Category-->
                 <div class="input-field col m4 s12">
@@ -12,28 +12,28 @@
                         <option value="{{ category.category_id }}" data-material-icon="{{ category.icon }}" class="circle">{{ category.name }}</option>
                         {% endfor %}
                     </select>
-                    <label>Category</label>
+                    <label>Catégorie</label>
                 </div>
 
                 <!--Description-->
                 <div class="input-field col m8 s12">
                     <i class="material-icons prefix">textsms</i>
-                    <input name="desc" id="transaction-description" placeholder="Optional, will use the category name if empty." type="text" class="validate" data-length="256" pattern="^.{0,256}$">
-                    <label for="transaction-description" data-error="The description must not exceed than 256 characters.">Description</label>
+                    <input name="desc" id="transaction-description" placeholder="Optionnel, utilisera le nom de la catégorie si vide." type="text" class="validate" data-length="256" pattern="^.{0,256}$">
+                    <label for="transaction-description" data-error="La description ne doit pas dépasser 256 caractères.">Description</label>
                 </div>
 
                 <!--Amount-->
                 <div class="input-field col m4 s12">
                     <i class="material-icons prefix">attach_money</i>
                     <input name="amount" id="transaction-amount" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate" required>
-                    <label for="transaction-amount" data-error="Please enter a amount like 123 or 456.50">Amount</label>
+                    <label for="transaction-amount" data-error="Veuillez entrer un montant comme 123 ou 456.50">Montant</label>
                 </div>
 
                 <!--Date-->
                 <div class="input-field col m4 s12">
                     <i class="material-icons prefix">date_range</i>
                     <input name="date" id="transaction-date" value="{{ today }}" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[12][0-9]{3}" class="validate">
-                    <label for="transaction-date" data-error="Please enter a date using like DD-MM-YYYY">Date</label>
+                    <label for="transaction-date" data-error="Veuillez entrer une date en utilisant le format DD-MM-AAAA">Date</label>
                 </div>
 
                 <!--Bank-->
@@ -44,7 +44,7 @@
                         <option value="{{ bank.bank_id }}" data-color="{{ bank.color }}">{{ bank.name }}</option>
                         {% endfor %}
                     </select>
-                    <label>Bank</label>
+                    <label>Banque</label>
                 </div>
 
                 <!--<div class="col m12 s12 switch center-align" style="line-height:5">-->
@@ -64,9 +64,9 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="waves-effect btn" style="margin-left:6px">
-                    <i class="material-icons left">add</i> Add
+                    <i class="material-icons left">add</i> Ajouter
                 </button>
-                <button type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</button>
+                <button type="button" class="modal-action modal-close waves-effect btn-flat">Annuler</button>
             </div>
         </form>
     </div>
@@ -104,7 +104,7 @@
         event.preventDefault();
         var url = "{{ url_for('budgeto_services.add_transaction') }}",
             data = $(this).serialize(),
-            errorMessage = "Error while adding the transaction. Please try later.";
+            errorMessage = "Une erreur s'est produite pendant l'ajout de la transaction. SVP essayez plus tard.";
 
         endless.post(url, data, errorMessage).done(function() {
             $("#new-transaction-modal").modal('close');
@@ -121,29 +121,29 @@
                 <input type="hidden" name="cat">
                 <h4>
                     <i id="category-icon" class="fa" aria-hidden="true"></i>
-                    <span id="category-title"></span> options
+                    <span id="category-title"></span>
                 </h4>
 
                 <div class="switch col m4 offset-m2 s12 center-align" style="line-height:5">
                     <label>
-                        Off
+                        Pas de limite
                         <input name="setLimit" id="category-limit-lever" type="checkbox">
                         <span class="lever"></span>
-                        Set a limit for this category
+                        Définir une limite pour cette catégorie
                     </label>
                 </div>
 
                 <div class="input-field col m6 s12">
                     <i class="material-icons prefix">attach_money</i>
                     <input name="limit" id="category-limit" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate" required disabled>
-                    <label for="transaction-amount" data-error="Please enter a money limit like 1000 or 10.50">Limit</label>
+                    <label for="transaction-amount" data-error="SVP Entrez une limite d'argent comme 1000 ou 10.50$.">Limite</label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="waves-effect btn" style="margin-left:6px">
-                    <i class="material-icons left">save</i> Save
+                    <i class="material-icons left">save</i> Sauvegarder
                 </button>
-                <button type="button" class="modal-action modal-close waves-effect btn-flat">Cancel</button>
+                <button type="button" class="modal-action modal-close waves-effect btn-flat">Annuler</button>
             </div>
         </form>
     </div>
@@ -165,13 +165,13 @@
     <form id="warning-form">
         <div class="modal-content">
             <input type="hidden" name="id">
-            <p>Are you sure you want to delete this transaction?</p>
+            <p>Êtes-vous certain de vouloir supprimer cette transaction?</p>
         </div>
         <div class="modal-footer">
             <button type="submit" class="waves-effect btn" style="margin-left:6px">
-                <i class="material-icons left">check</i> Yes
+                <i class="material-icons left">check</i> Oui
             </button>
-            <button type="button" class="modal-action modal-close waves-effect btn-flat">No</button>
+            <button type="button" class="modal-action modal-close waves-effect btn-flat">Non</button>
         </div>
     </form>
 </div>
