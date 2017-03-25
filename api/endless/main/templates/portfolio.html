@@ -1,0 +1,104 @@
+{% extends "main-layout.html" %}
+
+{% block head %}
+  <style type='text/css'>
+  </style>
+{% endblock %}
+
+
+{% block full_body %}
+
+
+  <div class="parallax-container">
+    <div class="parallax"><img src="/static/portfolio/pictures/panoramic/Wooden-Bridge.jpg"></div>
+    <div class="row container">
+      <div class="card-panel grey lighten-5 z-depth-1">
+        <div class="row valign-wrapper">
+          <div class="col s3">
+            <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </div>
+          <div class="col s9">
+            <div class="black-text">
+              <h4>Eric Matte, student in Computer Engineering</h4>
+              <p>
+                Programmer for more than {{ now.year - 2009 }} years, I’m always seeking for new goals.
+                I give a great interest on the quality of my work and I always want to learn more.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="section white">
+    <div class="row container">
+      <h2 class="header">Projects</h2>
+      <p class="grey-text text-darken-3 lighten-3">This is the list a all my projects so far.</p>
+
+      <div class="row">
+        {% for n in range(1,7) %}
+          <div class="col s6 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="/static/endless/img/cover.jpg">
+                <span class="card-title">Project #{{ n }}</span>
+              </div>
+              <div class="card-content">
+                <p>This is a simple application that do something.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">See in action</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+  <div class="parallax-container">
+    <div class="parallax"><img src="/static/portfolio/pictures/panoramic/Backyard.jpg"></div>
+  </div>
+  <div class="section white">
+    <div class="row container">
+      <h2 class="header">Photos</h2>
+      <p class="grey-text text-darken-3 lighten-3">
+        One thing I really like is go on an adventure and take some beautiful pictures.
+      </p>
+
+      <div class="row">
+        {% for picture in pictures %}
+          <div class="col s4 m3" style="margin-bottom: 10px">
+            <img class="materialboxed" data-caption="{{ picture.caption }}" width="250" src="{{ picture.url }}">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="parallax-container">
+    <div class="parallax"><img src="/static/portfolio/pictures/panoramic/Daisy.jpg"></div>
+  </div>
+
+  <footer class="page-footer grey darken-4" style="padding:0">
+    <div class="footer-copyright">
+      <div class="container">
+        Eric Matte © {{ now.year }}. All rights reserved.
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      </div>
+    </div>
+  </footer>
+
+
+{% endblock %}
+
+
+
+{% block js %}
+  <script type="text/javascript">
+
+  </script>
+{% endblock %}
