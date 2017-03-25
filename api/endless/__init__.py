@@ -27,18 +27,13 @@ def get_current_user():
         return redirect(request.url.replace('127.0.0.1', 'localhost'))
 
 
-@app.route('/', methods=['GET'])
-def index():
-    return redirect(url_for('budgeto.promotion'))
-
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
 
 
 # Blueprints
-app.register_blueprint(main, url_prefix='/endless')
+app.register_blueprint(main)
 app.register_blueprint(main_services, url_prefix='/api')
 app.register_blueprint(budgeto, url_prefix='/budgeto')
 app.register_blueprint(budgeto_services, url_prefix='/budgeto')

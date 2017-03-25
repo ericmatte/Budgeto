@@ -2,22 +2,22 @@
 <html prefix="og: http://ogp.me/ns#" lang="en">
 <head>
     <!-- Facebook Open Graph -->
-    <meta property="og:title" content="{{ title or 'Endless' }}"/>
+    <meta property="og:title" content="{{ title or 'Budgeto' }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="{{ request.url + '/' }}"/>
-    <meta property="og:image" content="{{ config['ORIGIN_URI'] }}/static/endless/img/favicon_xl.png"/>
+    <meta property="og:image" content="{{ config['ORIGIN_URI'] }}{{ image or '/static/endless/img/favicon_xl.png' }}"/>
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:site_name" content="Endless Budgeto"/>
-    <meta property="og:description" content="Un gestionniaire de Budget gratuit"/>
+    <meta property="og:site_name" content="{{ title or 'Budgeto' }}"/>
+    <meta property="og:description" content="{{ description or 'Un gestionniaire de Budget gratuit' }}"/>
 
     <!-- Chrome Android -->
-    <meta name="theme-color" content="#00897b" />
+    <meta name="theme-color" content="{{ color or '#00897b' }}" />
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='endless/img/favicon.png') }}" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='endless/img/favicon.png') }}" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ image or '/static/endless/img/favicon.png' }}" />
+    <link rel="icon" type="image/png" href="{{ image or '/static/endless/img/favicon.png' }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
