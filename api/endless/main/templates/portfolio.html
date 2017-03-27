@@ -55,6 +55,12 @@
       text-align: justify;
       text-justify: inter-word;
     }
+
+    .carousel.carousel-slider {
+        top: 0;
+        left: 0;
+        /*height: 280px;*/
+    }
   </style>
 
   <!-- Core CSS file -->
@@ -79,6 +85,7 @@
     <div class="row container">
       <!-- INFORMATION BRIEFING -->
       <div class="card-panel grey lighten-5 z-depth-3">
+
         <div class="row valign-wrapper">
           <div class="col s3">
             <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img">
@@ -298,6 +305,15 @@
   <script src="/static/photoswipe/js/photoswipe-ui-default.min.js"></script>
 
   <script type="text/javascript">
+
+  $(function() {
+      var carousels = $('.carousel.carousel-slider');
+      for (var i=0; i<carousels.length; i++) {
+          var height = $('.carousel-item img', carousels[i]).first().height();
+          $(carousels[i]).height(height);
+      }
+
+});
 
       var initPhotoSwipeFromDOM = function (gallerySelector) {
 
