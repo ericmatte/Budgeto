@@ -2,6 +2,10 @@
 
 {% block head %}
   <style type='text/css'>
+  .first.section {
+    background-image: url("/static/portfolio/gradient.png");
+    background-repeat: repeat-x;
+}
     .my-gallery {
       width: 100%;
       display:                 flex;
@@ -39,6 +43,10 @@
     padding-left: 15px;
     padding-right: 15px;
   }
+  .my-description {
+    text-align: justify;
+    text-justify: inter-word;
+  }
   </style>
 
   <!-- Core CSS file -->
@@ -55,36 +63,42 @@
 {% block full_body %}
 
 
-  <!-- INFORMATION BRIEFING -->
-  <div class="parallax-container">
-    <div class="parallax"><img src="/static/portfolio/bg1.png"></div>
+
+
+
+
+  <div class="first section grey lighten-3">
     <div class="row container">
-      <div class="card-panel grey lighten-5 z-depth-1">
+  <!-- INFORMATION BRIEFING -->
+      <div class="card-panel grey lighten-5 z-depth-3">
         <div class="row valign-wrapper">
           <div class="col s3">
             <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
           </div>
           <div class="col s9">
             <div class="black-text">
-              <h4>Eric Matte, student in Computer Engineering</h4>
-              <p>
+              <h3>Eric Matte</h3>
+              <h5>Student in Computer Engineering</h5>
+              <p class="my-description">
                 Programmer for more than {{ now.year - 2009 }} years, I’m always seeking for new goals.
                 I give a great interest on the quality of my work and I always want to learn more.
+                I am passionate about what I do and would like to share what I did along the route on this portfolio.
+                <br>
+                <i>Have a great tour!</i>
+                <br>
+                You can get in touch with me by email at <a href="mailto:contact@ericmatte.me" target="_top">contact@ericmatte.me</a>
+                or visit my <a href="https://www.linkedin.com/in/%C3%A9ric-matte-91b389a9/" target="_blank">LinkedIn</a>.
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-
 
   <!-- LIST OF PROJECTS -->
-  <div class="section grey lighten-3">
-    <div class="row container">
       <h2 class="header">Projects</h2>
-      <p class="grey-text text-darken-3 lighten-3">This is the list a all my projects so far.</p>
+      <p class="grey-text text-darken-3 lighten-3">
+        This is the list a all my projects which I am really proud to have created, or being part of the team that created them.
+      </p>
 
       <div class="row">
         {% for project in data.projects %}
@@ -170,7 +184,9 @@
     <div class="row container">
       <h2 class="header">Photos</h2>
       <p class="grey-text text-darken-3 lighten-3">
-        One thing I really like is go on an adventure and take some beautiful pictures.
+        One thing I really like is go on an adventure and take some beautiful pictures. I enjoy taking capturing and editing photos.
+        <br>
+        I also like to do some video editing and filming. You can see my<a href="https://www.youtube.com/channel/UCnrwdpFWs7BVcplngpt0NWA" target="_blank"><i class="fa fa-youtube-square" style="font-size:20px" aria-hidden="true"></i> Youtube page</a>.
       </p>
 
       <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
@@ -200,17 +216,14 @@
           <div class="pswp__item"></div>
           <div class="pswp__item"></div>
         </div>
-
         <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
         <div class="pswp__ui pswp__ui--hidden">
           <div class="pswp__top-bar">
-
             <!--  Controls are self-explanatory. Order can be changed. -->
             <div class="pswp__counter"></div>
             <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
             <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
             <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
             <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
             <!-- element will get class pswp__preloader--active when preloader is running -->
             <div class="pswp__preloader">
@@ -221,20 +234,10 @@
               </div>
             </div>
           </div>
-
-          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-            <div class="pswp__share-tooltip"></div>
-          </div>
-
-          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-          </button>
-
-          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-          </button>
-
-          <div class="pswp__caption">
-            <div class="pswp__caption__center"></div>
-          </div>
+          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div>
+          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+          <div class="pswp__caption"><div class="pswp__caption__center"></div></div>
         </div>
       </div>
     </div>
@@ -273,7 +276,6 @@
   <script src="/static/photoswipe/js/photoswipe-ui-default.min.js"></script>
 
   <script type="text/javascript">
-      $('.carousel.carousel-slider').carousel({fullWidth: true});
 
       var initPhotoSwipeFromDOM = function(gallerySelector) {
 

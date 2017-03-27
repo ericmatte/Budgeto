@@ -119,7 +119,7 @@
    "projects":[
       {
          "title":"Budgeto",
-         "description":"Budgeto is a simple webapp that easily help you manage your money.",
+         "description":"Budgeto is a simple webapp that easily help you manage your money. Right now, I am actively working on this project, as this app could be really useful for a lot of people like me. This let you have quickly an idea of what you mostly spend during the year. You can also set and track limits on every category available.",
          "logo":"static/endless/img/favicon.png",
          "images_path":"/static/portfolio/projects/budgeto/",
          "url":"http://ericmatte.me/budgeto/",

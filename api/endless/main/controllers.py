@@ -34,7 +34,7 @@ def portfolio():
                            description="This is my personal portfolio. It contains everything that I am very proud to share from what I\'ve done so far.",
                            image='/static/portfolio/my-icon.png',
                            data=data,
-                           color='#00897b',
+                           color='#034b7b',
                            now=datetime.utcnow())
 
 
