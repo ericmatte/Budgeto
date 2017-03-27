@@ -123,13 +123,14 @@
          "logo":"static/endless/img/favicon.png",
          "images_path":"/static/portfolio/projects/budgeto/",
          "url":"http://ericmatte.me/budgeto/",
-         "tags": ["WebApp", "Python"]
+         "tags": ["WebApp", "Python", "MySQL"]
       },
       {
          "title":"Découvrir Sherbrooke",
          "images_path":"/static/portfolio/projects/decouvrir/",
          "description":"For the hacketon HackSherbrooke 2016, my team and I made a simple application that helps new immigrants find great activities to do in the region. We've won the \"Prix coup de coeur\" for this occasion.",
-         "tags": ["Team Project", "HackSherbrooke16: A 24h Hackathon", "Ruby on Rails", "BootStrap"]
+         "prizes":["500$ + Prix coup de coeur"],
+         "tags": ["Team Project", "HackSherbrooke16: A 24h Hackathon", "Ruby on Rails", "BootStrap", "MongoDB"]
       },
       {
          "title":"Let Me Know",
@@ -145,11 +146,26 @@
          "tags": ["Team Projet", "University", "Java", "Applet"]
       },
       {
+         "title":"R2D2 - Concours Robot-Jouet",
+         "video":"/static/portfolio/projects/robotjouet.mp4",
+         "description":"At my first year at the University of Sherbrooke, we participated in a competition were we had to create a simple robot that will help children learn while having fun.",
+         "prizes":["100$ + Prix du Jury"],
+         "tags": ["Team Projet", "University", "C++", "Arduino", "Robot ArmUS"]
+      },
+      {
          "title":"SpirePlane",
-         "description":"A powerful web browser made in VB.NET. This is one of my first big project. I have coded Spireplane when I was 15 years old. It was based on the firefox engine, and had a ton of customisation settings. This is actually the second version. The first one was called FrostedLink, which I created with a very good friend of mine. With FrostedLink, we've won multiples prizes at Expo-science.",
+         "description":"A powerful web browser made in VB.NET. It is actually a complete makeover from scratch of FrostedLink. I have coded Spireplane when I was 15 years old. It was based on the firefox engine, and had a ton of customisation settings.",
          "logo":"/static/portfolio/projects/spireplane.png",
          "images_path":"/static/portfolio/projects/spireplane/",
          "tags": ["Expo-science", "VB.NET", "XUL-Runner"]
+      },
+      {
+         "title":"FrostedLink",
+         "description":"A great web browser made in VB.NET. This is one of my first big project. This is my first big project. I created it at the age of 14 years old with one of my great friend. Our goal was to make search (in that time) quicker and easier. With FrostedLink, we've won multiples prizes at Expo-science. We actually even go to the \"Expo-science Pan-canadien\".",
+         "logo":"/static/portfolio/projects/frostedlink.png",
+         "images_path":"/static/portfolio/projects/frostedlink/",
+         "prizes":["300$ + Bronze Medal at Expo-science Pan-canadien", "600$ at Expos-science Provincial", "and much more..."],
+         "tags": ["Expo-science", "VB.NET", "IE Engine"]
       }
    ]
 }

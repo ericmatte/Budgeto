@@ -55,6 +55,10 @@
       text-align: justify;
       text-justify: inter-word;
     }
+
+    .fa-trophy {
+      color: #e8ad00;
+    }
   </style>
 
   <!-- Core CSS file -->
@@ -148,25 +152,41 @@
                   {% endif %}
                   <span class="card-title valign">{{ project.title }}</span>
                   {% if project.images and project.images | length > 1 %}
-                    <span class="carousel-controls">
-                 <a class="waves-effect waves-teal btn-flat"
-                    onclick="$('#{{ project.id }} .carousel').carousel('prev');">
-                   <i class="material-icons">navigate_before</i>
-                 </a>
-                 <a class="waves-effect waves-teal btn-flat"
-                    onclick="$('#{{ project.id }} .carousel').carousel('next');">
-                   <i class="material-icons">navigate_next</i>
-                 </a>
-               </span>
+                    <span class="carousel-controls" style="height: 350px">
+                     <a class="waves-effect waves-teal btn-flat"
+                        onclick="$('#{{ project.id }} .carousel').carousel('prev');">
+                       <i class="material-icons">navigate_before</i>
+                     </a>
+                     <a class="waves-effect waves-teal btn-flat"
+                        onclick="$('#{{ project.id }} .carousel').carousel('next');">
+                       <i class="material-icons">navigate_next</i>
+                     </a>
+                    </span>
                   {% endif %}
                 </div>
                 <p>{{ project.description }}</p>
                 <br>
-                {% for tag in project.tags %}
-                  <div class="chip">
-                    {{ tag }}
+                <div class="project-prizes">
+                  {% for prize in project.prizes %}
+                  <div class="row valign-wrapper">
+                    <div class="col s1">
+                      <i class="fa fa-trophy" aria-hidden="true"></i>
+                    </div>
+                    <div class="col s11">
+                      <span class="black-text">
+                        {{ prize }}
+                      </span>
+                    </div>
                   </div>
-                {% endfor %}
+                  {% endfor %}
+                </div>
+                <div class="project-tags">
+                  {% for tag in project.tags %}
+                    <div class="chip">
+                      {{ tag }}
+                    </div>
+                  {% endfor %}
+                </div>
               </div>
               {% if project.url %}
                 <div class="card-action">
