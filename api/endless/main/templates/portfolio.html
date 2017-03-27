@@ -30,6 +30,15 @@
       font-size: 25px;
       margin-left: 10px;
     }
+    .carousel-controls {
+      position: absolute;
+      right: 0;
+      margin-right: 15px;
+    }
+  .carousel-controls .btn-flat {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   </style>
 
   <!-- Core CSS file -->
@@ -78,20 +87,68 @@
       <p class="grey-text text-darken-3 lighten-3">This is the list a all my projects so far.</p>
 
       <div class="row">
-        {% for project in projects %}
-          <div class="col s6 m3">
-            <div class="card">
-              <div class="card-image">
-                <img src="/static/endless/img/cover.jpg">
-                <span class="card-title">{{ project.title }}</span>
-              </div>
+        {% for project in data.projects %}
+          <div class="col s12 m6">
+
+
+            <div id="{{ project.id }}" class="card">
+              {% if project.images %}
+
+                {% if project.images | length == 1 %}
+
+                <img src="{{ project.images[0] }}" style="width: 100%">
+
+                {% else %}
+
+                  <div class="carousel carousel-slider">
+                  {% for image in project.images %}
+                    <a class="carousel-item"><img src="{{ image }}"></a>
+                  {% endfor %}
+                  </div>
+                {% endif %}
+
+              {% endif %}
+
+
+              {% if project.video %}
+<video class="responsive-video" controls>
+    <source src="{{ project.video }}" type="video/mp4">
+  </video>
+
+              {% endif %}
+
               <div class="card-content">
+             <div class="valign-wrapper" style="margin-bottom: 10px">
+                {% if project.logo %}
+               <img src="{{ project.logo }}" class="circle" style="margin-right:5px; height:48px; width:48px;">
+             {% endif %}
+               <span class="card-title valign">{{ project.title }}</span>
+               {% if project.images and project.images | length > 1 %}
+               <span class="carousel-controls">
+                 <a class="waves-effect waves-teal btn-flat" onclick="$('#{{ project.id }} .carousel').carousel('prev');">
+                   <i class="material-icons">navigate_before</i>
+                 </a>
+                 <a class="waves-effect waves-teal btn-flat" onclick="$('#{{ project.id }} .carousel').carousel('next');">
+                   <i class="material-icons">navigate_next</i>
+                 </a>
+               </span>
+               {% endif %}
+             </div>
                 <p>{{ project.description }}</p>
+                <br>
+                {% for tag in project.tags %}
+                  <div class="chip">
+    {{ tag }}
+  </div>
+                {% endfor %}
               </div>
               {% if project.url %}
-              <div class="card-action">
-                <a href="{{ project.url }}">See in action</a>
-              </div>
+                <div class="card-action">
+                  <a href="{{ project.url }}" target="_blank" class="waves-effect waves-teal">
+                    <i class="material-icons">open_in_new</i>
+                    See in action
+                  </a>
+                </div>
               {% endif %}
             </div>
           </div>
@@ -116,9 +173,8 @@
         One thing I really like is go on an adventure and take some beautiful pictures.
       </p>
 
-
       <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-        {% for picture in pictures %}
+        {% for picture in data.pictures %}
           <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
             <a href="{{ picture.url }}" itemprop="contentUrl" data-size="{{ picture.size }}">
               <img src="{{ picture.thumbnail }}" class="responsive-img" itemprop="thumbnail" alt="{{ picture.caption }}" />
@@ -128,8 +184,6 @@
         {% endfor %}
       </div>
     </div>
-
-
 
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -219,6 +273,8 @@
   <script src="/static/photoswipe/js/photoswipe-ui-default.min.js"></script>
 
   <script type="text/javascript">
+      $('.carousel.carousel-slider').carousel({fullWidth: true});
+
       var initPhotoSwipeFromDOM = function(gallerySelector) {
 
           // parse slide data (url, title, size ...) from DOM elements

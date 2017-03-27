@@ -1,0 +1,155 @@
+{
+   "pictures":[
+      {
+         "caption":"Angel Girl",
+         "size":"1280x1920",
+         "filename":"Angel.jpg"
+      },
+      {
+         "caption":"Backyard",
+         "size":"2340x1080",
+         "filename":"Backyard.jpg"
+      },
+      {
+         "caption":"Blue Moon",
+         "size":"1920x1248",
+         "filename":"Blue-Moon.jpg"
+      },
+      {
+         "caption":"The Little Thing",
+         "size":"2243x1080",
+         "filename":"Boubou.jpg"
+      },
+      {
+         "caption":"The Daisy Flower",
+         "size":"3132x1080",
+         "filename":"Daisy.jpg"
+      },
+      {
+         "caption":"Green Fern",
+         "size":"1920x1280",
+         "filename":"Fern.jpg"
+      },
+      {
+         "caption":"Flower",
+         "size":"3132x1080",
+         "filename":"Flower.jpg"
+      },
+      {
+         "caption":"Flying Girl",
+         "size":"1920x1280",
+         "filename":"Flying-Girl.jpg"
+      },
+      {
+         "caption":"Flying Stars",
+         "size":"1920x1280",
+         "filename":"Flying-Stars.jpg"
+      },
+      {
+         "caption":"Graffiti",
+         "size":"1920x1421",
+         "filename":"Graffiti.jpg"
+      },
+      {
+         "caption":"Gravel Road",
+         "size":"3132x1080",
+         "filename":"Gravel-Road.jpg"
+      },
+      {
+         "caption":"Journey",
+         "size":"1920x1440",
+         "filename":"Journey.jpg"
+      },
+      {
+         "caption":"Jump!",
+         "size":"2569x1080",
+         "filename":"Jump!.jpg"
+      },
+      {
+         "caption":"Lady of Leaves",
+         "size":"1920x1280",
+         "filename":"Lady-of-Leaves.jpg"
+      },
+      {
+         "caption":"Lantern",
+         "size":"1920x1395",
+         "filename":"Lantern.jpg"
+      },
+      {
+         "caption":"Leave",
+         "size":"3132x1080",
+         "filename":"Leave.jpg"
+      },
+      {
+         "caption":"Lumina",
+         "size":"1920x1183",
+         "filename":"Lumina.jpg"
+      },
+      {
+         "caption":"SharinganX",
+         "size":"1920x1280",
+         "filename":"SharinganX.jpg"
+      },
+      {
+         "caption":"The Red Chapel",
+         "size":"1920x1190",
+         "filename":"The-Red-Chapel.jpg"
+      },
+      {
+         "caption":"Tunnel",
+         "size":"3099x1368",
+         "filename":"Tunnel.jpg"
+      },
+      {
+         "caption":"Turtle",
+         "size":"1920x1280",
+         "filename":"Turtle.jpg"
+      },
+      {
+         "caption":"White Flower",
+         "size":"1920x1440",
+         "filename":"White-Flower.jpg"
+      },
+      {
+         "caption":"Wooden Bridge",
+         "size":"3132x1080",
+         "filename":"Wooden-Bridge.jpg"
+      }
+   ],
+   "projects":[
+      {
+         "title":"Budgeto",
+         "description":"Budgeto is a simple webapp that easily help you manage your money.",
+         "logo":"static/endless/img/favicon.png",
+         "images_path":"/static/portfolio/projects/budgeto/",
+         "url":"http://ericmatte.me/budgeto/",
+         "tags": ["WebApp", "Python"]
+      },
+      {
+         "title":"Découvrir Sherbrooke",
+         "images_path":"/static/portfolio/projects/decouvrir/",
+         "description":"For the hacketon HackSherbrooke 2016, my team and I made a simple application that helps new immigrants find great activities to do in the region. We've won the \"Prix coup de coeur\" for this occasion.",
+         "tags": ["Team Project", "HackSherbrooke16: A 24h Hackathon", "Ruby on Rails", "BootStrap"]
+      },
+      {
+         "title":"Let Me Know",
+         "logo":"/static/portfolio/projects/letmeknow.png",
+         "images_path":"/static/portfolio/projects/letmeknow/",
+         "description":"This is a simple app that helps promote alternates transports to cars by letting you know from multiples statistics and facts the pros and cons of each type of transport for your next commit.",
+         "tags": ["Team Projet", "HackQc17: A 48h Hackathon", "Ionic", "Angular2"]
+      },
+      {
+         "title":"Air Guitar Hero",
+         "video":"/static/portfolio/projects/airguitarhero.mp4",
+         "description":"Air Guitar Hero is a game similar to guitar hero. The main difference: The player plays without a guitar! Instead, we used gloves with conductive contacts to detect the player gestures.",
+         "tags": ["Team Projet", "University", "Java", "Applet"]
+      },
+      {
+         "title":"SpirePlane",
+         "description":"A powerful web browser made in VB.NET. This is one of my first big project. I have coded Spireplane when I was 15 years old. It was based on the firefox engine, and had a ton of customisation settings. This is actually the second version. The first one was called FrostedLink, which I created with a very good friend of mine. With FrostedLink, we've won multiples prizes at Expo-science.",
+         "logo":"/static/portfolio/projects/spireplane.png",
+         "images_path":"/static/portfolio/projects/spireplane/",
+         "tags": ["Expo-science", "VB.NET", "XUL-Runner"]
+      }
+   ]
+}
