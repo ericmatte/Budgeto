@@ -2,27 +2,31 @@
 
 {% block head %}
   <style type='text/css'>
-  .first.section {
-    background-image: url("/static/portfolio/gradient.png");
-    background-repeat: repeat-x;
-}
+    .first.section {
+      background-image: url("/static/portfolio/gradient.png");
+      background-repeat: repeat-x;
+    }
+
     .my-gallery {
       width: 100%;
-      display:                 flex;
-      display:                 -webkit-flex; /* Safari 8 */
-      flex-wrap:               wrap;
-      -webkit-flex-wrap:       wrap;         /* Safari 8 */
-      justify-content:         center;
-      -webkit-justify-content: center;       /* Safari 8 */
+      display: flex;
+      display: -webkit-flex; /* Safari 8 */
+      flex-wrap: wrap;
+      -webkit-flex-wrap: wrap; /* Safari 8 */
+      justify-content: center;
+      -webkit-justify-content: center; /* Safari 8 */
     }
+
     .my-gallery img {
       width: auto;
       height: 150px;
     }
+
     .my-gallery figure {
       margin: 0 5px 5px 0;
       height: 150px;
     }
+
     .my-gallery figcaption {
       display: none;
     }
@@ -30,23 +34,27 @@
     .page-footer a:hover {
       color: #FFFFFF !important;
     }
+
     i.fa {
       font-size: 25px;
       margin-left: 10px;
     }
+
     .carousel-controls {
       position: absolute;
       right: 0;
       margin-right: 15px;
     }
-  .carousel-controls .btn-flat {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .my-description {
-    text-align: justify;
-    text-justify: inter-word;
-  }
+
+    .carousel-controls .btn-flat {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .my-description {
+      text-align: justify;
+      text-justify: inter-word;
+    }
   </style>
 
   <!-- Core CSS file -->
@@ -69,11 +77,12 @@
 
   <div class="first section grey lighten-3">
     <div class="row container">
-  <!-- INFORMATION BRIEFING -->
+      <!-- INFORMATION BRIEFING -->
       <div class="card-panel grey lighten-5 z-depth-3">
         <div class="row valign-wrapper">
           <div class="col s3">
-            <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img">
+            <!-- notice the "circle" class -->
           </div>
           <div class="col s9">
             <div class="black-text">
@@ -94,10 +103,11 @@
         </div>
       </div>
 
-  <!-- LIST OF PROJECTS -->
+      <!-- LIST OF PROJECTS -->
       <h2 class="header">Projects</h2>
       <p class="grey-text text-darken-3 lighten-3">
-        This is the list a all my projects which I am really proud to have created, or being part of the team that created them.
+        This is the list a all my projects which I am really proud to have created, or being part of the team that
+        created them.
       </p>
 
       <div class="row">
@@ -110,14 +120,14 @@
 
                 {% if project.images | length == 1 %}
 
-                <img src="{{ project.images[0] }}" style="width: 100%">
+                  <img src="{{ project.images[0] }}" style="width: 100%">
 
                 {% else %}
 
                   <div class="carousel carousel-slider">
-                  {% for image in project.images %}
-                    <a class="carousel-item"><img src="{{ image }}"></a>
-                  {% endfor %}
+                    {% for image in project.images %}
+                      <a class="carousel-item"><img src="{{ image }}"></a>
+                    {% endfor %}
                   </div>
                 {% endif %}
 
@@ -125,35 +135,37 @@
 
 
               {% if project.video %}
-<video class="responsive-video" controls>
-    <source src="{{ project.video }}" type="video/mp4">
-  </video>
+                <video class="responsive-video" controls>
+                  <source src="{{ project.video }}" type="video/mp4">
+                </video>
 
               {% endif %}
 
               <div class="card-content">
-             <div class="valign-wrapper" style="margin-bottom: 10px">
-                {% if project.logo %}
-               <img src="{{ project.logo }}" class="circle" style="margin-right:5px; height:48px; width:48px;">
-             {% endif %}
-               <span class="card-title valign">{{ project.title }}</span>
-               {% if project.images and project.images | length > 1 %}
-               <span class="carousel-controls">
-                 <a class="waves-effect waves-teal btn-flat" onclick="$('#{{ project.id }} .carousel').carousel('prev');">
+                <div class="valign-wrapper" style="margin-bottom: 10px">
+                  {% if project.logo %}
+                    <img src="{{ project.logo }}" class="circle" style="margin-right:5px; height:48px; width:48px;">
+                  {% endif %}
+                  <span class="card-title valign">{{ project.title }}</span>
+                  {% if project.images and project.images | length > 1 %}
+                    <span class="carousel-controls">
+                 <a class="waves-effect waves-teal btn-flat"
+                    onclick="$('#{{ project.id }} .carousel').carousel('prev');">
                    <i class="material-icons">navigate_before</i>
                  </a>
-                 <a class="waves-effect waves-teal btn-flat" onclick="$('#{{ project.id }} .carousel').carousel('next');">
+                 <a class="waves-effect waves-teal btn-flat"
+                    onclick="$('#{{ project.id }} .carousel').carousel('next');">
                    <i class="material-icons">navigate_next</i>
                  </a>
                </span>
-               {% endif %}
-             </div>
+                  {% endif %}
+                </div>
                 <p>{{ project.description }}</p>
                 <br>
                 {% for tag in project.tags %}
                   <div class="chip">
-    {{ tag }}
-  </div>
+                    {{ tag }}
+                  </div>
                 {% endfor %}
               </div>
               {% if project.url %}
@@ -184,16 +196,20 @@
     <div class="row container">
       <h2 class="header">Photos</h2>
       <p class="grey-text text-darken-3 lighten-3">
-        One thing I really like is go on an adventure and take some beautiful pictures. I enjoy taking capturing and editing photos.
+        One thing I really like is go on an adventure and take some beautiful pictures. I enjoy taking capturing and
+        editing photos.
         <br>
-        I also like to do some video editing and filming. You can see my<a href="https://www.youtube.com/channel/UCnrwdpFWs7BVcplngpt0NWA" target="_blank"><i class="fa fa-youtube-square" style="font-size:20px" aria-hidden="true"></i> Youtube page</a>.
+        I also like to do some video editing and filming. You can see my<a
+          href="https://www.youtube.com/channel/UCnrwdpFWs7BVcplngpt0NWA" target="_blank"><i
+          class="fa fa-youtube-square" style="font-size:20px" aria-hidden="true"></i> Youtube page</a>.
       </p>
 
       <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
         {% for picture in data.pictures %}
           <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
             <a href="{{ picture.url }}" itemprop="contentUrl" data-size="{{ picture.size }}">
-              <img src="{{ picture.thumbnail }}" class="responsive-img" itemprop="thumbnail" alt="{{ picture.caption }}" />
+              <img src="{{ picture.thumbnail }}" class="responsive-img" itemprop="thumbnail"
+                   alt="{{ picture.caption }}"/>
             </a>
             <figcaption itemprop="caption description">{{ picture.caption }}</figcaption>
           </figure>
@@ -234,10 +250,14 @@
               </div>
             </div>
           </div>
-          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div>
+          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+            <div class="pswp__share-tooltip"></div>
+          </div>
           <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
           <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
-          <div class="pswp__caption"><div class="pswp__caption__center"></div></div>
+          <div class="pswp__caption">
+            <div class="pswp__caption__center"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -253,10 +273,12 @@
     <div class="footer-copyright">
       <div class="container">
         Eric Matte © {{ now.year }}. All rights reserved.
-        <a class="grey-text text-lighten-1 right" href="https://www.linkedin.com/in/%C3%A9ric-matte-91b389a9/" target="_blank">
+        <a class="grey-text text-lighten-1 right" href="https://www.linkedin.com/in/%C3%A9ric-matte-91b389a9/"
+           target="_blank">
           <i class="fa fa-linkedin-square" aria-hidden="true"></i>
         </a>
-        <a class="grey-text text-lighten-1 right" href="https://www.youtube.com/channel/UCnrwdpFWs7BVcplngpt0NWA" target="_blank">
+        <a class="grey-text text-lighten-1 right" href="https://www.youtube.com/channel/UCnrwdpFWs7BVcplngpt0NWA"
+           target="_blank">
           <i class="fa fa-youtube-square" aria-hidden="true"></i>
         </a>
       </div>
@@ -277,11 +299,11 @@
 
   <script type="text/javascript">
 
-      var initPhotoSwipeFromDOM = function(gallerySelector) {
+      var initPhotoSwipeFromDOM = function (gallerySelector) {
 
           // parse slide data (url, title, size ...) from DOM elements
           // (children of gallerySelector)
-          var parseThumbnailElements = function(el) {
+          var parseThumbnailElements = function (el) {
               var thumbElements = el.childNodes,
                   numNodes = thumbElements.length,
                   items = [],
@@ -290,12 +312,12 @@
                   size,
                   item;
 
-              for(var i = 0; i < numNodes; i++) {
+              for (var i = 0; i < numNodes; i++) {
 
                   figureEl = thumbElements[i]; // <figure> element
 
                   // include only element nodes
-                  if(figureEl.nodeType !== 1) {
+                  if (figureEl.nodeType !== 1) {
                       continue;
                   }
 
@@ -311,13 +333,12 @@
                   };
 
 
-
-                  if(figureEl.children.length > 1) {
+                  if (figureEl.children.length > 1) {
                       // <figcaption> content
                       item.title = figureEl.children[1].innerHTML;
                   }
 
-                  if(linkEl.children.length > 0) {
+                  if (linkEl.children.length > 0) {
                       // <img> thumbnail element, retrieving thumbnail url
                       item.msrc = linkEl.children[0].getAttribute('src');
                   }
@@ -335,18 +356,18 @@
           };
 
           // triggers when user clicks on thumbnail
-          var onThumbnailsClick = function(e) {
+          var onThumbnailsClick = function (e) {
               e = e || window.event;
               e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
               var eTarget = e.target || e.srcElement;
 
               // find root element of slide
-              var clickedListItem = closest(eTarget, function(el) {
+              var clickedListItem = closest(eTarget, function (el) {
                   return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
               });
 
-              if(!clickedListItem) {
+              if (!clickedListItem) {
                   return;
               }
 
@@ -359,11 +380,11 @@
                   index;
 
               for (var i = 0; i < numChildNodes; i++) {
-                  if(childNodes[i].nodeType !== 1) {
+                  if (childNodes[i].nodeType !== 1) {
                       continue;
                   }
 
-                  if(childNodes[i] === clickedListItem) {
+                  if (childNodes[i] === clickedListItem) {
                       index = nodeIndex;
                       break;
                   }
@@ -371,43 +392,42 @@
               }
 
 
-
-              if(index >= 0) {
+              if (index >= 0) {
                   // open PhotoSwipe if valid index found
-                  openPhotoSwipe( index, clickedGallery );
+                  openPhotoSwipe(index, clickedGallery);
               }
               return false;
           };
 
           // parse picture index and gallery index from URL (#&pid=1&gid=2)
-          var photoswipeParseHash = function() {
+          var photoswipeParseHash = function () {
               var hash = window.location.hash.substring(1),
                   params = {};
 
-              if(hash.length < 5) {
+              if (hash.length < 5) {
                   return params;
               }
 
               var vars = hash.split('&');
               for (var i = 0; i < vars.length; i++) {
-                  if(!vars[i]) {
+                  if (!vars[i]) {
                       continue;
                   }
                   var pair = vars[i].split('=');
-                  if(pair.length < 2) {
+                  if (pair.length < 2) {
                       continue;
                   }
                   params[pair[0]] = pair[1];
               }
 
-              if(params.gid) {
+              if (params.gid) {
                   params.gid = parseInt(params.gid, 10);
               }
 
               return params;
           };
 
-          var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
+          var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
               var pswpElement = document.querySelectorAll('.pswp')[0],
                   gallery,
                   options,
@@ -421,24 +441,24 @@
                   // define gallery index (for URL)
                   galleryUID: galleryElement.getAttribute('data-pswp-uid'),
 
-                  getThumbBoundsFn: function(index) {
+                  getThumbBoundsFn: function (index) {
                       // See Options -> getThumbBoundsFn section of documentation for more info
                       var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
                           pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
                           rect = thumbnail.getBoundingClientRect();
 
-                      return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+                      return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};
                   }
 
               };
 
               // PhotoSwipe opened from URL
-              if(fromURL) {
-                  if(options.galleryPIDs) {
+              if (fromURL) {
+                  if (options.galleryPIDs) {
                       // parse real index when custom PIDs are used
                       // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
-                      for(var j = 0; j < items.length; j++) {
-                          if(items[j].pid == index) {
+                      for (var j = 0; j < items.length; j++) {
+                          if (items[j].pid == index) {
                               options.index = j;
                               break;
                           }
@@ -452,31 +472,31 @@
               }
 
               // exit if index not found
-              if( isNaN(options.index) ) {
+              if (isNaN(options.index)) {
                   return;
               }
 
-              if(disableAnimation) {
+              if (disableAnimation) {
                   options.showAnimationDuration = 0;
               }
 
               // Pass data to PhotoSwipe and initialize it
-              gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+              gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
               gallery.init();
           };
 
           // loop through all gallery elements and bind events
-          var galleryElements = document.querySelectorAll( gallerySelector );
+          var galleryElements = document.querySelectorAll(gallerySelector);
 
-          for(var i = 0, l = galleryElements.length; i < l; i++) {
-              galleryElements[i].setAttribute('data-pswp-uid', i+1);
+          for (var i = 0, l = galleryElements.length; i < l; i++) {
+              galleryElements[i].setAttribute('data-pswp-uid', i + 1);
               galleryElements[i].onclick = onThumbnailsClick;
           }
 
           // Parse URL and open gallery if it contains #&pid=3&gid=1
           var hashData = photoswipeParseHash();
-          if(hashData.pid && hashData.gid) {
-              openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
+          if (hashData.pid && hashData.gid) {
+              openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
           }
       };
 
