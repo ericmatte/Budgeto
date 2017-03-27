@@ -20,9 +20,6 @@ def index():
 @main.route('/portfolio', methods=['GET'])
 def portfolio():
     root = app.config["PROJECT_ROOT"]
-    print("WORKING DIRECTORY")
-    print(os.path.dirname(os.path.realpath(__file__)))
-
     data = json.load(codecs.open(root + '/static/portfolio/data.json', 'r', 'utf-8-sig'))
 
     for i in range(len(data['pictures'])):
