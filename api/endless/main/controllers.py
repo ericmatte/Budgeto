@@ -30,7 +30,7 @@ def portfolio():
         data['projects'][i]['id'] = 'project-' + str(i)
         img_path = data['projects'][i].get('images_path')
         if img_path:
-            data['projects'][i]['images'] = [img_path+f for f in listdir(root + img_path) if isfile(join('endless'+img_path, f))]
+            data['projects'][i]['images'] = [img_path+f for f in listdir(root + img_path) if isfile(join(root +img_path, f))]
 
     return render_template('portfolio.html',
                            title="Eric Matte - Portfolio",
