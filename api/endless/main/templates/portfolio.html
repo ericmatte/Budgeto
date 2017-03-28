@@ -22,6 +22,20 @@
       height: 150px;
     }
 
+    .projects {
+      width: 100%;
+      display: flex;
+      display: -webkit-flex; /* Safari 8 */
+      flex-wrap: wrap;
+      -webkit-flex-wrap: wrap; /* Safari 8 */
+      justify-content: center;
+      -webkit-justify-content: center; /* Safari 8 */
+    }
+
+    .projects col {
+      width: auto;
+    }
+
     .my-gallery figure {
       margin: 0 5px 5px 0;
       height: 150px;
@@ -59,6 +73,17 @@
     .fa-trophy {
       color: #e8ad00;
     }
+    
+    .carousel.carousel-slider {
+        top: 0;
+        left: 0;
+        /*height: 280px;*/
+    }
+
+    .card-title {
+        margin-bottom: 0 !important;
+    }
+
   </style>
 
   <!-- Core CSS file -->
@@ -83,12 +108,13 @@
     <div class="row container">
       <!-- INFORMATION BRIEFING -->
       <div class="card-panel grey lighten-5 z-depth-3">
-        <div class="row valign-wrapper">
-          <div class="col s3">
-            <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img">
+
+        <div class="row">
+          <div class="col s12 m3">
+            <img src="/static/portfolio/my-icon.png" alt="" class="circle responsive-img center-align" style="max-height: 200px; display: block; margin: auto;">
             <!-- notice the "circle" class -->
           </div>
-          <div class="col s9">
+          <div class="col s12 m9">
             <div class="black-text">
               <h3>Eric Matte</h3>
               <h5>Student in Computer Engineering</h5>
@@ -114,7 +140,7 @@
         created them.
       </p>
 
-      <div class="row">
+      <div class="projects">
         {% for project in data.projects %}
           <div class="col s12 m6">
 
@@ -318,6 +344,15 @@
   <script src="/static/photoswipe/js/photoswipe-ui-default.min.js"></script>
 
   <script type="text/javascript">
+
+  $(function() {
+      var carousels = $('.carousel.carousel-slider');
+      for (var i=0; i<carousels.length; i++) {
+          var height = $('.carousel-item img', carousels[i]).first().height();
+          $(carousels[i]).height(height);
+      }
+
+});
 
       var initPhotoSwipeFromDOM = function (gallerySelector) {
 
