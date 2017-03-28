@@ -193,10 +193,10 @@
                 <div class="project-prizes">
                   {% for prize in project.prizes %}
                   <div class="row valign-wrapper">
-                    <div class="col s2 m1">
+                    <div class="col m2">
                       <i class="fa fa-trophy" aria-hidden="true"></i>
                     </div>
-                    <div class="col s10 m11">
+                    <div class="col m10">
                       <span class="black-text">
                         {{ prize }}
                       </span>
@@ -212,12 +212,20 @@
                   {% endfor %}
                 </div>
               </div>
-              {% if project.url %}
+              {% if project.url or project.reference %}
                 <div class="card-action">
+                  {% if project.url %}
                   <a href="{{ project.url }}" target="_blank" class="waves-effect waves-teal">
                     <i class="material-icons">open_in_new</i>
                     See in action
                   </a>
+                  {% endif %}
+                  {% if project.reference %}
+                  <a href="{{ project.reference }}" target="_blank" class="waves-effect waves-teal">
+                    <i class="material-icons">open_in_new</i>
+                    Reference
+                  </a>
+                  {% endif %}
                 </div>
               {% endif %}
             </div>

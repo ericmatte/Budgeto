@@ -167,6 +167,8 @@
          "description":"A powerful web browser made in VB.NET. It is actually a complete makeover from scratch of FrostedLink. I have coded Spireplane when I was 15 years old. It was based on the firefox engine, and had a ton of customisation settings.",
          "logo":"/static/portfolio/projects/spireplane.png",
          "images_path":"/static/portfolio/projects/spireplane/",
+         "reference":"http://exposciences.qc.ca/fr/salle-de-presse/12/la-releve-scientifique-s-illustre-a-la-finale-de-l-outaouais",
+         "prizes":["250$ - Prix des Clubs optimistes de l'Outaouais"],
          "tags": ["Expo-science", "VB.NET", "XUL-Runner"]
       },
       {
@@ -174,6 +176,7 @@
          "description":"A great web browser made in VB.NET. This is one of my first big project. This is my first big project. I created it at the age of 14 years old with one of my great friend. Our goal was to make search (in that time) quicker and easier. With FrostedLink, we've won multiples prizes at Expo-science. We actually even go to the \"Expo-science Pan-canadien\".",
          "logo":"/static/portfolio/projects/frostedlink.png",
          "images_path":"/static/portfolio/projects/frostedlink/",
+         "reference":"http://www.info07.com/communaute/2010/3/22/les-scientifiques-d-aujourd-hui-n-ont-qu-932343.html",
          "prizes":["300$ + Bronze Medal at Expo-science Pan-canadien", "600$ at Expos-science Provincial", "and much more..."],
          "tags": ["Expo-science", "VB.NET", "IE Engine"]
       }
