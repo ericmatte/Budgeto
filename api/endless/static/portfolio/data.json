@@ -26,14 +26,24 @@
          "filename":"Daisy.jpg"
       },
       {
+         "caption":"Eagles",
+         "size":"1629x1080",
+         "filename":"Eagles.jpg"
+      },
+      {
          "caption":"Green Fern",
          "size":"1920x1280",
-         "filename":"Fern.jpg"
+         "filename":"Green-Fern.jpg"
       },
       {
          "caption":"Flower",
          "size":"3132x1080",
          "filename":"Flower.jpg"
+      },
+      {
+         "caption":"Field and Trees",
+         "size":"3132x1080",
+         "filename":"Field-And-Trees.jpg"
       },
       {
          "caption":"Flying Girl",
@@ -46,14 +56,14 @@
          "filename":"Flying-Stars.jpg"
       },
       {
+         "caption":"Forest Road",
+         "size":"3132x1080",
+         "filename":"Forest-Road.jpg"
+      },
+      {
          "caption":"Graffiti",
          "size":"1920x1421",
          "filename":"Graffiti.jpg"
-      },
-      {
-         "caption":"Gravel Road",
-         "size":"3132x1080",
-         "filename":"Gravel-Road.jpg"
       },
       {
          "caption":"Journey",
@@ -64,11 +74,6 @@
          "caption":"Jump!",
          "size":"2569x1080",
          "filename":"Jump!.jpg"
-      },
-      {
-         "caption":"Lady of Leaves",
-         "size":"1920x1280",
-         "filename":"Lady-of-Leaves.jpg"
       },
       {
          "caption":"Lantern",
@@ -84,6 +89,11 @@
          "caption":"Lumina",
          "size":"1920x1183",
          "filename":"Lumina.jpg"
+      },
+      {
+         "caption":"Single Wheat",
+         "size":"3132x1080",
+         "filename":"Single-Wheat.jpg"
       },
       {
          "caption":"SharinganX",
@@ -106,14 +116,14 @@
          "filename":"Turtle.jpg"
       },
       {
+         "caption":"Wheat",
+         "size":"2941x1080",
+         "filename":"Wheat.jpg"
+      },
+      {
          "caption":"White Flower",
          "size":"1920x1440",
          "filename":"White-Flower.jpg"
-      },
-      {
-         "caption":"Wooden Bridge",
-         "size":"3132x1080",
-         "filename":"Wooden-Bridge.jpg"
       }
    ],
    "projects":[
