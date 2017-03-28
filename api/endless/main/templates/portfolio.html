@@ -140,11 +140,9 @@
         created them.
       </p>
 
-      <div class="projects">
+      <div class="projects row">
         {% for project in data.projects %}
-          <div class="col s12 m6">
-
-
+          <div class="col s12 m6 project">
             <div id="{{ project.id }}" class="card">
               {% if project.images %}
 
@@ -252,7 +250,7 @@
 
       <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
         {% for picture in data.pictures %}
-          <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+          <figure class="photo" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
             <a href="{{ picture.url }}" itemprop="contentUrl" data-size="{{ picture.size }}">
               <img src="{{ picture.thumbnail }}" class="responsive-img" itemprop="thumbnail"
                    alt="{{ picture.caption }}"/>
@@ -342,17 +340,21 @@
   <script src="/static/photoswipe/js/photoswipe.min.js"></script>
   <!-- UI JS file -->
   <script src="/static/photoswipe/js/photoswipe-ui-default.min.js"></script>
+  <script type="text/javascript" src="/static/masonry/masonry.pkgd.min.js"></script>
 
   <script type="text/javascript">
 
-  $(function() {
-      var carousels = $('.carousel.carousel-slider');
-      for (var i=0; i<carousels.length; i++) {
-          var height = $('.carousel-item img', carousels[i]).first().height();
-          $(carousels[i]).height(height);
-      }
 
-});
+      $(function () {
+          var carousels = $('.carousel.carousel-slider');
+          for (var i = 0; i < carousels.length; i++) {
+              var height = $('.carousel-item img', carousels[i]).first().height();
+              $(carousels[i]).height(height);
+          }
+          for (i=0; i<10000; i+=500) {
+              setTimeout(function () {$('.projects').masonry({itemSelector: '.project'});}, i);
+          }
+      });
 
       var initPhotoSwipeFromDOM = function (gallerySelector) {
 

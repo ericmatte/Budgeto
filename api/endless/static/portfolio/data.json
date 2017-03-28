@@ -147,20 +147,20 @@
          "logo":"/static/portfolio/projects/letmeknow.png",
          "images_path":"/static/portfolio/projects/letmeknow/",
          "description":"This is a simple app that helps promote alternates transports to cars by letting you know from multiples statistics and facts the pros and cons of each type of transport for your next commit.",
-         "tags": ["Team Projet", "HackQc17: A 48h Hackathon", "Ionic", "Angular2"]
+         "tags": ["Team Project", "HackQc17: A 48h Hackathon", "Ionic", "Angular2"]
       },
       {
          "title":"Air Guitar Hero",
          "video":"/static/portfolio/projects/airguitarhero.mp4",
          "description":"Air Guitar Hero is a game similar to guitar hero. The main difference: The player plays without a guitar! Instead, we used gloves with conductive contacts to detect the player gestures.",
-         "tags": ["Team Projet", "University", "Java", "Applet"]
+         "tags": ["Team Project", "University", "Java", "Applet"]
       },
       {
          "title":"R2D2 - Concours Robot-Jouet",
          "video":"/static/portfolio/projects/crj.mp4",
          "description":"At my first year at the University of Sherbrooke, we participated in a competition were we had to create a simple robot that will help children learn while having fun.",
          "prizes":["100$ + Prix du Jury"],
-         "tags": ["Team Projet", "University", "C++", "Arduino", "Robot ArmUS"]
+         "tags": ["Team Project", "University", "C++", "Arduino", "Robot ArmUS"]
       },
       {
          "title":"SpirePlane",
