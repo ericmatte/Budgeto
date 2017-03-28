@@ -147,7 +147,7 @@
       },
       {
          "title":"R2D2 - Concours Robot-Jouet",
-         "video":"/static/portfolio/projects/robotjouet.mp4",
+         "video":"/static/portfolio/projects/crj.mp4",
          "description":"At my first year at the University of Sherbrooke, we participated in a competition were we had to create a simple robot that will help children learn while having fun.",
          "prizes":["100$ + Prix du Jury"],
          "tags": ["Team Projet", "University", "C++", "Arduino", "Robot ArmUS"]
