@@ -150,6 +150,12 @@
          "tags": ["Team Project", "HackQc17: A 48h Hackathon", "Ionic", "Angular2"]
       },
       {
+         "title":"NerfUS",
+         "images_path":"/static/portfolio/projects/nerfus/",
+         "description":"NerfUS is a shooting range game using Nerfs, embedded systems, and a web server. The server is used to show the game interfaces and menus, and communicate with a mesh system of microcontrollers to elevate wooden targets in real-time.",
+         "tags": ["Team Project", "University", "mbed", "Node.JS", "AngularJS", "Websocket"]
+      },
+      {
          "title":"Air Guitar Hero",
          "video":"/static/portfolio/projects/airguitarhero.mp4",
          "description":"Air Guitar Hero is a game similar to guitar hero. The main difference: The player plays without a guitar! Instead, we used gloves with conductive contacts to detect the player gestures.",
