@@ -7,6 +7,7 @@ from flask import request
 from flask import session
 from flask import url_for
 
+from endless.budgeto.rest import budgeto_rest
 from endless.budgeto.controllers import budgeto
 from endless.budgeto.services import budgeto_services
 from endless.flask import app, db_session
@@ -14,7 +15,7 @@ from endless.main.services import main_services
 from endless.main.controllers import main
 from models.user import User
 
-@app.before_request
+# @app.before_request
 def get_current_user():
     g.user = getattr(g, 'user', User.get(email=session['email']) if session.get('email') else None)
 
@@ -37,3 +38,4 @@ app.register_blueprint(main)
 app.register_blueprint(main_services, url_prefix='/api')
 app.register_blueprint(budgeto, url_prefix='/budgeto')
 app.register_blueprint(budgeto_services, url_prefix='/budgeto')
+app.register_blueprint(budgeto_rest, url_prefix='/budgeto/api')

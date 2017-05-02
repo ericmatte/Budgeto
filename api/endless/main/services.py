@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from functools import wraps
 
 from flask import render_template
@@ -14,7 +15,61 @@ from lib.response_handler import HttpResponse
 from endless.main import main_services
 from oauth2client import client, crypt
 
-from models import User, add_to_db, set_attributes
+from models import User, set_attributes
+
+def token_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        authorization = request.headers.environ.get('HTTP_AUTHORIZATION', 'No')
+        if authorization.startswith('Bearer '):
+            g.user = validate_google_token(authorization[len('Bearer '):])
+            if g.user is None:
+                return HttpResponse("You must be login in order to complete this request.", status=401)
+        else:
+            return HttpResponse("Invalid authorization header.", status=403)
+        return f(*args, **kwargs)
+    return decorated_function
+
+def validate_google_token(token):
+    """Will return the user if the token is validated"""
+    # https://developers.google.com/identity/sign-in/web/backend-auth
+    try:
+        idinfo = client.verify_id_token(token, app.config['CLIENT_ID'])
+
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise crypt.AppIdentityError("Wrong issuer.")
+        if idinfo['exp'] <= time.time():
+            raise crypt.AppIdentityError("Token expired.")
+
+        user = update_user(idinfo)
+
+        return user  # Token validated
+    except crypt.AppIdentityError:
+        return None  # Token not valid
+
+def update_user(google_user_info):
+    """Update user using Google id token. Create a new user if it does not exist."""
+    attributes = {'first_name': google_user_info['given_name'],
+                  'last_name': google_user_info['family_name'],
+                  'picture': google_user_info['picture'],
+                  'google_id': google_user_info['sub']}
+
+    user = User.get(google_id=attributes['google_id'])
+    if user is None:
+        user = User.get(email=google_user_info['email'])
+        if user is None:
+            attributes['email'] = google_user_info['email']
+            user = User()
+            db_session.add(user)
+
+    user.heartbeat = datetime.now()
+    set_attributes(user, **attributes)
+    db_session.commit()
+    return user
+
+
+
+"""END OF NEW CODE"""
 
 
 def login_required(f):
@@ -76,24 +131,3 @@ def google_token_signin():
         del session['email']
         return HttpResponse('Client token invalid!', status=401)
     return HttpResponse('User {0} connected!'.format(idinfo['name']))
-
-def update_user(google_user_info):
-    """Update user using Google id token. Create a new user if it does not exist."""
-    user_info = {'first_name': google_user_info['given_name'],
-                 'last_name': google_user_info['family_name'],
-                 'picture': google_user_info['picture']}
-
-    user = User.get(google_id=google_user_info['sub'])
-    if user is None:
-        user = User.get(email=google_user_info['email'])
-        user_info['google_id'] = google_user_info['sub']
-        if user is None:
-            user_info['email'] = google_user_info['email']
-            add_to_db(User(), **user_info)
-        else:
-            set_attributes(user, **user_info)
-            db_session.commit()
-    else:
-        set_attributes(user, **user_info)
-        db_session.commit()
-
