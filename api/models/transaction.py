@@ -63,9 +63,10 @@ class Transaction(DeclarativeBase, BaseEntity):
     @classmethod
     def get_all_by_bank(cls, user):
         """Get all the categories in a hierarchical way"""
-        banks = [bank.__dict__ for bank in Bank.get_all()]
+        from models import to_json
+        banks = [to_json(bank, False) for bank in Bank.get_all()]
         transactions = user.transactions
 
         for bank in banks:
-            bank['transactions'] = [t for t in transactions if t.bank_id == bank['bank_id']]
+            bank['transactions'] = to_json([t for t in transactions if t.bank_id == bank['bank_id']], False)
         return banks

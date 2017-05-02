@@ -1,10 +1,13 @@
 import os
 
 from flask.app import Flask
+from flask_cors import CORS
 
 from endless.server.database import init_db
 
 app = Flask(__name__)
+CORS(app)
+
 selected_config_file = ('../../deployment_config/budgeto/config_{0}.cfg'
                         .format('prod' if os.environ.get('MODE', '') == 'PROD' else 'debug'))
 app.config["PROJECT_ROOT"] = os.path.abspath(os.path.dirname(__file__))
