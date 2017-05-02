@@ -70,3 +70,7 @@ class Transaction(DeclarativeBase, BaseEntity):
         for bank in banks:
             bank['transactions'] = to_json([t for t in transactions if t.bank_id == bank['bank_id']], False)
         return banks
+
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
