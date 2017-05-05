@@ -5,17 +5,11 @@ from datetime import datetime
 from lib.print_colors import out
 from lib.statement_parser import StatementParser
 
-path = 'tests/resources/csv/'
-statements = [
-    {'bank': 'Desjardins', 'csv': 'Desjardins_Comptes.csv',       'json': 'Desjardins_Comptes.json'},
-    {'bank': 'Tangerine',  'csv': 'Tangerine_Credit-Card.CSV',    'json': 'Tangerine_Credit-Card.json'},
-    {'bank': 'Tangerine',  'csv': 'Tangerine_Saving-Account.CSV', 'json': 'Tangerine_Saving-Account.json'}
-]
-
-def test_csv_to_json(client):
+def test_csv_to_json(client, statements):
     for statement in statements:
-        parsed = StatementParser(statement['bank']).parse(path+statement['csv'])
-        with codecs.open(path+statement['json'], 'r', encoding='utf8') as f:
+        out.print('Test: ' + statement['csv'], out.WARNING)
+        parsed = StatementParser(statement['bank']).parse(statement['csv'])
+        with codecs.open(statement['json'], 'r', encoding='utf8') as f:
             ref = json.loads(f.read())
 
             assert parsed['bank'] == ref['bank']
@@ -35,7 +29,7 @@ def test_csv_to_json(client):
     assert try_that(StatementParser, 'Bank not supported', 'NotABank')
     assert try_that(StatementParser, 'Bank not supported', '')
     assert try_that(StatementParser('Tangerine').parse, 'not found', 'NotAFile')
-    assert try_that(StatementParser('Tangerine').parse, 'not supported', path+statements[0]['json'])
+    assert try_that(StatementParser('Tangerine').parse, 'not supported', statements[0]['json'])
 
 def test_clean_text(client):
     strings = [
