@@ -1,0 +1,240 @@
+{
+   "transactions":[
+      {
+         "amount":1.09,
+         "date":"2017-01-01",
+         "description":"Promotional Bonus Interest"
+      },
+      {
+         "amount":29.0,
+         "date":"2017-03-01",
+         "description":"Tangerine Email Money Transfer F"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-06-01",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":-260.99,
+         "date":"2017-08-01",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-189.65,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":20.0,
+         "date":"2017-05-05",
+         "description":"Tangerine Email Money Transfer F"
+      },
+      {
+         "amount":-32.63,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":25.0,
+         "date":"2017-05-05",
+         "description":"Tangerine Email Money Transfer F"
+      },
+      {
+         "amount":-196.53,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":13.05,
+         "date":"2017-05-05",
+         "description":"Credit Card Rewards Redemption"
+      },
+      {
+         "amount":2.88,
+         "date":"2017-05-05",
+         "description":"Interest Paid"
+      },
+      {
+         "amount":0.25,
+         "date":"2017-01-02",
+         "description":"Promotional Bonus Interest"
+      },
+      {
+         "amount":-30.71,
+         "date":"2017-01-02",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-06-02",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":122.0,
+         "date":"2017-07-02",
+         "description":"Interac e-Transfer From: Cedrik"
+      },
+      {
+         "amount":-476.36,
+         "date":"2017-07-02",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-220.28,
+         "date":"2017-12-02",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-50.8,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-135.64,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-50.37,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-100.0,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":13.86,
+         "date":"2017-05-05",
+         "description":"Credit Card Rewards Redemption"
+      },
+      {
+         "amount":2.41,
+         "date":"2017-05-05",
+         "description":"Interest Paid"
+      },
+      {
+         "amount":0.02,
+         "date":"2017-01-03",
+         "description":"Promotional Bonus Interest"
+      },
+      {
+         "amount":-113.34,
+         "date":"2017-01-03",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-198.77,
+         "date":"2017-06-03",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-83.55,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-61.86,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":16.4,
+         "date":"2017-05-05",
+         "description":"Credit Card Rewards Redemption"
+      },
+      {
+         "amount":-783.34,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":2.15,
+         "date":"2017-05-05",
+         "description":"Interest Paid"
+      },
+      {
+         "amount":12.5,
+         "date":"2017-01-04",
+         "description":"Tangerine Email Money Transfer F"
+      },
+      {
+         "amount":-132.63,
+         "date":"2017-03-04",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-70.57,
+         "date":"2017-06-04",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-07-04",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-10-04",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":-84.45,
+         "date":"2017-12-04",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-05-05",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":-134.53,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":-170.56,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":500.0,
+         "date":"2017-05-05",
+         "description":"Eft Deposit from C.P.D. De Gatin"
+      },
+      {
+         "amount":9.77,
+         "date":"2017-05-05",
+         "description":"Credit Card Rewards Redemption"
+      },
+      {
+         "amount":-71.82,
+         "date":"2017-05-05",
+         "description":"Tng Money-Back Credit Card payme"
+      },
+      {
+         "amount":15.0,
+         "date":"2017-05-05",
+         "description":"Tangerine Email Money Transfer F"
+      },
+      {
+         "amount":2.08,
+         "date":"2017-05-05",
+         "description":"Interest Paid"
+      },
+      {
+         "amount":1.12,
+         "date":"2017-01-05",
+         "description":"Promotional Bonus Interest"
+      },
+      {
+         "amount":-466.51,
+         "date":"2017-02-05",
+         "description":"Tng Money-Back Credit Card payme"
+      }
+   ],
+   "bank":"Tangerine"
+}
