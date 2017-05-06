@@ -23,7 +23,7 @@ class StatementParser:
             # 0-Date, 2-Description, 4-Amount
             self.description = lambda row: row[2]
             self.amount = lambda row: float(row[4] or '0')
-            self.date = lambda row: self.format_date(row[0], '%d/%m/%Y')
+            self.date = lambda row: self.format_date(row[0], '%m/%d/%Y')
             self.start_at = 1
             self.columns = 5
 

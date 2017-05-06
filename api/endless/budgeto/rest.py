@@ -17,14 +17,25 @@ def get_banks():
     banks = Bank.get_all()
     return make_response(to_json(banks))
 
-
 @budgeto_rest.route('/categories', methods=['GET'])
 def get_categories():
     categories = {c.category_id: c for c in Category.get_all()}
     return make_response(to_json(categories))
 
-@budgeto_rest.route('/transactions', methods=['POST'])
+@budgeto_rest.route('/transactions', methods=['GET', 'POST'])
 @token_required
 def get_transactions():
-    transactions = Transaction.get_all(user_id=g.user.user_id, bank_id=request.json['bank_id'])
-    return make_response(to_json(transactions))
+    if request.method == 'GET':
+        banks = Bank.get_all()
+        categories = {c.category_id: c for c in Category.get_all()}
+        transactions = Transaction.get_all(user_id=g.user.user_id)
+        return make_response(to_json({
+            'transactions': transactions,
+            'banks': banks,
+            'categories': categories
+        }))
+
+
+    elif request.method == 'POST':
+        transactions = Transaction.get_all(user_id=g.user.user_id, bank_id=request.json['bank_id'])
+        return make_response(to_json(transactions))
