@@ -20,13 +20,14 @@ from models import User, set_attributes
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        authorization = request.headers.environ.get('HTTP_AUTHORIZATION', 'No')
-        if authorization.startswith('Bearer '):
-            g.user = validate_google_token(authorization[len('Bearer '):])
-            if g.user is None:
-                return HttpResponse("You must be login in order to complete this request.", status=401)
-        else:
-            return HttpResponse("Invalid authorization header.", status=403)
+        if not app.config['TESTING']:
+            authorization = request.headers.environ.get('HTTP_AUTHORIZATION', 'No')
+            if authorization.startswith('Bearer '):
+                g.user = validate_google_token(authorization[len('Bearer '):])
+                if g.user is None:
+                    return HttpResponse("You must be login in order to complete this request.", status=401)
+            else:
+                return HttpResponse("Invalid authorization header.", status=403)
         return f(*args, **kwargs)
     return decorated_function
 

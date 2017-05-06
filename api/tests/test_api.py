@@ -1,15 +1,13 @@
-import codecs
 import json
-from datetime import datetime
+from datetime import date
 
 from flask import g
-from flask import url_for
+from flask import jsonify
 
 from endless import app
 from endless import db_session
-from endless.budgeto.backend import put_transactions
 from endless.main.services import update_user
-from models import Transaction
+from models import Transaction, add_to_db
 from models import User
 from tests import set_current_user
 
@@ -45,18 +43,20 @@ def test_update_user(client, dummy_google_user_info):
     assert user.full_name == dummy_google_user_info['name']
     assert user.email == new_email
 
-def test_put_transaction(client, statements):
+def test_get_transactions(client):
+    def json_verifier(data, number_of_transactions):
+        assert len(data.get('banks', [])) > 0
+        assert len(data.get('categories', [])) > 0
+        assert len(data.get('transactions', [])) == number_of_transactions
+
     with set_current_user():
-        for statement in statements:
-            with codecs.open(statement['json'], 'r', encoding='utf8') as f:
-                ref = json.loads(f.read())
-                now = datetime.now()
+        response = client.get('/budgeto/api/transactions')
+        assert response.status_code == 200
+        json_verifier(json.loads(response.data.decode('utf-8')), 0)
 
-                assert put_transactions(statement, g.user)
+        add_to_db(Transaction(), description='Test de transaction', amount=10.55,
+                  date=date.today(), bank_id=2, user_id=g.user.user_id)
 
-                transactions = Transaction.get_all(Transaction.upload_time > now)
-                assert len(transactions) == len(ref['transactions'])
-                for i in range(0, len(transactions)):
-                    assert transactions[i].description == ref['transactions']['description']
-                    assert transactions[i].amount == ref['transactions']['amount']
-                    assert transactions[i].date == ref['transactions']['date']
+        response = client.get('/budgeto/api/transactions')
+        assert response.status_code == 200
+        json_verifier(json.loads(response.data.decode('utf-8')), 1)
