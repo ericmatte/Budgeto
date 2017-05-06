@@ -1,4 +1,6 @@
-from models import Bank, add_to_db, set_attributes
+import json
+
+from models import Bank, add_to_db, set_attributes, to_json
 from models import Transaction
 
 

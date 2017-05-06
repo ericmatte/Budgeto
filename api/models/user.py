@@ -42,9 +42,23 @@ class User(DeclarativeBase, BaseEntity):
         return self.first_name + ' ' + self.last_name
 
     @property
+    def is_admin(self):
+        return (self.user_id == 1 or self.full_name == "Test User")
+
+    @property
     def roles(self):
         """To be changed with real roles"""
         return ['admin', 'user'] if self.user_id == 1 or self.full_name == "Test User" else ['user']
+
+    @property
+    def to_json(self):
+        return {
+            'user_id': self.user_id,
+            'email': self.email,
+            'name': self.full_name,
+            'image': self.picture,
+            'is_admin': self.is_admin,
+        }
 
     @classmethod
     def apply_filter(cls, query, **kwargs):
