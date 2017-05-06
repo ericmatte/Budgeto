@@ -27,7 +27,7 @@ def token_required(f):
                 if g.user is None:
                     return HttpResponse("You must be login in order to complete this request.", status=401)
             else:
-                return HttpResponse("Invalid authorization header.", status=403)
+                return HttpResponse("Invalid authorization header.", status=401)
         return f(*args, **kwargs)
     return decorated_function
 
