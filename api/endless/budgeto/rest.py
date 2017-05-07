@@ -5,6 +5,7 @@ from flask import request
 
 from endless.budgeto import budgeto_rest
 from endless.main.services import token_required
+from lib.response_handler import HttpResponse
 from models import Bank
 from models import Category
 from models import Transaction, to_json
@@ -13,7 +14,7 @@ from models import Transaction, to_json
 @budgeto_rest.route('/fetch-initial-data', methods=['GET'])
 def fetch_initial_data():
     banks = Bank.get_all()
-    categories = {c.category_id: c for c in Category.get_all()}
+    categories = Category.get_all() # {c.category_id: c for c in Category.get_all()}
     return make_response(to_json({
         'banks': banks,
         'categories': categories
