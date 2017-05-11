@@ -23,8 +23,14 @@ def fetch_initial_data():
 @budgeto_rest.route('/validate-token', methods=['GET'])
 @token_required
 def validate_token():
-    """Will return an error code if the token is invalidated"""
-    return make_response(json.dumps(g.user.to_json))
+    """Will return an error code if the token is invalidated
+    Otherwise, return the user information.
+    """
+    transactions = Transaction.filter(user_id=g.user.user_id).order_by(Transaction.date.desc()).all()
+    return make_response(to_json({
+        'user': g.user.to_json,
+        'transactions': transactions
+    }))
 
 @budgeto_rest.route('/transactions', methods=['GET', 'POST'])
 @token_required
