@@ -39,7 +39,6 @@ def test_fetch_initial_data(client):
     data = json.loads(response.data.decode('utf-8'))
     assert len(data['banks']) > 0
     assert len(data['categories']) > 0
-    assert data['categories']['1']['category_id'] == 1
 
 def test_validate_token(client):
     with set_current_user():

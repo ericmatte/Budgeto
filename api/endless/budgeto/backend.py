@@ -7,7 +7,7 @@ from models import Transaction
 def put_transactions(json_data, user):
     """Save a list of transactions into the database
     Args:
-        json : str The json containing the bank and the transactions to add
+        json_data : str The json containing the bank and the transactions to add
         user : User The user to add to
     Returns:
         The number of transactions added

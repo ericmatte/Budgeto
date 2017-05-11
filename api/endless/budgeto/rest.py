@@ -13,8 +13,8 @@ from models import Transaction, to_json
 
 @budgeto_rest.route('/fetch-initial-data', methods=['GET'])
 def fetch_initial_data():
-    banks = Bank.get_all()
-    categories = Category.get_all() # {c.category_id: c for c in Category.get_all()}
+    banks = Bank.query.order_by(Bank.name).all()
+    categories = Category.query.order_by(Category.name).all()
     return make_response(to_json({
         'banks': banks,
         'categories': categories
@@ -29,11 +29,19 @@ def validate_token():
 @budgeto_rest.route('/transactions', methods=['GET', 'POST'])
 @token_required
 def get_transactions():
+    # Retrieve user transactions
     if request.method == 'GET':
-        transactions = Transaction.get_all(user_id=g.user.user_id)
+        transactions = Transaction.filter(user_id=g.user.user_id).order_by(Transaction.date.desc()).all()
         return make_response(to_json(transactions))
 
+    # Allow to insert new transactions
+    elif request.method == 'PUT':
+        return HttpResponse("Function not implemented yet.", status=418)
 
+    # Allow to edit a transaction
     elif request.method == 'POST':
-        transactions = Transaction.get_all(user_id=g.user.user_id, bank_id=request.json['bank_id'])
-        return make_response(to_json(transactions))
+        return HttpResponse("Function not implemented yet.", status=418)
+
+    # Allow to delete a transaction
+    elif request.method == 'DELETE':
+        return HttpResponse("Function not implemented yet.", status=418)
