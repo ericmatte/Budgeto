@@ -9,6 +9,7 @@ from lib.response_handler import HttpResponse
 from models import Bank
 from models import Category
 from models import Transaction, to_json
+from models.limit import Limit
 
 
 @budgeto_rest.route('/fetch-initial-data', methods=['GET'])
@@ -27,8 +28,10 @@ def validate_token():
     Otherwise, return the user information.
     """
     transactions = Transaction.filter(user_id=g.user.user_id).order_by(Transaction.date.desc()).all()
+    limits = Limit.get_all(user_id=g.user.user_id)
     return make_response(to_json({
         'user': g.user.to_json,
+        'limits': limits,
         'transactions': transactions
     }))
 
