@@ -32,7 +32,7 @@ def validate_token():
     return make_response(to_json({
         'user': g.user.to_json,
         'limits': limits,
-        'transactions': transactions
+        'transactions': [t.as_dict() for t in transactions]
     }))
 
 @budgeto_rest.route('/transactions', methods=['GET', 'POST'])
