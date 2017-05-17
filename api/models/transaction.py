@@ -34,4 +34,7 @@ class Transaction(DeclarativeBase, BaseEntity):
     bank = relationship('Bank')
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        transaction = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        transaction['date'] = str(transaction['date'])
+        transaction['upload_time'] = str(transaction['upload_time'])
+        return transaction
