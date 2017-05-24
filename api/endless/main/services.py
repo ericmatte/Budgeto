@@ -68,8 +68,6 @@ def update_user(google_user_info):
     db_session.commit()
     return user
 
-
-
 """END OF NEW CODE"""
 
 

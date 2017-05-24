@@ -16,16 +16,14 @@ class HttpResponse(Response):
     @See werkzeug.http.HTTP_STATUS_CODES for full list of status codes.
     """
 
-    def __init__(self, description=None, response={}, status=200):
+    def __init__(self, response=None, status=200):
         if status < 400:
             mime_type = 'application/json'
             # Put str type of response into a simple dict
-            response['description'] = description
+            response = json.dumps(response if type(response) is dict else {'description': response})
         else:
             mime_type = 'text/plain'
-            response = description
-
-        response = json.dumps(response) if type(response) is dict else response
+            response = response
 
         super().__init__(response, status=status, mimetype=mime_type)
 
