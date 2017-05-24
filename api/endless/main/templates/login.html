@@ -71,7 +71,7 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             console.log('Signed in as: ' + xhr.responseText);
-            window.location = "{{ request.args.get('redirect', url_for('budgeto.budget')) }}";
+            window.location = "{{ request.args.get('redirect', url_for('main.portfolio')) }}";
         };
         xhr.send('idtoken=' + id_token);
     }

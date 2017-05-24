@@ -14,7 +14,7 @@ from endless.flask import app
 
 @main.route('/', methods=['GET'])
 def index():
-    return redirect(url_for('budgeto.promotion'))
+    return redirect(url_for('main.portfolio'))
 
 
 @main.route('/portfolio', methods=['GET'])
