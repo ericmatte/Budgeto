@@ -2,6 +2,8 @@ import csv
 import os
 import uuid
 
+from sqlalchemy import and_
+
 from endless.flask import app
 from flask import g
 from flask import make_response
@@ -78,15 +80,19 @@ def transactions():
 
 
 # Allow to delete a transaction
-@budgeto_rest.route('/transactions/delete/<transaction_id>', methods=['DELETE'])
+@budgeto_rest.route('/transactions/delete/<ids>', methods=['DELETE'])
 @token_required
-def delete_transaction(transaction_id):
-    transaction = Transaction.get(user_id=g.user.user_id, transaction_id=transaction_id)
-    if transaction is not None:
+def delete_transaction(ids):
+    ids_list = ids.split(",")
+    transactions_to_delete = Transaction.get_all(
+        and_(Transaction.user_id == g.user.user_id, Transaction.transaction_id.in_(ids_list))
+    )
+    if len(transactions_to_delete) > 0:
         from endless import db_session
-        db_session.delete(transaction)
+        for transaction in transactions_to_delete:
+            db_session.delete(transaction)
         db_session.commit()
-        return HttpResponse("The transaction #{id} has been deleted.".format(id=transaction), status=200)
+        return HttpResponse("The transactions have been deleted.", status=200)
     else:
         return HttpResponse("Unable to delete the transaction. Please try again later.", status=500)
 
