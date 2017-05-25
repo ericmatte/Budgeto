@@ -35,3 +35,6 @@ def get_transaction_attributes(transaction):
         'date': datetime.strptime(transaction['date'], '%Y-%m-%d')
     }
     return t_attributes
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['csv']
