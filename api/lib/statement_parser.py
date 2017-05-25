@@ -9,8 +9,8 @@ from models import Bank
 class StatementParser:
 
 
-    def __init__(self, bank_name):
-        self.bank = Bank.get(name=bank_name.title())
+    def __init__(self, bank_name='', bank=None):
+        self.bank = bank or Bank.get(name=bank_name.title())
         if self.bank is None:
             raise ValueError('Bank not supported.')
 
