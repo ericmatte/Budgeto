@@ -1,0 +1,112 @@
+<ng-container *ngIf="root.categories | groupByKey:'category_id'; let categories">
+    <ng-container *ngIf="root.banks | groupByKey:'bank_id'; let banks">
+
+        <div [materializeActions]="transactionModal" materialize="modal" class="modal">
+
+            <form #transactionForm="ngForm" (ngSubmit)="onSubmit()" materialize *ngIf="transaction">
+                <div class="modal-content">
+                    <h4 *ngIf="type == 'add'">
+                        <i class="material-icons">add_circle</i> Ajouter une nouvelle transaction
+                    </h4>
+                    <h4 *ngIf="type == 'edit'">
+                        <i class="material-icons">add_circle</i> Modifier la transaction
+                    </h4>
+
+                    <div class="row">
+                        <!--Category-->
+                        <div class="input-field col m4 s12">
+                            <i id="transaction-cat-icon" class="fa {{ transaction.category_id ? categories[transaction.category_id].icon : '' }} prefix"
+                                aria-hidden="true"></i>
+                            <select [(ngModel)]="transaction.category_id" name="transaction-category" materialize="material_select">
+                                <option *ngFor="let category of root.categories" [ngValue]="category.category_id" class="circle">{{ category.name }}</option>
+                            </select>
+                            <label>Catégorie</label>
+                        </div>
+
+                        <!--Description-->
+                        <div class="input-field col m8 s12">
+                            <i class="material-icons prefix">textsms</i>
+                            <input [(ngModel)]="transaction.description" name="transaction-description" id="transaction-description" placeholder="Optionnel, utilisera le nom de la catégorie si vide."
+                                type="text" class="validate" data-length="256" pattern="^.{0,256}$">
+                            <label for="transaction-description" data-error="La description ne doit pas dépasser 256 caractères.">Description</label>
+                        </div>
+
+                        <!--Amount-->
+                        <div class="input-field col m4 s12">
+                            <i class="material-icons prefix">attach_money</i>
+                            <input [(ngModel)]="transaction.amount" name="transaction-amount" id="transaction-amount" type="text" pattern="-?[0-9]+(\.[0-9]{1,2})?"
+                                class="validate" required>
+                            <label for="transaction-amount" data-error="Veuillez entrer un montant comme 123 ou 456.50">Montant</label>
+                        </div>
+
+                        <!--Date-->
+                        <div class="input-field col m4 s12">
+                            <i class="material-icons prefix">date_range</i>
+                            <input [(ngModel)]="transaction.date" name="transaction-date" id="transaction-date" type="text" pattern="[12][0-9]{3}-[0-9]{1,2}-[0-9]{1,2}"
+                                class="validate" required>
+                            <label for="transaction-date" data-error="Veuillez entrer une date en utilisant le format AAAA-MM-DD">Date</label>
+                        </div>
+
+                        <!--Bank-->
+                        <div class="input-field col m4 s12">
+                            <i id="transaction-bank-icon" class="material-icons prefix" [style.color]="'#' + banks[transaction.bank_id].color">account_balance</i>
+                            <select [(ngModel)]="transaction.bank_id" name="transaction-bank" materialize="material_select" id="transaction-bank">
+                                <option *ngFor="let bank of root.banks" [selected]="bank.bank_id == transaction.bank_id" [ngValue]="bank.bank_id">{{ bank.name }}</option>
+                            </select>
+                            <label>Banque</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="!transactionForm.form.valid" type="submit" class="waves-effect btn" style="margin-left:6px">
+                        <i class="material-icons left">save</i> Enregistrer
+                    </button>
+                    <button (click)="onCancel()" type="button" class="modal-action modal-close waves-effect btn-flat">Annuler</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div [materializeActions]="deleteTransactionModal" materialize="modal" class="modal">
+            <form #deleteTransactionForm="ngForm" (ngSubmit)="deleteTransaction()" *ngIf="inputTransaction" materialize>
+                <div class="modal-content">
+                    <h5>
+                        <ng-container *ngIf="inputTransaction.category_id">
+                            <i class="fa" [ngClass]="categories[inputTransaction.category_id].icon" aria-hidden="true"></i>
+                        </ng-container>
+                        {{ inputTransaction.description }} ({{ inputTransaction.amount }} $) - {{ inputTransaction.date }}
+                    </h5>
+                    <p>Êtes-vous certain de vouloir supprimer cette transaction?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="waves-effect btn" style="margin-left:6px">
+                        <i class="material-icons left">delete_forever</i> Oui
+                    </button>
+                    <button type="button" class="modal-action modal-close waves-effect btn-flat">Non</button>
+                </div>
+            </form>
+        </div>
+
+    </ng-container>
+</ng-container>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red" materialize="tooltip" data-position="left" data-delay="50"
+        data-tooltip="Ajouter une transaction" (click)="showAddTransactionModal()">
+        <i class="large material-icons">add</i>
+    </a>
+    <ul>
+        <li>
+            <a class="btn-floating green" materialize="tooltip" data-position="left" data-delay="50" data-tooltip="Importer des transactions"
+                [routerLink]="['/upload-transactions']">
+                <i class="material-icons">publish</i>
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating blue" materialize="tooltip" data-position="left" data-delay="50" data-tooltip="Ajouter une catégorie">
+                <i class="material-icons">group_work</i>
+            </a>
+        </li>
+    </ul>
+</div>

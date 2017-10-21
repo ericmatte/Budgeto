@@ -1,0 +1,107 @@
+<main-container>
+
+  <div class="section">
+    <blockquote>
+      Importer des transactions de vos banques est simple et sécuritaire!
+      <br>Il vous suffit de vous connecter au site web correspondant à vos banques,
+      <br>puis télécharger vos dernières transactions sous formes de fichiers CSV.
+      <br>Pour connaitre les étapes relative à votre banques, veuillez vous réferrer aux instructions ci-dessous.
+    </blockquote>
+    <div>
+      <b>Banques supportés:</b>
+      <div *ngFor="let bank of supportedBanks" class="chip">
+        <i class="material-icons" [style.color]="'#' + bank.color">account_balance</i> {{ bank.name }}
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <form #UploadFileForm="ngForm" (ngSubmit)="submit()" materialize>
+      <h4>Importer:</h4>
+
+      <div *ngIf="uploadInProgress" class="progress">
+        <div class="indeterminate"></div>
+      </div>
+
+      <div class="file-field input-field">
+        <div class="btn grey lighten-2">
+          <span class="grey-text text-darken-2">
+            <i class="material-icons">attach_file</i>Choisir un fichier CSV
+          </span>
+          <input type="file" accept=".csv" [(ngModel)]="file" name="file" id="file" required>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+
+      <div class="input-field">
+        <i id="transaction-bank-icon" class="material-icons prefix" [style.color]="'#' + selectedBank.color">account_balance</i>
+
+        <select materialize="material_select" [(ngModel)]="selectedBank" name="selectedBank" required>
+        <option *ngFor="let bank of supportedBanks" [ngValue]="bank">{{ bank.name }}</option>
+      </select>
+        <label>Choisir la banque correspondant au fichier</label>
+      </div>
+
+      <button type="submit" class="waves-effect waves-light btn">
+        <i class="material-icons right">file_upload</i>Envoyer
+      </button>
+    </form>
+  </div>
+
+
+
+  <div class="section">
+    <h4>Instructions pour chaque banques:</h4>
+    <ul materialize="collapsible" class="collapsible" data-collapsible="accordion">
+      <li *ngFor="let bank of supportedBanks">
+
+        <div class="collapsible-header">
+          <i class="material-icons" [style.color]="'#' + bank.color">account_balance</i>{{ bank.name }}
+        </div>
+        <div *ngIf="bank.bank_id == 1" class="collapsible-body">
+          <ul class="collection">
+            <li class="collection-item">1. Connectez-vous a votre compte {{ bank.name }}</li>
+            <li class="collection-item">2. Au bas à droite de la page « My Accounts », cliquez sur le bouton « Download transactions ».</li>
+            <li class="collection-item">3. Choisissez le compte dont vous voulez télécharger les transactions.</li>
+            <li class="collection-item">4. Choisissez la date correspondante.</li>
+            <li class="collection-item">5. Assurez-vous de sélectionner le format de téléchargement CSV (Excel).</li>
+            <li class="collection-item">6. Enregistrer, et importer dans Budgeto.</li>
+          </ul>
+          <div class="center-align">
+            <div class="img-container">
+              <img class="materialboxed z-depth-2" width="1192" src="assets/budgeto/img/banks/tangerine/accounts.png">
+            </div>
+            <div class="img-container">
+              <img class="materialboxed z-depth-2" src="assets/budgeto/img/banks/tangerine/download-transactions.png">
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="bank.bank_id == 2" class="collapsible-body">
+          <ul class="collection">
+            <li class="collection-item">1. Connectez-vous a votre compte {{ bank.name }}</li>
+            <li class="collection-item">2. Sur la barre de droite, cliquez sur l'option « Relevé et documents ».</li>
+            <li class="collection-item">3. Sous « Relevé mensuels», choisissez l'option « Comptes».</li>
+            <li class="collection-item">4. Choisissez Le compte et la période que vous désirez télécharger.</li>
+            <li class="collection-item">5. Assurez-vous de sélectionner le format de téléchargement CSV (Excel).</li>
+            <li class="collection-item">6. Enregistrer, et importer dans Budgeto.</li>
+          </ul>
+          <div class="center-align">
+            <div class="img-container">
+              <img class="materialboxed z-depth-2" src="assets/budgeto/img/banks/desjardins/mes-comptes.png">
+            </div>
+            <div class="img-container">
+              <img class="materialboxed z-depth-2" src="assets/budgeto/img/banks/desjardins/comptes.png">
+            </div>
+            <div class="img-container">
+              <img class="materialboxed z-depth-2" src="assets/budgeto/img/banks/desjardins/telecharger.png">
+            </div>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+</main-container>

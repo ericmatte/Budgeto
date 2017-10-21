@@ -1,0 +1,33 @@
+<ul id="side-bar" class="side-nav fixed">
+    <li *ngIf="root.user">
+        <div class="userView">
+            <div class="background">
+                <img src="assets/budgeto/img/cover.jpg">
+            </div>
+            <img class="circle" [src]="root.user.image || '//ssl.gstatic.com/accounts/ui/avatar_2x.png'" onError="this.src='//ssl.gstatic.com/accounts/ui/avatar_2x.png'">
+            <span class="white-text name">{{ root.user.name }}</span>
+            <span class="white-text email">{{ root.user.email }}</span>
+        </div>
+    </li>
+
+    <menu-item title="Budget" icon="account_balance_wallet" url="/budget"></menu-item>
+    <menu-item title="Transactions" icon="trending_up" url="/transactions"></menu-item>
+    <menu-item title="Importer des transactions" icon="file_upload" url="/upload-transactions"></menu-item>
+
+    <div admin>
+        <div class="divider"></div>
+        <li><a class="subheader">Admin Tools</a></li>
+        <menu-item title="Users" icon="supervisor_account" url="/admin/users"></menu-item>
+        <menu-item title="Keywords Categorizer" icon="storage" url="/admin/categorizer"></menu-item>
+        <menu-item title="Keywords Creator" icon="loyalty" url="/admin/keywords-creator"></menu-item>
+        <li><a class="waves-effect waves-teal" href="http://materializecss.com/getting-started.html" target="_blank"><i class="material-icons">view_compact</i>Materialize</a></li>
+    </div>
+
+    <div class="divider"></div>
+    <li><a class="subheader">Votre compte</a></li>
+    <li><a class="waves-effect waves-teal" onclick="Materialize.toast('Cette section n\'est pas encore disponible.', 4000)"><i class="material-icons">settings</i>Paramètres</a></li>
+    <li><a class="waves-effect waves-teal" (click)="logout()"><i class="material-icons">exit_to_app</i>Déconnexion</a></li>
+    <li>
+        <a class="waves-effect waves-teal" href="mailto:contact@ericmatte.me?Subject=Besoin%20d'aide%20avec%20Budgeto"><i class="material-icons">help</i>Aide et commentaires</a>
+    </li>
+</ul>

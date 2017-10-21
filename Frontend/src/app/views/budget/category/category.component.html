@@ -1,0 +1,41 @@
+<ul materialize="collapsible" class="collapsible" [class.popout]="transactions" [attr.data-collapsible]="transactions ? 'accordion' : 'expandable'">
+    <li *ngFor="let category of categories" class="cat" [class.active]="!transactions">
+            <div class="collapsible-header" [class.active]="!transactions">
+                <i *ngIf="category.icon != undefined" class="fa {{ category.icon }}" aria-hidden="true"></i>
+                <span name="name">{{ category.name }}</span>
+
+                <span (click)="showCategoryOptions(category); $event.stopPropagation()" materialize="tooltip" class="badge btn-flat waves-effect options tooltipped" data-position="right" data-delay="50" data-tooltip="Options">
+                    <i class="material-icons">more_vert</i>
+                </span>
+
+                <span class="badge hide-on-med-and-up">{{ category.count }}</span>
+                <span class="badge hide-on-small-only" data-badge-caption="transactions">{{ category.count }}</span>
+
+                <span name="dollar-bill"></span>
+                <div class="progress" *ngIf="category.limit != undefined">
+                    <div name="limit" [attr.data-limit]="category.limit" class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="collapsible-body" style="display: block;">
+
+                <category-transaction [transactions]="category.items" [banks]="banks" collapsible="accordion"></category-transaction>
+
+                <div *ngIf="category.children.length > 0">
+                    <budget-category (onModalCall)="showCategoryOptions($event)" [categories]="category.children" [banks]="banks"></budget-category>
+                </div>
+            </div>
+    </li>
+
+    <li class="cat" *ngIf="transactions && transactions.length > 0">
+        <div class="collapsible-header">
+            <i class="material-icons">more_horiz</i>
+            <span name="name">Autres</span>
+            <span class="badge empty"><i class="material-icons"></i></span>
+            <span class="badge hide-on-med-and-up">{{ transactions.length }}</span>
+            <span class="badge hide-on-small-only" data-badge-caption="transactions">{{ transactions.length }}</span>
+        </div>
+        <div class="collapsible-body" style="display: block;">
+            <category-transaction [transactions]="transactions" [banks]="banks"></category-transaction>
+        </div>
+    </li>
+</ul>

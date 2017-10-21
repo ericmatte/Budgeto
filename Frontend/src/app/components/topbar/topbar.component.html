@@ -1,0 +1,35 @@
+<header>
+    <ul id="categoryFilter" class="dropdown-content">
+        <li><a (click)="showAllCategory()">Toutes les catégories</a></li>
+        <li><a (click)="selectCategory()">Non catégorisé</a></li>
+        <li class="divider"></li>
+        <li *ngFor="let category of root.categories">
+            <a (click)="selectCategory(category)">
+                <i class="fa {{ category.icon }} material-icons" aria-hidden="true"></i>
+                {{ category.name }}
+            </a>
+        </li>
+    </ul>
+
+    <nav class="teal darken-1" role="navigation">
+        <div class="nav-wrapper">
+            <a materialize="sideNav" href="javascript:void(0)" data-activates="side-bar" class="button-collapse"><i class="material-icons">menu</i></a>
+            <a class="brand-logo">{{ title || 'Budgeto' }}</a>
+
+            <ul class="right">
+                <!--block options-->
+                <li class="search-field">
+                        <div class="input-field">
+                            <input id="search" type="search" placeholder="Filtrer les transactions">
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                    </div>
+                </li>
+                <li>
+                    <a materialize="dropdown" class="dropdown-button" data-activates="categoryFilter" data-belowOrigin="true" data-alignment="right"
+                        data-constrainWidth="false"><i class="material-icons">filter_list</i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

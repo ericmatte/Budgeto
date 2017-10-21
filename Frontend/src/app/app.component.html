@@ -1,0 +1,6 @@
+<div *ngIf="root.user && this.router.url !== '/'">
+  <app-menu></app-menu>
+  <app-topbar></app-topbar>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,43 @@
+.card .card-image .card-title {
+    padding: 12px;
+    padding-left: 24px;
+}
+.card .card-content {
+    padding: 0;
+}
+table tr td:first-child, table tr th:first-child {
+    padding-left: 15px;
+}
+table tr td:last-child, table tr th:last-child {
+    padding-right: 0;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+table.highlight > tbody > tr:hover {
+  background-color: #dddddd;
+}
+
+tr:not(.selected) i.select {
+    opacity: 0;
+    -o-transition: opacity .2s ease-in-out;
+    -ms-transition: opacity .2s ease-in-out;
+    -moz-transition: opacity .2s ease-in-out;
+    -webkit-transition: opacity .2s ease-in
+}
+
+th:hover i.select,
+td:hover i.select {
+    opacity: 1;
+}
+
+tr.selected {
+    background-color: #f9f9f9 !important;
+    border: 1px solid #b7b7b7;
+}
+
+tbody tr td:last-child {
+    padding-right: 1rem;
+}

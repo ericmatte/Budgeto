@@ -1,0 +1,61 @@
+<main-container *ngIf="root.categories | groupByKey:'category_id'; let categories" class="noselect">
+
+    <div *ngIf="root.transactions | groupBy:root.banks:'bank_id'; let banks">
+
+        <div *ngFor="let bank of banks">
+            <div class="section">
+                <div class="row">
+                    <div class="col s12 m12">
+                        <div class="card">
+                            <div class="card-image" [style.background-color]="'#' + bank.color">
+                                <span class="card-title black-text">{{ bank.name }}</span>
+                                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" height="60px" style="padding: 10px">
+                                <a (click)="addTransaction(bank.bank_id)" materialize="tooltip" class="btn-floating halfway-fab waves-effect waves-light red tooltipped"
+                                    data-tooltip="Ajouter une transaction" data-position="left" data-delay="50">
+                                <i class="material-icons">add</i>
+                            </a>
+                            </div>
+                            <div class="card-content">
+
+                                <transactions-table (onModalCall)="editTransaction($event)" [transactions]="bank.items" [categories]="categories"></transactions-table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="banks.length == 0">
+            <div class="section">
+                <h5>Vous n'avez actuellement aucune transaction.</h5>
+                <p>Cliquez sur le bouton '+' pour ajouter votre premier!</p>
+            </div>
+        </div>
+
+        <div id="transaction-delete-selected-modal" materialize="modal" class="modal">
+            <form (ngSubmit)="deleteSelectedTransactions()" materialize>
+                <div class="modal-content">
+                    <h5>Êtes-vous certain de vouloir supprimer les transactions sélectionné?</h5>
+                    <blockquote>Cette action est irréversible.</blockquote>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="waves-effect btn" style="margin-left:6px">
+                        <i class="material-icons left">delete_forever</i> Oui
+                    </button>
+                    <button type="button" class="modal-action modal-close waves-effect btn-flat">Non</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main-container>
+
+
+<transaction-modal></transaction-modal>
+
+<div *ngIf="root.transactions | hasSelectedElements" class="fixed-action-btn">
+    <a href="#transaction-delete-selected-modal" class="btn-floating btn-large waves-effect waves-light blue" materialize="tooltip"
+        data-position="left" data-delay="50" data-tooltip="Supprimer les transactions sélectionnées">
+        <i class="material-icons">delete_forever</i>
+    </a>
+</div>

@@ -1,0 +1,44 @@
+<div id="category-options" materialize="modal" class="modal bottom-sheet">
+    <div class="container">
+
+        <form #optionsForm="ngForm" (ngSubmit)="onSubmit()" materialize *ngIf="category">
+            <div class="modal-content">
+                <h4>
+                    <i class="fa {{ category.icon }}" aria-hidden="true"></i>
+                    <span>{{ category.name }} - Options</span>
+                </h4>
+
+
+                <h6>Définir une limite pour cette catégorie</h6>
+                <div class="row">
+                    <div class="input-field col s6 m4">
+                        <div class="switch">
+                            <label>
+                                Pas de limite
+                                <input [(ngModel)]="setLimit" name="setLimit" checked type="checkbox">
+                                <span class="lever"></span>
+                        <input class="with-gap" name="group3" type="radio" id="test5" checked />
+                        <label for="test5">Mensuel</label>
+                        <input class="with-gap" name="group3" type="radio" id="test5" checked />
+                        <label for="test5">Annuel</label>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="input-field col s6 m8">
+                        <i class="material-icons prefix">attach_money</i>
+                        <input name="limit" id="category-limit" placeholder="Un montant d'argent" type="text" pattern="[0-9]+(\.[0-9]{1,2})?" class="validate"
+                            required [(ngModel)]="category.limit" [disabled]="!setLimit">
+                        <label for="category-limit" data-error="SVP Entrez une limite d'argent comme 1000 ou 10.50$." class="active">Limite</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="!optionsForm.form.valid" type="submit" class="waves-effect btn" style="margin-left:6px">
+                    <i class="material-icons left">save</i> Sauvegarder
+                </button>
+                <button (click)="onCancel()" type="button" class="modal-action modal-close waves-effect btn-flat">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>

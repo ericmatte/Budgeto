@@ -1,0 +1,137 @@
+<main-container *ngIf="root.banks | groupByKey:'bank_id'; let banks" class="noselect">
+  <div *ngIf="root.transactions | groupBy:root.categories:'category_id':'category_id':true | getLimits; let categories">
+
+
+
+<h5>Résumé</h5>
+<table class="summary">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Jan.</th>
+      <th>Fév.</th>
+      <th>Mar.</th>
+      <th>Avr.</th>
+      <th>Mai</th>
+      <th>Juin</th>
+      <th>Jul.</th>
+      <th>Aout</th>
+      <th>Sep.</th>
+      <th>Oct.</th>
+      <th>Nov.</th>
+      <th>Déc.</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Revenu</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+    </tr>
+    <tr>
+      <td>Dépense</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+    </tr>
+    <tr>
+      <td>Net (Revenu-Dépense)</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+    </tr>
+    <tr>
+      <td>Balance projetée</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+      <td>10$</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Afficher</h5>
+  <p>
+    <input class="with-gap" name="group3" type="radio" id="test5" checked />
+    <label for="test5">Ce mois-ci</label>
+    <input class="with-gap" name="group3" type="radio" id="test5" checked />
+    <label for="test5">Mois passé</label>
+    <input class="with-gap" name="group3" type="radio" id="test5" checked />
+    <label for="test5">Cette année</label>
+    <input class="with-gap" name="group3" type="radio" id="test5" checked />
+    <label for="test5">Personnalisé</label>
+  </p>
+
+
+
+
+
+    <div *ngFor="let category of categories | tree:'category_id':'parent_id' | cleanTree | addUncategorized">
+
+      <div id="{{ category.category_id }}" class="section scrollspy">
+        <div class="row">
+          <div class="col s12 m3">
+            <h5 class="light">
+              <i *ngIf="category.icon != undefined" class="fa {{ category.icon }}" aria-hidden="true"></i>
+              <span name="name">{{ category.name }}</span>
+            </h5>
+            <blockquote>{{ category.count }} transactions</blockquote>
+          </div>
+
+          <div class="col s12 m9">
+            <p *ngIf="category.count == 0">Pas de transactions dans cette catégorie.</p>
+            <budget-category (onModalCall)="showCategoryOptions($event)" [categories]="category.children" [transactions]="category.items"
+              [banks]="banks"></budget-category>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main-container>
+
+
+<transaction-modal></transaction-modal>
+
+<category-options [inputCategory]="selectedCategory"></category-options>

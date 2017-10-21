@@ -1,0 +1,48 @@
+#transactions table {
+    margin-bottom: 0;
+}
+#transactions table {
+    margin-bottom: 0;
+}
+
+@media only screen and (max-width: 599px) {
+    .collapsible.popout > li {
+        margin: 0 6px;
+    }
+    .collapsible.popout li .collapsible-body {
+        padding: 6px 10px;
+    }
+    .show-on-small .material-icons {
+        font-size: 14px;
+    }
+    .show-on-small .material-icons:not(:first-child) {
+        margin: 0 0 0 10px;
+    }
+    .badge.hide-on-med-and-up {
+        min-width: 30px;
+    }
+    td {
+        padding: 10px 5px 10px 5px;
+    }
+}
+
+/*Option button*/
+.collapsible-header .btn-flat,
+.collapsible-header .empty {
+    min-width: 0;
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    padding: 0;
+}
+.collapsible-header .btn-flat .material-icons,
+.collapsible-header .empty .material-icons{
+    width: 1rem;
+    line-height: 1;
+    margin-right: 0;
+}
+
+
+table.summary tbody tr td:first {
+    font-weight: bold;
+}

@@ -1,0 +1,39 @@
+<table class="striped highlight">
+    <thead>
+        <tr>
+            <th (click)="selectAll()">
+                <i class="select material-icons tooltipped" materialize="tooltip" data-position="bottom" data-delay="50" data-tooltip="Sélectionner tout">{{ allSelected ? 'check_circle' : 'check' }}</i>
+            </th>
+            <th><span class="hide-on-small-only">Catégorie</span></th>
+            <th>Description</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let t of transactions" (click)="editTransaction(t)" [ngClass]="{'selected z-depth-4' : t.isSelected}">
+            <td *ngIf="t.isLoading">
+                <spinner size="tiny"></spinner>
+            </td>
+            <td *ngIf="!t.isLoading" (click)="selectTransaction(t); $event.stopPropagation()">
+                <i class="select material-icons">{{ t.isSelected ? 'check_circle' : 'check' }}</i>
+            </td>
+            <td>
+                <ng-container *ngIf="!t.category_id">
+                    --
+                </ng-container>
+                <ng-container *ngIf="t.category_id">
+                    <i class="fa" [ngClass]="categories[t.category_id].icon" aria-hidden="true"></i>
+                    <span class="hide-on-small-only">{{ categories[t.category_id].name }}</span>
+                </ng-container>
+            </td>
+            <td>{{ t.description }}</td>
+            <td>{{ t.amount }} $</td>
+            <td>{{ t.date }}</td>
+            <td (click)="deleteTransaction(t); $event.stopPropagation()">
+                <a materialize="tooltip" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Supprimer">x</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

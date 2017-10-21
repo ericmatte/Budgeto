@@ -1,0 +1,41 @@
+.input-field.btn input {
+  margin: 10px;
+  padding: 0;
+}
+
+.input-field.btn i {
+  line-height: 45px;
+  padding-left: 10px;
+}
+
+.brand-logo {
+  margin-left: 1rem;
+  position: inherit;
+}
+
+@media only screen and (max-width: 992px) {
+  nav .brand-logo {
+    margin-left: 0;
+    left: 0;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  ul.right * {
+    color: #444 !important;
+  }
+
+  ul.right input {
+    background-color: #e8e8e8;
+  }
+}
+
+.search-field {
+  width: 25rem;
+}
+
+ul.right, ul.right li.search-field, ul.right li.search-field * {
+  height: 100%;
+}

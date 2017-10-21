@@ -1,0 +1,17 @@
+<table class="bordered" *ngIf="transactions.length > 0">
+    <tbody *ngFor="let t of transactions">
+        <tr>
+            <td>
+                <b>{{ t.description }}</b>
+                <span class="hide-on-med-and-up show-on-small">
+                    <i class="material-icons">attach_money</i> {{ t.amount }} $
+                    <i class="material-icons">date_range</i> {{ t.date }}
+                    <i class="material-icons">account_balance</i> {{ banks[t['bank_id']].name }}
+                </span>
+            </td>
+            <td class="amount hide-on-small-only">{{ t.amount }} $</td>
+            <td class="hide-on-small-only">{{ t.date }}</td>
+            <td class="hide-on-small-only">{{ banks[t['bank_id']].name }}</td>
+        </tr>
+    </tbody>
+</table>
