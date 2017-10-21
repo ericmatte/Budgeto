@@ -1,4 +1,5 @@
 import sqlalchemy.orm.properties
+from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import exc
 from sqlalchemy.sql.functions import func
 
@@ -61,3 +62,7 @@ class BaseEntity:
         q = cls.apply_filter(q, **kwargs)
         q = q.slice(start_idx, end_idx)
         return q.all()
+
+    def attribute_names(cls):
+        return [prop.key for prop in class_mapper(cls).iterate_properties
+            if isinstance(prop, sqlalchemy.orm.ColumnProperty)]

@@ -5,21 +5,16 @@ from datetime import datetime
 from lib.print_colors import out
 from lib.statement_parser import StatementParser
 
-path = 'tests/resources/csv/'
-statements = [
-    {'bank': 'Desjardins', 'csv': 'Desjardins_Comptes.csv',       'json': 'Desjardins_Comptes.json'},
-    {'bank': 'Tangerine',  'csv': 'Tangerine_Credit-Card.CSV',    'json': 'Tangerine_Credit-Card.json'},
-    {'bank': 'Tangerine',  'csv': 'Tangerine_Saving-Account.CSV', 'json': 'Tangerine_Saving-Account.json'}
-]
-
-def test_csv_to_json(client):
+def test_csv_to_json(client, statements):
     for statement in statements:
-        parsed = StatementParser(statement['bank']).parse(path+statement['csv'])
-        with codecs.open(path+statement['json'], 'r', encoding='utf8') as f:
+        out.print('Test: ' + statement['csv'], out.WARNING)
+        parsed = StatementParser(statement['bank']).parse(statement['csv'])
+        with codecs.open(statement['json'], 'r', encoding='utf8') as f:
             ref = json.loads(f.read())
 
             assert parsed['bank'] == ref['bank']
             for i in range(len(parsed['transactions'])):
+                out.print(json.dumps(parsed['transactions'][i]), out.OKBLUE)
                 assert parsed['transactions'][i]['description'] == ref['transactions'][i]['description']
                 assert parsed['transactions'][i]['date'] == ref['transactions'][i]['date']
                 assert parsed['transactions'][i]['amount'] == ref['transactions'][i]['amount']
@@ -35,7 +30,7 @@ def test_csv_to_json(client):
     assert try_that(StatementParser, 'Bank not supported', 'NotABank')
     assert try_that(StatementParser, 'Bank not supported', '')
     assert try_that(StatementParser('Tangerine').parse, 'not found', 'NotAFile')
-    assert try_that(StatementParser('Tangerine').parse, 'not supported', path+statements[0]['json'])
+    assert try_that(StatementParser('Tangerine').parse, 'not supported', statements[0]['json'])
 
 def test_clean_text(client):
     strings = [
@@ -51,7 +46,8 @@ def test_clean_text(client):
 def test_format_date(client):
     now = datetime.now().date().isoformat()
     dates = [
-        {'input': '4/9/2017',   'format': '%d/%m/%Y', 'iso': '2017-09-04', 'test': 'Tangerine'},
+        {'input': '4/9/2017',   'format': '%m/%d/%Y', 'iso': '2017-04-09', 'test': 'Tangerine'},
+        {'input': '4/26/2017',  'format': '%m/%d/%Y', 'iso': '2017-04-26', 'test': 'Tangerine'},
         {'input': '2017/03/31', 'format': '%Y/%m/%d', 'iso': '2017-03-31', 'test': 'Desjardins'},
         {'input': '4/26/2017',  'format': '%Y.%m.%d', 'iso': now,          'test': 'Wrong format'},
         {'input': '',           'format': '',         'iso': now,          'test': 'No date'}

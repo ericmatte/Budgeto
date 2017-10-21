@@ -23,7 +23,7 @@
 	  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="google-signin-client_id" content="{{ config['CLIENT_ID'] }}">
 
-    <title>{{ title or 'Endless' }}</title>
+    <title>{{ title or 'Eric Matte' }}</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -39,91 +39,7 @@
 </head>
 
 <body>
-    {% block full_body %}
-
-    <ul id="side-bar" class="side-nav fixed">
-        <li><div class="userView">
-            <div class="background">
-                <img src="{{ url_for('static', filename='endless/img/cover.jpg') }}">
-            </div>
-            <img class="circle" src="{{ g.user.picture or '//ssl.gstatic.com/accounts/ui/avatar_2x.png' }}">
-            <span class="white-text name">{{ g.user.full_name }}</span>
-            <span class="white-text email">{{ g.user.email }}</span>
-        </div></li>
-
-
-        {% macro side_item(title, icon, url) %}
-        <li{% if request.path == url %} class="active"{% endif %}>
-            <a class="waves-effect waves-teal" href="{{ url }}"><i class="material-icons">{{ icon }}</i>{{ title }}</a>
-        </li>
-        {% endmacro %}
-
-        {{ side_item('Transactions', 'trending_up', url_for("budgeto.transactions")) }}
-        {{ side_item('Budget', 'account_balance_wallet', url_for("budgeto.budget")) }}
-        
-        {% if 'admin' in g.user.roles %}
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Admin Tools</a></li>
-        {{ side_item('Users', 'supervisor_account', url_for("budgeto.users")) }}
-        {{ side_item('Keywords Categorizer', 'storage', url_for("budgeto.keywords_categorizer")) }}
-        {{ side_item('Keywords Creator', 'loyalty', url_for("budgeto.keywords_creator")) }}
-        <li><a class="waves-effect waves-teal" href="http://materializecss.com/getting-started.html" target="_blank"><i class="material-icons">view_compact</i>Materialize</a></li>
-        {% endif %}
-        
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Votre compte</a></li>
-        <!--<li><a class="waves-effect waves-teal" onclick="Materialize.toast('Settings is not available yet.', 4000)"><i class="material-icons">settings</i>Settings</a></li>-->
-        <li><a class="waves-effect waves-teal" onclick="signOut();"><i class="material-icons">exit_to_app</i>Déconnexion</a></li>
-        <li><a class="waves-effect waves-teal" href="mailto:{{ config['ADMIN_EMAIL'] }}?Subject=Besoin%20d'aide%20avec%20{{ (title or 'Endless') | e }}"><i class="material-icons">help</i>Aide et commentaires</a></li>
-    </ul>
-
-
-    <header>
-        <nav class="teal darken-1" role="navigation">
-            <div class="nav-wrapper container">
-                <a id="logo-container" href="#" class="brand-logo">{{ title or 'Budgeto' }}</a>
-                <ul class="right hide-on-med-and-down">
-                    {% block options %}{% endblock %}
-                    <!--<li><a onclick="signOut();">Déconnexion</a></li>-->
-                    <!--<li class="divider"></li>-->
-                </ul>
-                <ul class="right hide-on-large-only">
-                    <li><a class="dropdown-button" href="#" data-activates="right-settings" data-constrainWidth="false" data-belowOrigin="true" data-alignment="right">
-                        <i class="material-icons">more_vert</i>
-                    </a></li>
-                    <ul id="right-settings" class="dropdown-content">
-                        {{ self.options() }}
-                    </ul>
-                </ul>
-                <a href="#" data-activates="side-bar" class="button-collapse"><i class="material-icons">menu</i></a>
-            </div>
-        </nav>
-    </header>
-    <main class="">
-		<div class="container">
-		<div class="row">
-		<div class="col s12 m12">
-        {% block body %}
-        <div class="section no-pad-bot">
-            <div class="container">
-                <br><br>
-                <h1 class="header center orange-text">Starter Template</h1>
-                <div class="row center">
-                    <h5 class="header col s12 light">To be replaced by a web page content</h5>
-                </div>
-                <div class="row center">
-                    <a href="http://materializecss.com/getting-started.html" target="_blank" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
-                </div>
-                <br><br>
-            </div>
-        </div>
-        {% endblock %}
-		</div>
-		</div>
-		</div>
-    </main>
-
-    {% endblock %}
+    {% block full_body %}{% endblock %}
 
 
     <!--<script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>-->

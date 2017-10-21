@@ -72,3 +72,19 @@ def dummy_google_user_info(request):
 
     request.addfinalizer(teardown)
     return user_info
+
+@pytest.fixture
+def statements(request):
+    path = 'tests/resources/csv/'
+    statements = [
+        {'bank': 'Desjardins', 'csv': 'Desjardins_Comptes.csv', 'json': 'Desjardins_Comptes.json'},
+        {'bank': 'Tangerine', 'csv': 'Tangerine_Credit-Card.CSV', 'json': 'Tangerine_Credit-Card.json'},
+        {'bank': 'Tangerine', 'csv': 'Tangerine_Saving-Account.CSV', 'json': 'Tangerine_Saving-Account.json'}
+    ]
+    for statement in statements:
+        statement['csv'] = path + statement['csv']
+        statement['json'] = path + statement['json']
+
+    return statements
+
+

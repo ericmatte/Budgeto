@@ -14,32 +14,6 @@ from models import Transaction
 from models import User
 
 
-@budgeto.route('/', methods=['GET'])
-def promotion():
-    return render_template('promotion.html')
-
-
-"""START OF User section"""
-@budgeto.route('/budget', methods=['GET'])
-@login_required
-def budget():
-    transactions_tree = Transaction.get_all_hierarchically(g.user)
-    return render_template('budget.html', title="Budget",
-                           banks=Bank.get_all(),
-                           categories=Category.get_all(),
-                           today=date.today().strftime("%d-%m-%Y"),
-                           transactions_tree=clean_empty_leaves_on_tree(transactions_tree))
-
-
-@budgeto.route('/transactions', methods=['GET'])
-@login_required
-def transactions():
-    return render_template('transactions.html', title="Transactions",
-                           banks=Transaction.get_all_by_bank(g.user),
-                           categories=Category.get_all(),
-                           today=date.today().strftime("%d-%m-%Y"))
-"""END OF User section"""
-
 
 """START OF Admin section"""
 # All route in this section must be set as @login_required and @required_roles('admin')
@@ -68,12 +42,3 @@ def keywords_creator():
     remaining_keywords = Keyword.get_all(value=None)
     return render_template('keywords_creator.html', title="Keywords Creator", keywords=remaining_keywords)
 """END OF Admin section"""
-
-
-def clean_empty_leaves_on_tree(tree, count_key='count', children_key='children'):
-    new_tree = {}
-    for key, item in tree.items():
-        if tree[key][count_key] != 0:
-            new_tree[key] = copy.copy(item)
-            new_tree[key][children_key] = clean_empty_leaves_on_tree(new_tree[key][children_key], count_key, children_key)
-    return new_tree

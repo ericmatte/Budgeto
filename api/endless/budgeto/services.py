@@ -2,50 +2,19 @@ from datetime import datetime
 
 from flask import g
 from flask import json
+from flask import make_response
 from flask import request
 from werkzeug.exceptions import BadRequestKeyError
 
 from endless.budgeto import budgeto_services
 from endless.flask import db_session
-from endless.main.services import login_required
+from endless.main.services import login_required, token_required
 from lib.categorizer import Categorizer
 from lib.response_handler import HttpResponse, HttpErrorResponse
-from models import Bank,  Transaction, Category, set_attributes, add_to_db
+from models import Bank,  Transaction, Category, set_attributes, add_to_db, to_json
 from models import Keyword
 from models.limit import Limit
 
-
-"""START OF Transaction section"""
-@budgeto_services.route('/add-transaction', methods=['POST'])
-@login_required
-def add_transaction():
-    try:
-        data = request.form
-        t_attributes = {
-            'user_id': g.user.user_id,
-            'bank_id': int(data['bank']),
-            'category_id': int(data['cat']),
-            'description': data['desc'] or Category.get(category_id=int(data['cat'])).name,
-            'amount': float(data['amount']),
-            'date': datetime.strptime(data['date'], '%d-%m-%Y')
-        }
-        transaction = add_to_db(Transaction(), **t_attributes)
-        Keyword.generate_from_description(transaction.description)
-        return HttpResponse('Transactions created!', {'transaction': transaction.uuid}, status=201)
-    except BadRequestKeyError as e:
-        return HttpErrorResponse(e, 'Unable to add the transaction.', status=400)
-
-
-@budgeto_services.route('/delete-transaction', methods=['POST'])
-@login_required
-def delete_transaction():
-    try:
-        transaction = Transaction.get(transaction_id=request.form['id'])
-        db_session.delete(transaction)
-        db_session.commit()
-        return HttpResponse('Transactions deleted.', status=200)
-    except BadRequestKeyError as e:
-        return HttpErrorResponse(e, 'Unable to delete the transaction.', status=400)
 
 
 @budgeto_services.route('/transactions-fetcher', methods=['POST'])

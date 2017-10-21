@@ -9,8 +9,8 @@ from models import Bank
 class StatementParser:
 
 
-    def __init__(self, bank_name):
-        self.bank = Bank.get(name=bank_name.title())
+    def __init__(self, bank_name='', bank=None):
+        self.bank = bank or Bank.get(name=bank_name.title())
         if self.bank is None:
             raise ValueError('Bank not supported.')
 
@@ -23,7 +23,7 @@ class StatementParser:
             # 0-Date, 2-Description, 4-Amount
             self.description = lambda row: row[2]
             self.amount = lambda row: float(row[4] or '0')
-            self.date = lambda row: self.format_date(row[0], '%d/%m/%Y')
+            self.date = lambda row: self.format_date(row[0], '%m/%d/%Y')
             self.start_at = 1
             self.columns = 5
 
